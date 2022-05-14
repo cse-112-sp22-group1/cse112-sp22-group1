@@ -13,29 +13,29 @@
  import { TrackerMenu } from "./components/tracker.jsx";
  import { createEditor } from "./components/blockController.js";
  import { router } from "./router.js";
- 
+
   // CSS imports
   /* eslint-disable */
   import "./index.css";
   /* eslint-enable */
- 
+
   document.querySelector("body").style.display = "none";
- 
+
   /**
    * The index page navbar
    */
   export let navbar = new NavBar();
- 
+
   /**
    * The index page header
    */
   export let header = new PageHeader();
- 
+
   /**
    * Index page dropdown
    */
   export let adderDropdown = new InlineDropdown();
- 
+
   /**
    * Index page futureLog creation menu
    */
