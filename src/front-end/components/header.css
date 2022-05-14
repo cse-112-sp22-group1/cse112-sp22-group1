@@ -1,14 +1,17 @@
 :host {
     font-family: "SF-Pro";
     display: block;
-    margin-left: 80px;
+    margin-left: 240px;
     margin-right: 20px;
+    margin-top: 25px;
     text-align: left;
 }
 
 /* Top navigation */
 #container {
     display: flex;
+    width: flex;
+    object-position: 10%;
     align-items: center;
     height: 75px;
     border-bottom: solid 2px var(--border-color);
