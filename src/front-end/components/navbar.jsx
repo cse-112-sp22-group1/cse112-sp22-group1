@@ -32,7 +32,9 @@ let template = <template>
 	</nav>
 	<nav class="navigation">
 		<div id="menu" class="closed">
-			<button id="homeMenu">  <img src="../public/resources/home_icon.png"/> <h1>&nbsp;Index</h1></button>
+			<div id="top">
+				<button id="homeMenu">  <img src="../public/resources/home_icon.png"/> <h1>&nbsp;Index</h1></button>
+			</div>
 			<button id="todayLogMenu"> <p>Today's Log</p> </button>
 			<button id="thisMonthMenu"> <p>This Month</p> </button>
 			<button id="futureLogMenu"> <p>Future Logs</p> </button>
@@ -40,14 +42,11 @@ let template = <template>
 			<button id="eventsMenu"> <p>Events</p> </button>
 			<button id="retrospectiveMenu"> <p>Retrospective</p> </button>
 			<button id="trackersMenu"> <p>Trackers</p> </button>
-			<div id="bottomMenu">
+			<div id="bottom">
 				<button id="helpMenu">  <img src="../public/resources/question.png"/> <p2>&nbsp; Help </p2> </button>
 				<button id="userMenu">  <img src="../public/resources/user.png"/> <p2>&nbsp; My Account</p2> </button>
 			</div>
 
-			<button id="singleMenu"><img src="../public/resources/left.png"/></button>
-			<button id="doubleMenu"><img src="../public/resources/double_icon.png"/></button>
-			<button id="userMenu">  <img src="../public/resources/user.png"/></button>
 		</div>
 	</nav>
 </template>

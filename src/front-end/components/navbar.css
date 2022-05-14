@@ -4,12 +4,13 @@
 
 .nav-bar {
     position: fixed;
-    width: 220px;
+    width: 210px;
     height: 100%;
     top: 0;
     bottom: 0;
     left: 0;
     display: block;
+
     background-color: var(--navbar-background-color);
 }
 
@@ -18,9 +19,9 @@ button {
     background-color: transparent;
     border: none;
     padding: 0;
-    width: 170px;
-    height: 32px;
-    margin: 5px auto 24px auto;
+    width: 150px;
+    height: 23px;
+    margin: 5px auto 32px auto;
     cursor: pointer;
     text-align: left;
 }
@@ -33,7 +34,7 @@ button img {
 button p {
     display:inline-block;
     font-family: "SF-Pro";
-    font-size: 18px;
+    font-size: 15px;
     opacity: 80%;
     filter: var(--icon-filter);
 }
@@ -41,10 +42,10 @@ button p {
 button p2 {
     display:inline-block;
     font-family: "SF-Pro";
-    font-size: 18px;
+    font-size: 15px;
     opacity: 80%;
     position: relative;
-    bottom: 10px;
+    bottom: 7px;
     filter: var(--icon-filter);
 }
 
@@ -52,7 +53,7 @@ button h1 {
     display:inline-block;
     font-family: "SF-Pro";
     font-weight: bold;
-    font-size: 34px;
+    font-size: 28px;
     opacity: 80%;
     filter: var(--icon-filter);
 }
@@ -80,18 +81,26 @@ button:hover h1 {
 
 #bottom {
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     width: 100%;
 }
 
 #top {
-    margin-bottom: 40px;
+    margin-bottom: 55px;
+    margin-top: 10px;
 }
 
 
 #user {
     position: static;
+    height: 22px;
     margin: 0 auto;
+}
+
+#help {
+    position: static;
+    height: 22px;
+    margin-bottom: 20px;
 }
 
 @media only screen and (max-width:1100px) {
@@ -132,7 +141,7 @@ button:hover h1 {
         position:fixed;
     }
 
-    #homeMenu {
+    /* #homeMenu {
         position: absolute;
         width: 60px;
         height: 60px;
@@ -140,7 +149,7 @@ button:hover h1 {
         left: 0;
         right: 0;
         margin: auto;
-    }
+    } */
 
     #singleMenu {
         position: absolute;
@@ -162,7 +171,7 @@ button:hover h1 {
         margin: auto;
     }
 
-    #userMenu {
+    /* #userMenu {
         position: absolute;
         width: 65px;
         height: 65px;
@@ -171,14 +180,14 @@ button:hover h1 {
         right: 0;
         padding: 0;
         margin: 0 auto;
-    }
+    } */
 }
 
 @media only screen and (max-height: 1200px){
-    #homeMenu {
+    /* #homeMenu {
         width: 40px;
         height: 40px;
-    }
+    } */
 
     #singleMenu {
         width: 40px;
@@ -192,19 +201,19 @@ button:hover h1 {
         top: 230px;
     }
 
-    #userMenu {
+    /* #userMenu {
         position: absolute;
         width: 45px;
         height: 45px;
         top: calc(100% - 85px);
-    }
+    } */
 }
 
 @media only screen and (max-height: 800px){
-    #homeMenu {
+    /* #homeMenu {
         width: 35px;
         height: 35px;
-    }
+    } */
 
     #singleMenu {
         width: 35px;
@@ -217,11 +226,11 @@ button:hover h1 {
         height: 35px;
         top: 190px;
     }
-
+/* 
     #userMenu {
         position: absolute;
         width: 40px;
         height: 40px;
         top: calc(100% - 65px);
-    }
+    } */
 }

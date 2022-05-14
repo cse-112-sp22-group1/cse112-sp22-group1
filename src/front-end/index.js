@@ -176,10 +176,10 @@
 	//   navbar.single.style.visibility = "hidden";
 	//   navbar.double.setAttribute("disabled", "disabled");
 	//   navbar.double.style.visibility = "hidden";
-	  navbar.singleMenu.setAttribute("disabled", "disabled");
-	  navbar.singleMenu.style.visibility = "hidden";
-	  navbar.doubleMenu.setAttribute("disabled", "disabled");
-	  navbar.doubleMenu.style.visibility = "hidden";
+	//   navbar.singleMenu.setAttribute("disabled", "disabled");
+	//   navbar.singleMenu.style.visibility = "hidden";
+	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
+	//   navbar.doubleMenu.style.visibility = "hidden";
 	  header.makeUneditable();
 	  let headerButtons = header.imgbuttons;
 	  for (let i = 0; i < headerButtons.length; i++) {
@@ -245,10 +245,10 @@
 	//   navbar.single.style.visibility = "hidden";
 	//   navbar.double.setAttribute("disabled", "disabled");
 	//   navbar.double.style.visibility = "hidden";
-	  navbar.singleMenu.setAttribute("disabled", "disabled");
-	  navbar.singleMenu.style.visibility = "hidden";
-	  navbar.doubleMenu.setAttribute("disabled", "disabled");
-	  navbar.doubleMenu.style.visibility = "hidden";
+	//   navbar.singleMenu.setAttribute("disabled", "disabled");
+	//   navbar.singleMenu.style.visibility = "hidden";
+	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
+	//   navbar.doubleMenu.style.visibility = "hidden";
 	  header.makeUneditable();
 	  let headerButtons = header.imgbuttons;
 	  for (let i = 0; i < headerButtons.length; i++) {
@@ -325,8 +325,8 @@
 	  document.getElementById("targetMenu").style.display = "block";
 	//   navbar.double.setAttribute("disabled", "disabled");
 	//   navbar.double.style.visibility = "hidden";
-	  navbar.doubleMenu.setAttribute("disabled", "disabled");
-	  navbar.doubleMenu.style.visibility = "hidden";
+	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
+	//   navbar.doubleMenu.style.visibility = "hidden";
 	  header.makeUneditable();
 	  let headerButtons = header.imgbuttons;
 	  for (let i = 0; i < headerButtons.length; i++) {
@@ -441,10 +441,10 @@
 	//   navbar.single.style.visibility = "hidden";
 	//   navbar.double.setAttribute("disabled", "disabled");
 	//   navbar.double.style.visibility = "hidden";
-	  navbar.singleMenu.setAttribute("disabled", "disabled");
-	  navbar.singleMenu.style.visibility = "hidden";
-	  navbar.doubleMenu.setAttribute("disabled", "disabled");
-	  navbar.doubleMenu.style.visibility = "hidden";
+	//   navbar.singleMenu.setAttribute("disabled", "disabled");
+	//   navbar.singleMenu.style.visibility = "hidden";
+	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
+	//   navbar.doubleMenu.style.visibility = "hidden";
 	  header.makeEditable();
 	  let headerButtons = header.imgbuttons;
 	  for (let i = 0; i < headerButtons.length; i++) {
