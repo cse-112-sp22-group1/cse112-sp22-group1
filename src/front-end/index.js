@@ -170,6 +170,9 @@
 		  btn[i].style.visibility = "visible";
 	  }
 	  document.getElementById("targetMenu").style.display = "none";
+	// I have been told to just comment out these for right now
+	// Main purpose of these was previously to remove certain navbar icons
+	// but with the new nav bar it is no longer necessary.
 	//   navbar.target.setAttribute("disabled", "disabled");
 	//   navbar.target.style.visibility = "hidden";
 	//   navbar.single.setAttribute("disabled", "disabled");
@@ -241,6 +244,9 @@
 		  btn[i].removeAttribute("disabled");
 		  btn[i].style.visibility = "visible";
 	  }
+	// I have been told to just comment out these for right now
+	// Main purpose of these was previously to remove certain navbar icons
+	// but with the new nav bar it is no longer necessary.
 	//   navbar.single.setAttribute("disabled", "disabled");
 	//   navbar.single.style.visibility = "hidden";
 	//   navbar.double.setAttribute("disabled", "disabled");
@@ -323,6 +329,9 @@
 		  btn[i].style.visibility = "visible";
 	  }
 	  document.getElementById("targetMenu").style.display = "block";
+	// I have been told to just comment out these for right now
+	// Main purpose of these was previously to remove certain navbar icons
+	// but with the new nav bar it is no longer necessary.
 	//   navbar.double.setAttribute("disabled", "disabled");
 	//   navbar.double.style.visibility = "hidden";
 	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
@@ -436,7 +445,9 @@
 	  createEditor(contentWrapper, currentObject, null, (success) => {
 		  console.log(success);
 	  });
-  
+    // I have been told to just comment out these for right now
+	// Main purpose of these was previously to remove certain navbar icons
+	// but with the new nav bar it is no longer necessary.
 	//   navbar.single.setAttribute("disabled", "disabled");
 	//   navbar.single.style.visibility = "hidden";
 	//   navbar.double.setAttribute("disabled", "disabled");

@@ -1,7 +1,9 @@
+/* used for more vertical screen sizes */
 .navigation {
     display: none; 
 }
 
+/* open version of nav */
 .nav-bar {
     position: fixed;
     width: 210px;
@@ -14,6 +16,7 @@
     background-color: var(--navbar-background-color);
 }
 
+/* exclusively for the collapsed version of nav */
 .collapsed-nav {
     position: fixed;
     width: 40px;
@@ -37,6 +40,7 @@ button {
     text-align: left;
 }
 
+/* different sizing for buttons */
 button img {
     height: 100%;
     filter: var(--icon-filter);
@@ -70,6 +74,7 @@ button h1 {
 }
 
 
+/* all different button hover mechanics */
 button:hover img {
     opacity: 100%;
     transition: opacity 25ms;
@@ -90,23 +95,27 @@ button:hover h1 {
     transition: opacity 25ms;
 }
 
+/* Differentiates two bottom buttons  */
 #bottom {
     position: absolute;
     bottom: 20px;
     width: 100%;
 }
 
+/* Differentiates header  */
 #top {
     margin-bottom: -10px;
     margin-top: 10px;
     margin-left: 30px;
 }
 
+/* home button shifted to incorporate the collapse button to the right */
 #home {
     width: 150px;
     display: inline-block;
 }
 
+/* Used exclusively for the collapse button right of the Home button */
 #collapse {
     width: 30px;
     display: inline-block;
@@ -116,6 +125,8 @@ button:hover h1 {
     height: 75%;
 }
 
+
+/* the properties below describe the change of the two bottom navbar buttons */
 #user {
     position: static;
     height: 22px;
@@ -128,6 +139,8 @@ button:hover h1 {
     margin-bottom: 20px;
 }
 
+/* Both of the below properties of the main navbar switch the state to open and closed */
+/* for the non-receded version of the navBar */
 #mainNav.closed {
     transform: translate(-100%, 0);
     transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
@@ -138,10 +151,8 @@ button:hover h1 {
     transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 }
 
-/* #closedNav {
-    display: none;
-} */
-
+/* Both of the below properties of closedNav switch the state to open and closed */
+/* for the closed version of the navBar */
 #closedNav.closed {
     /* display: none; */
     transform: translate(-100%, 0);
@@ -154,7 +165,8 @@ button:hover h1 {
     transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 }
 
-
+/* Purpose of the code below is to change components with a smaller screen */
+/* I left the code below to have a framework for future work */ 
 @media only screen and (max-width:1100px) {
     #menu {
         position: fixed;
@@ -192,97 +204,25 @@ button:hover h1 {
         left: 0;
         position:fixed;
     }
-
-    /* #homeMenu {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        top: 70px;
-        left: 0;
-        right: 0;
-        margin: auto;
-    } */
-
-    #singleMenu {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        top: 180px;
-        left: 0;
-        right: 0;
-        margin: auto;
-    }
-
-    #doubleMenu {
-        position: absolute;
-        width: 60px;
-        height: 60px;
-        top: 290px;
-        left: 0;
-        right: 0;
-        margin: auto;
-    }
-
-    /* #userMenu {
-        position: absolute;
-        width: 65px;
-        height: 65px;
-        top: calc(100% - 115px);
-        left: 0;
-        right: 0;
-        padding: 0;
-        margin: 0 auto;
-    } */
 }
 
+/* Purpose of the code below is to change components with a smaller screen */
+/* I left the code below to have a framework for future work */ 
 @media only screen and (max-height: 1200px){
-    /* #homeMenu {
-        width: 40px;
-        height: 40px;
-    } */
+    #homeMenu {
 
-    #singleMenu {
-        width: 40px;
-        height: 40px;
-        top: 150px;
     }
+    #userMenu {
 
-    #doubleMenu {
-        width: 40px;
-        height: 40px;
-        top: 230px;
     }
-
-    /* #userMenu {
-        position: absolute;
-        width: 45px;
-        height: 45px;
-        top: calc(100% - 85px);
-    } */
 }
 
+/* Purpose of the code below is to change components with a smaller screen */
+/* I left the code below to have a framework for future work */ 
 @media only screen and (max-height: 800px){
-    /* #homeMenu {
-        width: 35px;
-        height: 35px;
-    } */
-
-    #singleMenu {
-        width: 35px;
-        height: 35px;
-        top: 130px;
+    #homeMenu {
     }
 
-    #doubleMenu {
-        width: 35px;
-        height: 35px;
-        top: 190px;
-    }
-/* 
     #userMenu {
-        position: absolute;
-        width: 40px;
-        height: 40px;
-        top: calc(100% - 65px);
-    } */
+    }
 }

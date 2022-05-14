@@ -71,9 +71,11 @@ export class NavBar extends HTMLElement {
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
+		// Main nav bar 
 		this.mainNav = this.shadowRoot.querySelector("#mainNav");
 		this.navShown = true;
 
+		// Instantiates closed version of navbar
 		this.closedNav = this.shadowRoot.querySelector("#closedNav");
 		this.closedNav.classList.toggle("closed", true);
 
@@ -92,16 +94,9 @@ export class NavBar extends HTMLElement {
 		this.user = this.shadowRoot.querySelectorAll("button")[10];
 		this.uncollapse = this.shadowRoot.querySelectorAll("button")[11];
 
-		
-		// this.target = this.shadowRoot.querySelectorAll("button")[1];
-		// this.single = this.shadowRoot.querySelectorAll("button")[2];
-		// this.double = this.shadowRoot.querySelectorAll("button")[3];
-		// this.user = this.shadowRoot.querySelectorAll("button")[4];
-
+		// Would be used for a vertical screen size
 		this.menu = this.shadowRoot.querySelector("#menu");
 		this.homeMenu = this.shadowRoot.querySelector("#homeMenu");
-		// this.singleMenu = this.shadowRoot.querySelector("#singleMenu");
-		// this.doubleMenu = this.shadowRoot.querySelector("#doubleMenu");
 		this.userMenu = this.shadowRoot.querySelector("#userMenu");
 	}
 
@@ -109,6 +104,7 @@ export class NavBar extends HTMLElement {
 	 * When a navbar instance is created sets event listeners for all header buttons in the callback
 	 */
 	connectedCallback () {
+		// normal open menu button
 		this.home.addEventListener("click", () => {
 			this.goHome();
 		});
@@ -123,23 +119,17 @@ export class NavBar extends HTMLElement {
 			settingsMenu.toggle();
 		});
 
-
+		// collapsed menu button
 		this.uncollapse.addEventListener("click", () => {
 			this.navToggle(this.navShown)
 		});
 
+
+		// Vertical sized screen related buttons
 		this.homeMenu.addEventListener("click", () => {
 			this.goHome();
 			this.open = false;
 		});
-		// this.singleMenu.addEventListener("click", () => {
-		// 	this.goBack();
-		// 	this.open = false;
-		// });
-		// this.doubleMenu.addEventListener("click", () => {
-		// 	this.goFarBack();
-		// 	this.open = false;
-		// });
 		this.userMenu.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
 			if (typeof settingsMenu === SettingsMenu) {
@@ -171,7 +161,7 @@ export class NavBar extends HTMLElement {
 	}
 
 	/**
-	 * collapses the navigation bar when pressed
+	 * toggles the collapse of the navigation bar 
 	 */
 	navToggle (navShown) {
 		this.mainNav.classList.toggle("open", !navShown);
