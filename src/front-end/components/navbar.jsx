@@ -14,9 +14,10 @@ import { createElement, createFragment } from "../jsxEngine.js";
 
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="navbar.css" />
-    <nav class="nav-bar">
+    <nav class="nav-bar" id="mainNav">
 		<div id="top">
 			<button id="home">  <img src="../public/resources/home_icon.png"/> <h1>&nbsp;Index</h1></button>
+			<button id="collapse"><img id="collapseImage" src="../public/resources/left-chevron.png"/> </button>
 		</div>
 		<button id="todayLog"> <p>Today's Log</p> </button>
 		<button id="thisMonth"> <p>This Month</p> </button>
@@ -29,6 +30,9 @@ let template = <template>
 			<button id="help">  <img src="../public/resources/question.png"/> <p2>&nbsp; Help </p2> </button>
 			<button id="user">  <img src="../public/resources/user.png"/> <p2>&nbsp; My Account</p2> </button>
 		</div>
+	</nav>
+	<nav class="collapsed-nav" id="closedNav">
+		<button id="uncollapse"><img id="collapseImage" src="../public/resources/closedNav.png"/> </button>
 	</nav>
 	<nav class="navigation">
 		<div id="menu" class="closed">
@@ -67,17 +71,26 @@ export class NavBar extends HTMLElement {
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-		this.home = this.shadowRoot.querySelectorAll("button")[0];
-		this.todayLog = this.shadowRoot.querySelectorAll("button")[1];
-		this.monthLog = this.shadowRoot.querySelectorAll("button")[2];
-		this.futureLog = this.shadowRoot.querySelectorAll("button")[3];
-		this.collections = this.shadowRoot.querySelectorAll("button")[4];
-		this.events = this.shadowRoot.querySelectorAll("button")[5];
-		this.retrospective = this.shadowRoot.querySelectorAll("button")[6];
-		this.trackers = this.shadowRoot.querySelectorAll("button")[7];
+		this.mainNav = this.shadowRoot.querySelector("#mainNav");
+		this.navShown = true;
 
-		this.help = this.shadowRoot.querySelectorAll("button")[8];
-		this.user = this.shadowRoot.querySelectorAll("button")[9];
+		this.closedNav = this.shadowRoot.querySelector("#closedNav");
+		this.closedNav.classList.toggle("closed", true);
+
+
+		this.home = this.shadowRoot.querySelectorAll("button")[0];
+		this.collapse = this.shadowRoot.querySelectorAll("button")[1];
+		this.todayLog = this.shadowRoot.querySelectorAll("button")[2];
+		this.monthLog = this.shadowRoot.querySelectorAll("button")[3];
+		this.futureLog = this.shadowRoot.querySelectorAll("button")[4];
+		this.collections = this.shadowRoot.querySelectorAll("button")[5];
+		this.events = this.shadowRoot.querySelectorAll("button")[6];
+		this.retrospective = this.shadowRoot.querySelectorAll("button")[7];
+		this.trackers = this.shadowRoot.querySelectorAll("button")[8];
+
+		this.help = this.shadowRoot.querySelectorAll("button")[9];
+		this.user = this.shadowRoot.querySelectorAll("button")[10];
+		this.uncollapse = this.shadowRoot.querySelectorAll("button")[11];
 
 		
 		// this.target = this.shadowRoot.querySelectorAll("button")[1];
@@ -87,8 +100,8 @@ export class NavBar extends HTMLElement {
 
 		this.menu = this.shadowRoot.querySelector("#menu");
 		this.homeMenu = this.shadowRoot.querySelector("#homeMenu");
-		this.singleMenu = this.shadowRoot.querySelector("#singleMenu");
-		this.doubleMenu = this.shadowRoot.querySelector("#doubleMenu");
+		// this.singleMenu = this.shadowRoot.querySelector("#singleMenu");
+		// this.doubleMenu = this.shadowRoot.querySelector("#doubleMenu");
 		this.userMenu = this.shadowRoot.querySelector("#userMenu");
 	}
 
@@ -99,6 +112,9 @@ export class NavBar extends HTMLElement {
 		this.home.addEventListener("click", () => {
 			this.goHome();
 		});
+		this.collapse.addEventListener("click", () => {
+			this.navToggle(this.navShown)
+		});
 		this.trackers.addEventListener("click", () => {
 			this.toggleTracker();
 		});
@@ -108,19 +124,22 @@ export class NavBar extends HTMLElement {
 		});
 
 
+		this.uncollapse.addEventListener("click", () => {
+			this.navToggle(this.navShown)
+		});
 
 		this.homeMenu.addEventListener("click", () => {
 			this.goHome();
 			this.open = false;
 		});
-		this.singleMenu.addEventListener("click", () => {
-			this.goBack();
-			this.open = false;
-		});
-		this.doubleMenu.addEventListener("click", () => {
-			this.goFarBack();
-			this.open = false;
-		});
+		// this.singleMenu.addEventListener("click", () => {
+		// 	this.goBack();
+		// 	this.open = false;
+		// });
+		// this.doubleMenu.addEventListener("click", () => {
+		// 	this.goFarBack();
+		// 	this.open = false;
+		// });
 		this.userMenu.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
 			if (typeof settingsMenu === SettingsMenu) {
@@ -148,6 +167,23 @@ export class NavBar extends HTMLElement {
 	goHome () {
 		if (document.location.hash !== null && document.location.hash !== "#index" && document.location.hash !== "") {
 			router.setState("", false);
+		}
+	}
+
+	/**
+	 * collapses the navigation bar when pressed
+	 */
+	navToggle (navShown) {
+		this.mainNav.classList.toggle("open", !navShown);
+		this.mainNav.classList.toggle("closed", navShown);
+
+		this.closedNav.classList.toggle("open", navShown);
+		this.closedNav.classList.toggle("closed", !navShown);
+		console.log(navShown)
+		if (navShown) {
+			this.navShown = false;
+		} else {
+			this.navShown = true;
 		}
 	}
 
