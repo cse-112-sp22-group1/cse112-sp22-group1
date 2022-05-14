@@ -4,7 +4,7 @@
 
 .nav-bar {
     position: fixed;
-    width: 60px;
+    width: 220px;
     height: 100%;
     top: 0;
     bottom: 0;
@@ -18,19 +18,62 @@ button {
     background-color: transparent;
     border: none;
     padding: 0;
-    width: 32px;
+    width: 170px;
     height: 32px;
-    margin: 20px auto 44px auto;
+    margin: 20px auto 24px auto;
     cursor: pointer;
+    text-align: left;
 }
 
 button img {
     height: 100%;
     filter: var(--icon-filter);
-    opacity: 50%;
+    opacity: 80%;
+}
+button p {
+    display:inline-block;
+    font-family: "SF-Pro";
+    font-size: 18px;
+    opacity: 80%;
+    filter: var(--icon-filter);
 }
 
+button p2 {
+    display:inline-block;
+    font-family: "SF-Pro";
+    font-size: 18px;
+    opacity: 80%;
+    position: relative;
+    bottom: 10px;
+    filter: var(--icon-filter);
+}
+
+button h1 {
+    display:inline-block;
+    font-family: "SF-Pro";
+    font-weight: bold;
+    font-size: 34px;
+    opacity: 80%;
+    filter: var(--icon-filter);
+}
+
+
 button:hover img {
+    opacity: 100%;
+    transition: opacity 25ms;
+}
+
+button:hover p {
+    opacity: 100%;
+    transition: opacity 25ms;
+}
+
+button:hover p2 {
+    opacity: 100%;
+    transition: opacity 25ms;
+}
+
+button:hover h1 {
     opacity: 100%;
     transition: opacity 25ms;
 }
@@ -40,6 +83,11 @@ button:hover img {
     bottom: 10px;
     width: 100%;
 }
+
+#top {
+    margin-bottom: 40px;
+}
+
 
 #user {
     position: static;

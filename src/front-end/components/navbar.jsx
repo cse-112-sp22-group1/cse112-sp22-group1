@@ -15,17 +15,36 @@ import { createElement, createFragment } from "../jsxEngine.js";
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="navbar.css" />
     <nav class="nav-bar">
-		<button id="home">  <img src="../public/resources/home_icon.png"/></button>
-		<button id="target"><img src="../public/resources/target_icon.png"/></button>
-		<button id="single"><img src="../public/resources/left.png"/></button>
-		<button id="double"><img src="../public/resources/double_icon.png"/></button>
+		<div id="top">
+			<button id="home">  <img src="../public/resources/home_icon.png"/> <h1>&nbsp;Index</h1></button>
+		</div>
+		<button id="todayLog"> <p>Today's Log</p> </button>
+		<button id="thisMonth"> <p>This Month</p> </button>
+		<button id="futureLog"> <p>Future Logs</p> </button>
+		<button id="collections"> <p>Collections</p> </button>
+		<button id="events"> <p>Events</p> </button>
+		<button id="retrospective"> <p>Retrospective</p> </button>
+		<button id="trackers"> <p>Trackers</p> </button>
 		<div id="bottom">
-			<button id="user">  <img src="../public/resources/user.png"/></button>
+			<button id="help">  <img src="../public/resources/question.png"/> <p2>&nbsp; Help </p2> </button>
+			<button id="user">  <img src="../public/resources/user.png"/> <p2>&nbsp; My Account</p2> </button>
 		</div>
 	</nav>
 	<nav class="navigation">
 		<div id="menu" class="closed">
-			<button id="homeMenu">  <img src="../public/resources/home_icon.png"/></button>
+			<button id="homeMenu">  <img src="../public/resources/home_icon.png"/> <h1>&nbsp;Index</h1></button>
+			<button id="todayLogMenu"> <p>Today's Log</p> </button>
+			<button id="thisMonthMenu"> <p>This Month</p> </button>
+			<button id="futureLogMenu"> <p>Future Logs</p> </button>
+			<button id="collectionsMenu"> <p>Collections</p> </button>
+			<button id="eventsMenu"> <p>Events</p> </button>
+			<button id="retrospectiveMenu"> <p>Retrospective</p> </button>
+			<button id="trackersMenu"> <p>Trackers</p> </button>
+			<div id="bottomMenu">
+				<button id="helpMenu">  <img src="../public/resources/question.png"/> <p2>&nbsp; Help </p2> </button>
+				<button id="userMenu">  <img src="../public/resources/user.png"/> <p2>&nbsp; My Account</p2> </button>
+			</div>
+
 			<button id="singleMenu"><img src="../public/resources/left.png"/></button>
 			<button id="doubleMenu"><img src="../public/resources/double_icon.png"/></button>
 			<button id="userMenu">  <img src="../public/resources/user.png"/></button>
@@ -50,10 +69,22 @@ export class NavBar extends HTMLElement {
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
 		this.home = this.shadowRoot.querySelectorAll("button")[0];
-		this.target = this.shadowRoot.querySelectorAll("button")[1];
-		this.single = this.shadowRoot.querySelectorAll("button")[2];
-		this.double = this.shadowRoot.querySelectorAll("button")[3];
-		this.user = this.shadowRoot.querySelectorAll("button")[4];
+		this.todayLog = this.shadowRoot.querySelectorAll("button")[1];
+		this.monthLog = this.shadowRoot.querySelectorAll("button")[2];
+		this.futureLog = this.shadowRoot.querySelectorAll("button")[3];
+		this.collections = this.shadowRoot.querySelectorAll("button")[4];
+		this.events = this.shadowRoot.querySelectorAll("button")[5];
+		this.retrospective = this.shadowRoot.querySelectorAll("button")[6];
+		this.trackers = this.shadowRoot.querySelectorAll("button")[7];
+
+		this.help = this.shadowRoot.querySelectorAll("button")[8];
+		this.user = this.shadowRoot.querySelectorAll("button")[9];
+
+		
+		// this.target = this.shadowRoot.querySelectorAll("button")[1];
+		// this.single = this.shadowRoot.querySelectorAll("button")[2];
+		// this.double = this.shadowRoot.querySelectorAll("button")[3];
+		// this.user = this.shadowRoot.querySelectorAll("button")[4];
 
 		this.menu = this.shadowRoot.querySelector("#menu");
 		this.homeMenu = this.shadowRoot.querySelector("#homeMenu");
@@ -69,19 +100,15 @@ export class NavBar extends HTMLElement {
 		this.home.addEventListener("click", () => {
 			this.goHome();
 		});
-		this.target.addEventListener("click", () => {
+		this.trackers.addEventListener("click", () => {
 			this.toggleTracker();
-		});
-		this.single.addEventListener("click", () => {
-			this.goBack();
-		});
-		this.double.addEventListener("click", () => {
-			this.goFarBack();
 		});
 		this.user.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
 			settingsMenu.toggle();
 		});
+
+
 
 		this.homeMenu.addEventListener("click", () => {
 			this.goHome();
