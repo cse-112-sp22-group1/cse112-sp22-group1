@@ -1,10 +1,6 @@
-/**
- * StateManager module
- * @module indexManager
- */
-
 import * as localStorage from "../localStorage/userOperations.js";
-import { header, setUrl, setPageNumber} from "../index.js"
+import { header } from "../index.js"
+import { setUrl, setPageType } from "./router.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
 import { currentState } from "./stateManager.js";
@@ -72,7 +68,7 @@ import { currentState } from "./stateManager.js";
 	console.log("we are here");
 	header.title = "Index";
 	setUrl("/");
-	setPageNumber(1);
+	setPageType(1);
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

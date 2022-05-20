@@ -5,9 +5,13 @@
 
  import * as localStorage from "../localStorage/userOperations.js";
  import {fade, unfade} from "../transitions.js";
- import {navbar, pageNumber, setupCollection, setupDailyLog, setupFutureLog, setupMonthlyLog, url} from "../index.js";
+ import { navbar } from "../index.js";
  import { setupIndex } from "./setupIndex.js"
  import { getCurrentObject } from "./stateManager.js";
+ import { setupFutureLog } from "./setupFutureLog.js";
+ import { setupMonthlyLog } from "./setupMonthlyLog.js";
+ import { setupDailyLog } from "./setupDailyLog.js";
+ import { setupCollection } from "./setupCollection.js";
 
  /**
   * @typedef {Object} Router
@@ -20,13 +24,39 @@
   */
  export let state = "";
 
- /**
-  * Sets the new state based on the new url to render and the previous url.
-  *
-  * @param {String} newState The url to render.
-  * @param {Bool} shouldNotAddToHistory The url that was last rendered.
-  */
- function stateSwitch (newState, shouldNotAddToHistory) {
+/** 
+ * used for url of page
+ */
+export let url = "";
+
+/** 
+ * Setter for url
+ */
+export function setUrl(newUrl) {
+	url = newUrl;
+}
+
+/** 
+ * Setter for url
+ */
+export let pageType = 1;
+// PageNumber
+
+/** 
+ * Setter for pageType
+ */
+export function setPageType(newPageType) {
+	pageType = newPageType;
+}
+
+
+/**
+ * Sets the new state based on the new url to render and the previous url.
+ *
+ * @param {String} newState The url to render.
+ * @param {Bool} shouldNotAddToHistory The url that was last rendered.
+ */
+function stateSwitch (newState, shouldNotAddToHistory) {
 	getCurrentObject(newState);
 	state = newState;
 	setTimeout(() => {
@@ -57,7 +87,7 @@
 					setupCollection(btn, newState);
 				}
 				if (!shouldNotAddToHistory) {
-					history.pushState({page: pageNumber}, "", url);
+					history.pushState({page: pageType}, "", url);
 				}
 				unfade(content, () => {
 					console.log("unfading the content");

@@ -1,5 +1,5 @@
 /**
- * StateManager module
+ * StateManager module which establishes what url we will be grabbing our data 
  * @module stateManager
  */
 
