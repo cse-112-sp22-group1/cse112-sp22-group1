@@ -4,7 +4,8 @@
  */
  import * as dropdown from "../fillDropdown.js";
  import * as localStorage from "../localStorage/userOperations.js";
- import {adderDropdown, currentObject, creationMenu} from "../index.js";
+ import {adderDropdown, creationMenu} from "../index.js";
+ import { currentState } from "../state/stateManager.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -43,24 +44,24 @@ export class CreatorBlock extends HTMLElement {
 			if (key === "Enter") {
 				e.preventDefault();
 				let content = textBlock.innerHTML;
-				if (content === "/futurelog" && currentObject.objectType === "index") {
+				if (content === "/futurelog" && currentState.objectType === "index") {
 					creationMenu.setKind("futureLog");
 					creationMenu.show();
 					adderDropdown.hide();
-				} else if (content === "/monthlylog" && currentObject.objectType === "futureLog") {
+				} else if (content === "/monthlylog" && currentState.objectType === "futureLog") {
 					creationMenu.setKind("monthlyLog");
 					creationMenu.show();
 					adderDropdown.hide();
-				} else if (content === "/dailylog" && currentObject.objectType === "monthlyLog") {
+				} else if (content === "/dailylog" && currentState.objectType === "monthlyLog") {
 					creationMenu.setKind("dailyLog");
 					creationMenu.show();
 					adderDropdown.hide();
-				} else if (content === "/collection" && currentObject.objectType === "index") {
+				} else if (content === "/collection" && currentState.objectType === "index") {
 					creationMenu.setKind("collection");
 					creationMenu.show();
 					adderDropdown.hide();
 				} else if (content === "/tracker") {
-					localStorage.createTracker("Practice Tracker", [], currentObject.id, true, (err, tracker) => {
+					localStorage.createTracker("Practice Tracker", [], currentState.id, true, (err, tracker) => {
 						if (err) {
 							console.log(err);
 						} else {

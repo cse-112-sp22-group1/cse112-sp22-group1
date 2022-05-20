@@ -208,7 +208,7 @@ export class BlockController extends Object {
  * @param {Array} items An item of objects to populate the editor with.
  * @param {response} callback Sends back an error if there is one or a message to the callback.
  */
- export function populateEditor (controller, items, signifiers, callback) {
+export function populateEditor (controller, items, signifiers, callback) {
 	populateEditorRecursive(controller, items, 0, signifiers, (res) => {
 		callback(res);
 	});

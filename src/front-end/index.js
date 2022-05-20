@@ -12,7 +12,10 @@ import { PageHeader } from "./components/header.jsx";
 import { TrackerBlock } from "./components/trackerBlock.jsx";
 import { TrackerMenu } from "./components/tracker.jsx";
 import { createEditor } from "./components/blockController.js";
-import { router } from "./router.js";
+import { router } from "./state/router.js";
+import { currentState } from "./state/stateManager.js";
+import { Log } from "./components/log.jsx";
+
 
 // CSS imports
 /* eslint-disable */
@@ -25,6 +28,11 @@ document.querySelector("body").style.display = "none";
  * The index page navbar
  */
 export let navbar = new NavBar();
+
+/**
+ * The index page navbar
+ */
+ export let log = new Log();
 
 /**
  * The index page header
@@ -43,13 +51,23 @@ export let creationMenu = new CreationMenu("futureLog");
 /* eslint-disable */
 let plusIndex = 0;
 /* eslint-disable */
+
 export let url = "";
 export let pageNumber = 1;
 
-/**
- * @type {DailyLog}
+/** 
+ * Setter for url
  */
-export let currentObject = {};
+export function setUrl(newUrl) {
+	url = newUrl;
+}
+
+/** 
+ * Setter for pageNumber
+ */
+export function setPageNumber(newPageNumber) {
+	pageNumber = newPageNumber;
+}
 
 let contentWrapper = document.getElementById("contentWrapper");
 document.getElementById("adderDropdown").appendChild(adderDropdown);
@@ -59,6 +77,8 @@ document.getElementById("sidebar").appendChild(navbar);
 document.getElementById("targetMenu").onclick = () => {
 	navbar.toggleTracker();
 };
+
+contentWrapper.appendChild(log)
 // Document.getElementById("")
 router.setState(document.location.hash, false);
 
@@ -66,131 +86,7 @@ window.onpopstate = () => {
 	router.setState(document.location.hash, true);
 };
 
-/**
- * Gets the current object at the current url.
- *
- * @param {String} urlFromRouter The current url.
- */
-export function getCurrentObject(urlFromRouter) {
-	let urlparse = "";
-	let id = null;
-	if (urlFromRouter !== null) {
-		urlparse = urlFromRouter.split("~");
-	}
-	console.log(urlparse !== undefined);
-	if (urlparse !== undefined) {
-		id = urlparse[1];
-	}
-	localStorage.readUser((err, user) => {
-		if (err) {
-			window.location.href = "/login";
-		} else if (id === undefined || id === null) {
-			currentObject = user.index;
-		} else {
-			let userArr = [];
-			Array.prototype.push.apply(userArr, user.dailyLogs);
-			Array.prototype.push.apply(userArr, user.monthlyLogs);
-			Array.prototype.push.apply(userArr, user.futureLogs);
-			Array.prototype.push.apply(userArr, user.collections);
-			let parsed = userArr.filter((object) => object.id === id);
-			currentObject = parsed[0];
-		}
-	});
 
-}
-
-/**
- * Sets up the index page with the futureLogs and collections of the user.
- *
- * @param {Array} btn An array of the buttons in the index page's navbar.
- */
-export function setupIndex(btn) {
-	localStorage.readUser((err, user) => {
-		if (err) {
-			console.log(err);
-		} else {
-			console.log(user.futureLogs);
-			let userArr = [];
-			Array.prototype.push.apply(userArr, user.futureLogs);
-			Array.prototype.push.apply(userArr, user.collections);
-
-			let parentArr = [];
-			console.log(currentObject);
-			for (let i = 0; i < currentObject.contents.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentObject.contents[i]));
-			}
-
-			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-			for (let i = 0; i < parentArr.length; i++) {
-				console.log("inside for loop");
-				if (parentArr[i].objectType === "futureLog") {
-					let futureLogStart = new Date(parentArr[i].startDate);
-					let futureLogEnd = new Date(parentArr[i].endDate);
-					let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, parentArr[i], 1);
-					contentWrapper.appendChild(dropdown);
-
-					if (i > 0) {
-						dropdown.titleWrapper.classList.add("singleItemWrapper");
-					}
-
-					for (let j = 0; j < parentArr[i].months.length; j++) {
-						let currentMonth = user.monthlyLogs.filter((month) => month.id === parentArr[i].months[j].monthlyLog)[0];
-						console.log(currentMonth);
-						console.log(user);
-						let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
-						dropdown.contentWrapper.appendChild(dropdownMonth);
-						for (let k = 0; k < currentMonth.days.length; k++) {
-							let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
-							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-							let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
-							dropdownMonth.contentWrapper.appendChild(dropdownDay);
-						}
-					}
-				} else {
-					let collection = parentArr[i];
-					let dropdown = new DropdownBlock(collection.title, collection, 1);
-					contentWrapper.appendChild(dropdown);
-					if (i > 0) {
-						dropdown.titleWrapper.classList.add("singleItemWrapper");
-					}
-				}
-			}
-			contentWrapper.appendChild(new CreatorBlock());
-		}
-	});
-	console.log("we are here");
-	header.title = "Index";
-	url = "/";
-	pageNumber = 1;
-
-	// Setting navbar buttons
-	for (let i = 0; i < btn.length; i++) {
-		btn[i].removeAttribute("disabled");
-		btn[i].style.visibility = "visible";
-	}
-	document.getElementById("targetMenu").style.display = "none";
-	// I have been told to just comment out these for right now
-	// Main purpose of these was previously to remove certain navbar icons
-	// but with the new nav bar it is no longer necessary.
-	//   navbar.target.setAttribute("disabled", "disabled");
-	//   navbar.target.style.visibility = "hidden";
-	//   navbar.single.setAttribute("disabled", "disabled");
-	//   navbar.single.style.visibility = "hidden";
-	//   navbar.double.setAttribute("disabled", "disabled");
-	//   navbar.double.style.visibility = "hidden";
-	//   navbar.singleMenu.setAttribute("disabled", "disabled");
-	//   navbar.singleMenu.style.visibility = "hidden";
-	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
-	//   navbar.doubleMenu.style.visibility = "hidden";
-	header.makeUneditable();
-	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++) {
-		if (!headerButtons[i].classList.contains("plus")) {
-			headerButtons[i].classList.add("hide");
-		}
-	}
-}
 
 /**
  * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
@@ -204,10 +100,10 @@ export function setupFutureLog(btn, newState) {
 			console.log(err);
 		} else {
 			let userArr = user.monthlyLogs;
-			console.log(currentObject);
+			console.log(currentState);
 			let parentArr = [];
-			for (let i = 0; i < currentObject.months.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentObject.months[i].monthlyLog));
+			for (let i = 0; i < currentState.months.length; i++) {
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.months[i].monthlyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -220,7 +116,7 @@ export function setupFutureLog(btn, newState) {
 					dropdownMonth.titleWrapper.classList.add("singleItemWrapper");
 				}
 
-				createEditor(dropdownMonth.contentWrapper, currentObject, currentMonth.id, () => {
+				createEditor(dropdownMonth.contentWrapper, currentState, currentMonth.id, () => {
 					for (let k = 0; k < currentMonth.days.length; k++) {
 						let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
 						let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -234,8 +130,8 @@ export function setupFutureLog(btn, newState) {
 		}
 	});
 	document.getElementById("targetMenu").style.display = "block";
-	let futureLogStart = new Date(currentObject.startDate);
-	let futureLogEnd = new Date(currentObject.endDate);
+	let futureLogStart = new Date(currentState.startDate);
+	let futureLogEnd = new Date(currentState.endDate);
 	header.title = futureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
 	pageNumber = 4;
 	url = newState;
@@ -271,14 +167,14 @@ export function setupFutureLog(btn, newState) {
 		} else {
 			let userArr = user.trackers;
 			let trackerArr = [];
-			for (let i = 0; i < currentObject.trackers.length; i++) {
-				trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
+			for (let i = 0; i < currentState.trackers.length; i++) {
+				trackerArr.push(userArr.filter((object) => object.id === currentState.trackers[i])[0]);
 			}
 			console.log(trackerArr);
 			setTimeout(() => {
 				for (let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
-					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, futureLogTrackerMenu);
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentState.id, currentTracker, futureLogTrackerMenu);
 					trackerBlockWrapper.appendChild(dropdownTracker);
 				}
 				trackerBlockWrapper.appendChild(new CreatorBlock());
@@ -301,26 +197,26 @@ export function setupMonthlyLog(btn, newState) {
 			let userArr = user.dailyLogs;
 
 			let parentArr = [];
-			for (let i = 0; i < currentObject.days.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentObject.days[i].dailyLog));
+			for (let i = 0; i < currentState.days.length; i++) {
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.days[i].dailyLog));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 			let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-			for (let i = 0; i < currentObject.days.length; i++) {
+			for (let i = 0; i < currentState.days.length; i++) {
 				let currentDay = parentArr[i];
 				let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 1);
 				contentWrapper.appendChild(dropdownDay);
 				if (i > 0) {
 					dropdownDay.titleWrapper.classList.add("singleItemWrapper");
 				}
-				createEditor(dropdownDay.contentWrapper, currentObject, currentDay.id, () => { });
+				createEditor(dropdownDay.contentWrapper, currentState, currentDay.id, () => { });
 			}
 			contentWrapper.appendChild(new CreatorBlock());
 		}
 	});
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	header.title = `${monthNames[new Date(currentObject.date).getMonth()]} ${new Date(currentObject.date).getFullYear()}`;
+	header.title = `${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getFullYear()}`;
 	pageNumber = 3;
 	url = newState;
 	// Setting navbar buttons
@@ -351,13 +247,13 @@ export function setupMonthlyLog(btn, newState) {
 		} else {
 			let userArr = user.trackers;
 			let trackerArr = [];
-			for (let i = 0; i < currentObject.trackers.length; i++) {
-				trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
+			for (let i = 0; i < currentState.trackers.length; i++) {
+				trackerArr.push(userArr.filter((object) => object.id === currentState.trackers[i])[0]);
 			}
 			setTimeout(() => {
 				for (let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
-					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, monthlyLogTrackerMenu);
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentState.id, currentTracker, monthlyLogTrackerMenu);
 					trackerBlockWrapper.appendChild(dropdownTracker);
 				}
 				trackerBlockWrapper.appendChild(new CreatorBlock());
@@ -376,7 +272,7 @@ export function setupMonthlyLog(btn, newState) {
 export function setupDailyLog(btn, newState) {
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-	header.title = `${weekDays[new Date(currentObject.date).getDay()]} ${monthNames[new Date(currentObject.date).getMonth()]} ${new Date(currentObject.date).getUTCDate()}, ${new Date(currentObject.date).getFullYear()}`;
+	header.title = `${weekDays[new Date(currentState.date).getDay()]} ${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getUTCDate()}, ${new Date(currentState.date).getFullYear()}`;
 	pageNumber = 2;
 	url = newState;
 	// Setting navbar buttons
@@ -385,7 +281,7 @@ export function setupDailyLog(btn, newState) {
 		btn[i].style.visibility = "visible";
 	}
 
-	createEditor(contentWrapper, currentObject, null, (success) => {
+	createEditor(contentWrapper, currentState, null, (success) => {
 		console.log(success);
 	});
 	document.getElementById("targetMenu").style.display = "block";
@@ -404,15 +300,15 @@ export function setupDailyLog(btn, newState) {
 		} else {
 			let userArr = user.trackers;
 			let trackerArr = [];
-			for (let i = 0; i < currentObject.trackers.length; i++) {
+			for (let i = 0; i < currentState.trackers.length; i++) {
 				console.log("hello");
-				trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
+				trackerArr.push(userArr.filter((object) => object.id === currentState.trackers[i])[0]);
 			}
 			console.log(trackerArr);
 			setTimeout(() => {
 				for (let i = 0; i < trackerArr.length; i++) {
 					let currentTracker = trackerArr[i];
-					let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, 1);
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentState.id, 1);
 					trackerBlockWrapper.appendChild(dropdownTracker);
 				}
 				createEditor(trackerBlockWrapper, null, null, (success) => {
@@ -433,7 +329,7 @@ export function setupDailyLog(btn, newState) {
  */
 export function setupCollection(btn, newState) {
 
-	header.title = currentObject.title;
+	header.title = currentState.title;
 	pageNumber = 5;
 	url = newState;
 	// Setting navbar buttons
@@ -442,7 +338,7 @@ export function setupCollection(btn, newState) {
 		btn[i].style.visibility = "visible";
 	}
 
-	createEditor(contentWrapper, currentObject, null, (success) => {
+	createEditor(contentWrapper, currentState, null, (success) => {
 		console.log(success);
 	});
 	// I have been told to just comment out these for right now

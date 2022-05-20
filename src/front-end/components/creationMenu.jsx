@@ -2,7 +2,7 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { DropdownBlock } from "./dropdown.jsx";
 import { createEditor } from "./blockController.js";
-import { currentObject } from "../index.js";
+import { currentState } from "../state/stateManager.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -238,11 +238,11 @@ export class CreationMenu extends HTMLElement {
 	createMonthlyLog () {
 		let start = new Date(this.shadowRoot.getElementById("monthlyFrom").value);
         let end = new Date(this.shadowRoot.getElementById("monthlyTo").value);
-		console.log(new Date(currentObject.startdate) > end || new Date(currentObject.endDate) < start);
-		if ((new Date(currentObject.startDate) > end || new Date(currentObject.endDate) < start) && start !== null && end !== null) {
+		console.log(new Date(currentState.startdate) > end || new Date(currentState.endDate) < start);
+		if ((new Date(currentState.startDate) > end || new Date(currentState.endDate) < start) && start !== null && end !== null) {
 			console.log(start);
 			console.log(end);
-			localStorage.createMonthlyLog(currentObject.id, [], [], start, end, true, (err, monthlyLog) => {
+			localStorage.createMonthlyLog(currentState.id, [], [], start, end, true, (err, monthlyLog) => {
 				if (err) {
 					console.log(err);
 				} else if (monthlyLog) {
@@ -259,16 +259,16 @@ export class CreationMenu extends HTMLElement {
 							if (contentWrapper.childNodes.length >= 1) {
 								dropdownMonth.titleWrapper.classList.add("singleItemWrapper");
 							}
-							if (new Date(currentObject.startDate) > end) {
-								currentObject.startDate = start.toDateString();
-								currentObject.months.splice(0, 0, {id: monthlyLog.id, content: [], monthlyLog: monthlyLog.id});
+							if (new Date(currentState.startDate) > end) {
+								currentState.startDate = start.toDateString();
+								currentState.months.splice(0, 0, {id: monthlyLog.id, content: [], monthlyLog: monthlyLog.id});
 							} else {
-								currentObject.endDate = end.toDateString();
-								currentObject.months.push({id: monthlyLog.id, content: [], monthlyLog: monthlyLog.id});
+								currentState.endDate = end.toDateString();
+								currentState.months.push({id: monthlyLog.id, content: [], monthlyLog: monthlyLog.id});
 							}
-							localStorage.updateFutureLog(currentObject, true, (res) => {
+							localStorage.updateFutureLog(currentState, true, (res) => {
 								if (res.ok) {
-									createEditor(dropdownMonth.contentWrapper, currentObject, currentMonth.id, (resp) => {
+									createEditor(dropdownMonth.contentWrapper, currentState, currentMonth.id, (resp) => {
 										if (resp) {
 											for (let k = 0; k < currentMonth.days.length; k++) {
 												let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
@@ -300,7 +300,7 @@ export class CreationMenu extends HTMLElement {
     createCollection() {
         let title = this.shadowRoot.getElementById("collection-title").value;
 
-        localStorage.createCollection(title, currentObject.id, [], 1, (err, collection) => {
+        localStorage.createCollection(title, currentState.id, [], 1, (err, collection) => {
             if (err) {
                 console.log(err);
             } else {
@@ -316,7 +316,7 @@ export class CreationMenu extends HTMLElement {
     createTracker() {
         let title = this.shadowRoot.getElementById("tracker-title").value;
 
-        localStorage.createTracker(title, [], currentObject.id, 1, (err, tracker) => {
+        localStorage.createTracker(title, [], currentState.id, 1, (err, tracker) => {
             if (err) {
                 console.log(err);
             } else {

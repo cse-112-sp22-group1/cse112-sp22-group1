@@ -6,7 +6,7 @@ import * as localStorage from "../localStorage/userOperations.js";
 import * as shadow from "./shadow.js";
 import { includesClock, getDate } from "./blockModel.js";
 import { BlockController } from "./blockController.js";
-import { currentObject } from "../index.js";
+import { currentState } from "../state/stateManager.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -68,7 +68,7 @@ export class TextBlock extends HTMLElement {
 		this.timeSetter = false;
 		this.dateSetter = false;
 		this.eventDelete = true;
-		this.signifier = signifier
+		this.signifier = signifier;
 		this.signifierIcon = this.shadowRoot.getElementById("signifier");
 		this.signifierIcon.innerHTML = this.signifier.symbol;
 		this.plus = this.shadowRoot.getElementById("plus");
@@ -82,7 +82,7 @@ export class TextBlock extends HTMLElement {
 	/**
 	 * Keeps track of current location of textBlock
 	 */
-	 setCurrentSpot () {
+	setCurrentSpot () {
 		let container = this.shadowRoot.getElementById("textBlock");
 		let range = shadow.getRange(this.shadowRoot);
 		if (range === null) {
@@ -111,7 +111,7 @@ export class TextBlock extends HTMLElement {
 	 * @param {Boolean} up - whether the cursor should move up or down
 	 */
 	moveToSpot (newSpotToMove, up) {
-		let newSpot = newSpotToMove
+		let newSpot = newSpotToMove;
 		let container = this.shadowRoot.getElementById("textBlock");
 		if (container.childNodes.length > 0) {
 			if (!this.controller.resetPosition) {
@@ -618,7 +618,7 @@ export class TextBlock extends HTMLElement {
 					alert("New Collection will be created");
 					e.preventDefault();
 				} else if (content === "/tracker") {
-					localStorage.createTracker("Practice Tracker", [], currentObject.id, (err, tracker) => {
+					localStorage.createTracker("Practice Tracker", [], currentState.id, (err, tracker) => {
 						if (err) {
 							console.log(err);
 						} else {

@@ -3,9 +3,11 @@
  * @module router
  */
 
- import * as localStorage from "./localStorage/userOperations.js";
- import {fade, unfade} from "./transitions.js";
- import {getCurrentObject, navbar, pageNumber, setupCollection, setupDailyLog, setupFutureLog, setupIndex, setupMonthlyLog, url} from "./index.js";
+ import * as localStorage from "../localStorage/userOperations.js";
+ import {fade, unfade} from "../transitions.js";
+ import {navbar, pageNumber, setupCollection, setupDailyLog, setupFutureLog, setupMonthlyLog, url} from "../index.js";
+ import { setupIndex } from "./setupIndex.js"
+ import { getCurrentObject } from "./stateManager.js";
 
  /**
   * @typedef {Object} Router
@@ -22,9 +24,9 @@
   * Sets the new state based on the new url to render and the previous url.
   *
   * @param {String} newState The url to render.
-  * @param {String} prev The url that was last rendered.
+  * @param {Bool} shouldNotAddToHistory The url that was last rendered.
   */
- function stateSwitch (newState, prev) {
+ function stateSwitch (newState, shouldNotAddToHistory) {
 	getCurrentObject(newState);
 	state = newState;
 	setTimeout(() => {
@@ -54,7 +56,7 @@
 				} else if (state.includes("#collection")) {
 					setupCollection(btn, newState);
 				}
-				if (!prev) {
+				if (!shouldNotAddToHistory) {
 					history.pushState({page: pageNumber}, "", url);
 				}
 				unfade(content, () => {

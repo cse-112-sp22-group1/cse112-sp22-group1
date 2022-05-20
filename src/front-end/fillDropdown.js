@@ -1,5 +1,6 @@
 /* eslint-disable */
-import {adderDropdown, creationMenu , currentObject} from "./index.js";
+import {adderDropdown, creationMenu } from "./index.js";
+import { currentState } from "./state/stateManager.js";
 
 export let creationDropdownContents = {
     "index": [
@@ -86,21 +87,21 @@ export let utilDropdownContents = {
 }
 
 export function openCreationDropdown(x, y) {
-    if (creationDropdownContents[currentObject.objectType] === undefined) {
+    if (creationDropdownContents[currentState.objectType] === undefined) {
         return;
     }
 
     adderDropdown.setPosition(x, y);
 
-    adderDropdown.fillDropdown(creationDropdownContents[currentObject.objectType]);
+    adderDropdown.fillDropdown(creationDropdownContents[currentState.objectType]);
 }
 
 export function openUtilDropdown(x, y) {
-    if (utilDropdownContents[currentObject.objectType] === undefined) {
+    if (utilDropdownContents[currentState.objectType] === undefined) {
         return;
     }
 
     adderDropdown.setPosition(x, y);
 
-    adderDropdown.fillDropdown(utilDropdownContents[currentObject.objectType]);
+    adderDropdown.fillDropdown(utilDropdownContents[currentState.objectType]);
 }

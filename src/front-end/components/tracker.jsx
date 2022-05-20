@@ -1,7 +1,7 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { CreatorBlock } from "./creator.jsx";
 import { TrackerBlock } from "./trackerBlock.jsx";
-import { currentObject } from "../index.js";
+import { currentState } from "../state/stateManager.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -76,24 +76,24 @@ export class TrackerMenu extends HTMLElement {
 					} else {
 						let userArr = user.trackers;
 						let trackerArr = [];
-						for (let i = 0; i < currentObject.trackers.length; i++) {
+						for (let i = 0; i < currentState.trackers.length; i++) {
 							console.log("hello");
-							trackerArr.push(userArr.filter((object) => object.id === currentObject.trackers[i])[0]);
+							trackerArr.push(userArr.filter((object) => object.id === currentState.trackers[i])[0]);
 						}
 						console.log(trackerArr);
 						setTimeout(() => {
 							for (let i = 0; i < trackerArr.length; i++) {
 								let currentTracker = trackerArr[i];
-								let dropdownTracker = new TrackerBlock(currentTracker.title, currentObject.id, currentTracker, this);
+								let dropdownTracker = new TrackerBlock(currentTracker.title, currentState.id, currentTracker, this);
 								trackerBlockWrapper.appendChild(dropdownTracker);
 							}
 							trackerBlockWrapper.appendChild(new CreatorBlock());
 						}, 10);
 					}
 				});
-				if (currentObject.objectType === "futureLog") {
+				if (currentState.objectType === "futureLog") {
 					this.title = "Future Log Trackers";
-				} else if (currentObject.objectType === "monthlyLog") {
+				} else if (currentState.objectType === "monthlyLog") {
 					this.title = "Monthly Log Trackers";
 				} else {
 					this.title = "Daily Log Trackers";

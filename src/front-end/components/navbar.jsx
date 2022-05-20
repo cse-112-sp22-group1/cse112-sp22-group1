@@ -1,7 +1,8 @@
 
-import { currentObject, header } from "../index.js";
+import { header } from "../index.js";
+import { currentState } from "../state/stateManager.js";
 import {SettingsMenu} from "./settings.jsx";
-import { router } from "../router.js";
+import { router } from "../state/router.js";
 
 //const template = document.createElement("template");
 
@@ -182,7 +183,7 @@ export class NavBar extends HTMLElement {
 	 */
 	goBack () {
 		let parent = document.location.hash.includes("#dailyLog") ? "monthlyLog" : "futureLog";
-		router.setState(`#${parent}~${currentObject.parent}`, false);
+		router.setState(`#${parent}~${currentState.parent}`, false);
 	}
 
 	/**
@@ -197,7 +198,7 @@ export class NavBar extends HTMLElement {
 				Array.prototype.push.apply(userArr, user.monthlyLogs);
 				Array.prototype.push.apply(userArr, user.futureLogs);
 				Array.prototype.push.apply(userArr, user.collections);
-				let parsed = userArr.filter((object) => object.id === currentObject.parent);
+				let parsed = userArr.filter((object) => object.id === currentState.parent);
 				let firstParent = parsed[0];
 				router.setState(`#${parent}~${firstParent.parent}`, false);
 			} else {

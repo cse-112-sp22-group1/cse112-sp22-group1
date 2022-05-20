@@ -1,6 +1,7 @@
 import * as dropdown from "../fillDropdown.js";
 import * as localStorage from "../localStorage/userOperations.js";
-import { currentObject, navbar } from "../index.js";
+import { navbar } from "../index.js";
+import { currentState } from "../state/stateManager.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -71,8 +72,8 @@ export class PageHeader extends HTMLElement {
 
 		this.h1.onblur = () => {
 			if (this.h1.contentEditable) {
-				currentObject.title = this.h1.innerText;
-				localStorage.updateCollection(currentObject, true, (err) => {
+				currentState.title = this.h1.innerText;
+				localStorage.updateCollection(currentState, true, (err) => {
 					if (err) {
 						console.log(err);
 					}

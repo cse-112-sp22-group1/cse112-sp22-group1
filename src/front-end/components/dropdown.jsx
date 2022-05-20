@@ -1,6 +1,7 @@
 import * as dropdown from "../fillDropdown.js";
-import {adderDropdown, creationMenu, currentObject, navbar} from "../index.js";
-import {router} from "../router.js";
+import {adderDropdown, creationMenu, navbar} from "../index.js";
+import { currentState } from "../state/stateManager.js";
+import {router} from "../state/router.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -66,7 +67,7 @@ export class DropdownBlock extends HTMLElement {
 		}
 
         this.more.onclick = () => {
-			if (currentObject.objectType === "index") {
+			if (currentState.objectType === "index") {
 				adderDropdown.fillDropdown([
 {
 					title: "Delete",

@@ -76,10 +76,10 @@ const userSchema = {
 			objectType: String,
 			parent: String,
 			date: Date,
+			content: [String],
 			days: [
 				{
 					id: String,
-					content: [String],
 					dailyLog: String
 				}
 			],
@@ -103,10 +103,10 @@ const userSchema = {
 			objectType: String,
 			startDate: Date,
 			endDate: Date,
+			content: [String],
 			months: [
 				{
 					id: String,
-					content: [String],
 					monthlyLog: String
 				}
 			],
