@@ -1,11 +1,12 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { header } from "../index.js"
-import { setUrl, setPageType } from "./router.js";
+import { contentWrapper, setPageType, setUrl } from "./router.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
-import { currentState } from "./stateManager.js";
-import { createEditor } from "../components/blockController.js";
+import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
+import { createEditor } from "../components/blockController.js";
+import { currentState } from "./stateManager.js";
+import { header } from "../index.js";
 
 
 /**
@@ -14,7 +15,7 @@ import { TrackerMenu } from "../components/tracker.jsx";
  * @param {Array} btn An array of the buttons in the futureLog page's navbar.
  * @param {String} newState The new url to go to.
  */
- export function setupFutureLog(btn, newState) {
+ export function setupFutureLog (btn, newState) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -42,7 +43,9 @@ import { TrackerMenu } from "../components/tracker.jsx";
 						let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 						let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 2);
 						dropdownMonth.contentWrapper.appendChild(dropdownDay);
-						createEditor(dropdownDay.contentWrapper, currentMonth, currentDay.id, () => { });
+                        /* eslint-disable */
+						createEditor(dropdownDay.contentWrapper, currentMonth, currentDay.id, () => {});
+                        /* eslint-enable */
 					}
 				});
 			}
@@ -53,8 +56,11 @@ import { TrackerMenu } from "../components/tracker.jsx";
 	let futureLogStart = new Date(currentState.startDate);
 	let futureLogEnd = new Date(currentState.endDate);
 	header.title = futureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
-	// pageNumber = 4;
-	// url = newState;
+
+	/*
+	 * PageNumber = 4;
+	 * url = newState;
+	 */
 	setPageType(4);
 	setUrl(newState);
 	// Setting navbar buttons
@@ -62,17 +68,20 @@ import { TrackerMenu } from "../components/tracker.jsx";
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-	// I have been told to just comment out these for right now
-	// Main purpose of these was previously to remove certain navbar icons
-	// but with the new nav bar it is no longer necessary.
-	//   navbar.single.setAttribute("disabled", "disabled");
-	//   navbar.single.style.visibility = "hidden";
-	//   navbar.double.setAttribute("disabled", "disabled");
-	//   navbar.double.style.visibility = "hidden";
-	//   navbar.singleMenu.setAttribute("disabled", "disabled");
-	//   navbar.singleMenu.style.visibility = "hidden";
-	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
-	//   navbar.doubleMenu.style.visibility = "hidden";
+
+	/*
+	 * I have been told to just comment out these for right now
+	 * Main purpose of these was previously to remove certain navbar icons
+	 * but with the new nav bar it is no longer necessary.
+	 *   navbar.single.setAttribute("disabled", "disabled");
+	 *   navbar.single.style.visibility = "hidden";
+	 *   navbar.double.setAttribute("disabled", "disabled");
+	 *   navbar.double.style.visibility = "hidden";
+	 *   navbar.singleMenu.setAttribute("disabled", "disabled");
+	 *   navbar.singleMenu.style.visibility = "hidden";
+	 *   navbar.doubleMenu.setAttribute("disabled", "disabled");
+	 *   navbar.doubleMenu.style.visibility = "hidden";
+	 */
 	header.makeUneditable();
 	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++) {

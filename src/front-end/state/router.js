@@ -4,14 +4,14 @@
  */
 
  import * as localStorage from "../localStorage/userOperations.js";
- import {fade, unfade} from "../transitions.js";
- import { navbar } from "../index.js";
- import { setupIndex } from "./setupIndex.js"
+ import { fade, unfade } from "../transitions.js";
  import { getCurrentObject } from "./stateManager.js";
- import { setupFutureLog } from "./setupFutureLog.js";
- import { setupMonthlyLog } from "./setupMonthlyLog.js";
- import { setupDailyLog } from "./setupDailyLog.js";
+ import { navbar } from "../index.js";
  import { setupCollection } from "./setupCollection.js";
+ import { setupDailyLog } from "./setupDailyLog.js";
+ import { setupFutureLog } from "./setupFutureLog.js";
+ import { setupIndex } from "./setupIndex.js"
+ import { setupMonthlyLog } from "./setupMonthlyLog.js";
 
  /**
   * @typedef {Object} Router
@@ -24,28 +24,28 @@
   */
  export let state = "";
 
-/** 
- * used for url of page
+/**
+ * Used for url of page
  */
 export let url = "";
 
-/** 
+/**
  * Setter for url
  */
-export function setUrl(newUrl) {
+export function setUrl (newUrl) {
 	url = newUrl;
 }
 
-/** 
+/**
  * Setter for url
  */
 export let pageType = 1;
 // PageNumber
 
-/** 
+/**
  * Setter for pageType
  */
-export function setPageType(newPageType) {
+export function setPageType (newPageType) {
 	pageType = newPageType;
 }
 

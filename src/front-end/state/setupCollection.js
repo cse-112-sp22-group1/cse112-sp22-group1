@@ -1,7 +1,7 @@
+import { contentWrapper, header } from "../index.js";
+import { setPageType, setUrl } from "./router.js";
 import { createEditor } from "../components/blockController.js";
-import { setUrl, setPageType } from "./router.js";
 import { currentState } from "./stateManager.js";
-import { header } from "../index.js";
 
 /**
  * Sets up the collection page with the textBlocks and trackers of the user.
@@ -9,11 +9,14 @@ import { header } from "../index.js";
  * @param {Array} btn An array of the buttons in the collection page's navbar.
  * @param {String} newState The new url to go to.
  */
- export function setupCollection(btn, newState) {
+ export function setupCollection (btn, newState) {
 
 	header.title = currentState.title;
-	// pageNumber = 5;
-	// url = newState;
+
+	/*
+	 * PageNumber = 5;
+	 * url = newState;
+	 */
 	setPageType(5);
 	setUrl(newState);
 	// Setting navbar buttons
@@ -25,17 +28,20 @@ import { header } from "../index.js";
 	createEditor(contentWrapper, currentState, null, (success) => {
 		console.log(success);
 	});
-	// I have been told to just comment out these for right now
-	// Main purpose of these was previously to remove certain navbar icons
-	// but with the new nav bar it is no longer necessary.
-	//   navbar.single.setAttribute("disabled", "disabled");
-	//   navbar.single.style.visibility = "hidden";
-	//   navbar.double.setAttribute("disabled", "disabled");
-	//   navbar.double.style.visibility = "hidden";
-	//   navbar.singleMenu.setAttribute("disabled", "disabled");
-	//   navbar.singleMenu.style.visibility = "hidden";
-	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
-	//   navbar.doubleMenu.style.visibility = "hidden";
+
+	/*
+	 * I have been told to just comment out these for right now
+	 * Main purpose of these was previously to remove certain navbar icons
+	 * but with the new nav bar it is no longer necessary.
+	 *   navbar.single.setAttribute("disabled", "disabled");
+	 *   navbar.single.style.visibility = "hidden";
+	 *   navbar.double.setAttribute("disabled", "disabled");
+	 *   navbar.double.style.visibility = "hidden";
+	 *   navbar.singleMenu.setAttribute("disabled", "disabled");
+	 *   navbar.singleMenu.style.visibility = "hidden";
+	 *   navbar.doubleMenu.setAttribute("disabled", "disabled");
+	 *   navbar.doubleMenu.style.visibility = "hidden";
+	 */
 	header.makeEditable();
 	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++) {

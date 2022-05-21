@@ -1,10 +1,8 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { CreatorBlock } from "../components/creator.jsx";
-import { DropdownBlock } from "../components/dropdown.jsx";
+import { contentWrapper, setPageType, setUrl } from "./router.js";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
-import { setUrl, setPageType } from "./router.js";
 import { currentState } from "./stateManager.js";
 import { header } from "../index.js";
 
@@ -15,12 +13,15 @@ import { header } from "../index.js";
  * @param {Array} btn An array of the buttons in the dailyLog page's navbar.
  * @param {String} newState The new url to go to.
  */
- export function setupDailyLog(btn, newState) {
+ export function setupDailyLog (btn, newState) {
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	header.title = `${weekDays[new Date(currentState.date).getDay()]} ${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getUTCDate()}, ${new Date(currentState.date).getFullYear()}`;
-	// pageNumber = 2;
-	// url = newState;
+
+	/*
+	 * PageNumber = 2;
+	 * url = newState;
+	 */
 	setPageType(2);
 	setUrl(newState);
 	// Setting navbar buttons

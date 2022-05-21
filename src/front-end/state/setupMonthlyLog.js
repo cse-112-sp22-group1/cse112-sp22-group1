@@ -1,10 +1,10 @@
 import * as localStorage from "../localStorage/userOperations.js";
+import { contentWrapper, setPageType, setUrl } from "./router.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
-import { setUrl, setPageType } from "./router.js";
 import { currentState } from "./stateManager.js";
 import { header } from "../index.js";
 
@@ -15,7 +15,7 @@ import { header } from "../index.js";
  * @param {Array} btn An array of the buttons in the monthlyLog page's navbar.
  * @param {String} newState The new url to go to.
  */
- export function setupMonthlyLog(btn, newState) {
+ export function setupMonthlyLog (btn, newState) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -36,15 +36,20 @@ import { header } from "../index.js";
 				if (i > 0) {
 					dropdownDay.titleWrapper.classList.add("singleItemWrapper");
 				}
+				/* eslint-disable */
 				createEditor(dropdownDay.contentWrapper, currentState, currentDay.id, () => { });
+				/* eslint-enable */
 			}
 			contentWrapper.appendChild(new CreatorBlock());
 		}
 	});
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getFullYear()}`;
-	// pageNumber = 3;
-	// url = newState;
+
+	/*
+	 * PageNumber = 3;
+	 * url = newState;
+	 */
 	setPageType(3);
 	setUrl(newState);
 	// Setting navbar buttons
@@ -53,13 +58,16 @@ import { header } from "../index.js";
 		btn[i].style.visibility = "visible";
 	}
 	document.getElementById("targetMenu").style.display = "block";
-	// I have been told to just comment out these for right now
-	// Main purpose of these was previously to remove certain navbar icons
-	// but with the new nav bar it is no longer necessary.
-	//   navbar.double.setAttribute("disabled", "disabled");
-	//   navbar.double.style.visibility = "hidden";
-	//   navbar.doubleMenu.setAttribute("disabled", "disabled");
-	//   navbar.doubleMenu.style.visibility = "hidden";
+
+	/*
+	 * I have been told to just comment out these for right now
+	 * Main purpose of these was previously to remove certain navbar icons
+	 * but with the new nav bar it is no longer necessary.
+	 *   navbar.double.setAttribute("disabled", "disabled");
+	 *   navbar.double.style.visibility = "hidden";
+	 *   navbar.doubleMenu.setAttribute("disabled", "disabled");
+	 *   navbar.doubleMenu.style.visibility = "hidden";
+	 */
 	header.makeUneditable();
 	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++) {

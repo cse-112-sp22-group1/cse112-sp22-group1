@@ -6,8 +6,7 @@ import { CreationMenu } from "./components/creationMenu.jsx";
 import { InlineDropdown } from "./components/inlineDropdown.jsx";
 import { NavBar } from "./components/navbar.jsx";
 import { PageHeader } from "./components/header.jsx";
-import { router, setUrl, setPageType } from "./state/router.js";
-import { Log } from "./components/log.jsx";
+import { router } from "./state/router.js";
 
 
 // CSS imports
@@ -21,11 +20,6 @@ document.querySelector("body").style.display = "none";
  * The index page navbar
  */
 export let navbar = new NavBar();
-
-/**
- * The index page navbar
- */
- export let log = new Log();
 
 /**
  * The index page header

@@ -1,5 +1,5 @@
 /**
- * StateManager module which establishes what url we will be grabbing our data 
+ * StateManager module which establishes what url we will be grabbing our data
  * @module stateManager
  */
 
@@ -16,7 +16,7 @@ export let currentState = {};
  * @param {String} urlFromRouter The current url.
  */
 
-export function getCurrentObject(urlFromRouter) {
+export function getCurrentObject (urlFromRouter) {
 	let urlparse = "";
 	let id = null;
 	if (urlFromRouter !== null) {

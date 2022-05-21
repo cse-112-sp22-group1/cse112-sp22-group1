@@ -1,7 +1,6 @@
-import {Log} from "./components/log.jsx";
+import {Calendar} from "./components/calendar.jsx";
 
 let template = document.getElementById("template");
-// let log = document.
 
 let start = 1;
 let end = 25;
@@ -51,4 +50,4 @@ for (let i = start; i <= end; i++) {
 }
 
 
-template.appendChild(new Log());
+template.appendChild(new Calendar(new Date(), start, end, eventsMock, logMock));
