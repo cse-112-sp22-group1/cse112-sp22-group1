@@ -6,7 +6,7 @@
  import * as localStorage from "../localStorage/userOperations.js";
  import { fade, unfade } from "../transitions.js";
  import { getCurrentObject } from "./stateManager.js";
- import { navbar } from "../index.js";
+ import { navbar, contentWrapper } from "../index.js";
  import { setupCollection } from "./setupCollection.js";
  import { setupDailyLog } from "./setupDailyLog.js";
  import { setupFutureLog } from "./setupFutureLog.js";

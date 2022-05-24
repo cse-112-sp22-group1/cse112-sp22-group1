@@ -41,7 +41,7 @@ let plusIndex = 0;
 
 
 
-let contentWrapper = document.getElementById("contentWrapper");
+export let contentWrapper = document.getElementById("contentWrapper");
 document.getElementById("adderDropdown").appendChild(adderDropdown);
 document.getElementById("creationMenu").appendChild(creationMenu);
 document.getElementById("topbar").appendChild(header);
@@ -50,7 +50,7 @@ document.getElementById("targetMenu").onclick = () => {
 	navbar.toggleTracker();
 };
 
-contentWrapper.appendChild(log)
+
 // Document.getElementById("")
 router.setState(document.location.hash, false);
 

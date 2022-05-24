@@ -1,12 +1,12 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { contentWrapper, setPageType, setUrl } from "./router.js";
+import { setPageType, setUrl } from "./router.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
-import { header } from "../index.js";
+import { header, contentWrapper } from "../index.js";
 
 
 /**
