@@ -3,7 +3,7 @@ const template = document.createElement('template');
 template.innerHTML = `
 	<style>
 		.navigation {
-			display: none; 
+			display: none;
 		}
 
 		.nav-bar {
@@ -15,7 +15,7 @@ template.innerHTML = `
 			left: 0;
 			display: block;
 			background: rgba(236, 223, 207, 0.4);
-			
+
 
 		}
 
@@ -111,7 +111,7 @@ template.innerHTML = `
 			.nav-bar {
 				display:none;
 			}
-			
+
 			.navigation {
 				display: block;
 				background-color: rgba(236, 223, 207, 0.0);
@@ -123,7 +123,7 @@ template.innerHTML = `
 				left: 0;
 				position:fixed;
 			}
-			  
+
 			#menu {
 				position: fixed;
 				width: 30%;
@@ -135,19 +135,19 @@ template.innerHTML = `
 				padding: 0;
 				background-color: white;
 			}
-	
+
 			.menuClosed{
 				-webkit-font-smoothing: antialiased;
 				transform: translate(-100%, 0);
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
-	
+
 			.menuOpen{
 				-webkit-font-smoothing: antialiased;
 				transform-origin: 0 0;
 				transition: transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0);
 			}
-	
+
 			#homeMenu {
 				background-image: url(../public/resources/home_icon.png);
 				background-size: cover;
@@ -162,7 +162,7 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#singleMenu {
 				background-image: url(../public/resources/left.png);
 				background-size: cover;
@@ -177,7 +177,7 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#doubleMenu {
 				background-image: url(../public/resources/double_icon.png);
 				background-size: cover;
@@ -192,7 +192,7 @@ template.innerHTML = `
 				right: 0;
 				margin: auto;
 			}
-	
+
 			#userMenu {
 				background-image: url(../public/resources/user.png);
 				background-size: cover;
@@ -208,33 +208,33 @@ template.innerHTML = `
 				padding: 0;
 				margin: 0 auto;
 			}
-	
-			  
+
+
 			  #menuToggle input:checked ~ ul
 			  {
 				transform: none;
 			  }
-	 
+
 		}
-	
+
 		@media only screen and (max-height: 1200px){
 			#homeMenu {
 				width: 40px;
 				height: 40px;
 			}
-	
+
 			#singleMenu {
 				width: 40px;
 				height: 40px;
 				top: 150px;
 			}
-	
+
 			#doubleMenu {
 				width: 40px;
 				height: 40px;
 				top: 230px;
 			}
-	
+
 			#userMenu {
 				position: absolute;
 				width: 45px;
@@ -242,25 +242,25 @@ template.innerHTML = `
 				top: calc(100% - 85px);
 			}
 		}
-	
+
 		@media only screen and (max-height: 800px){
 			#homeMenu {
 				width: 35px;
 				height: 35px;
 			}
-	
+
 			#singleMenu {
 				width: 35px;
 				height: 35px;
 				top: 130px;
 			}
-	
+
 			#doubleMenu {
 				width: 35px;
 				height: 35px;
 				top: 190px;
 			}
-	
+
 			#userMenu {
 				position: absolute;
 				width: 40px;
@@ -269,7 +269,7 @@ template.innerHTML = `
 			}
 		}
 
-	</style> 
+	</style>
 
 	<nav class="nav-bar">
 		<ul>
@@ -323,7 +323,7 @@ export class NavBar extends HTMLElement {
 			this.goFarBack();
 		});
 		this.user.addEventListener('click', () => {
-			alert("hello"); 
+			alert("hello");
 		});
 
 		this.homeMenu.addEventListener('click', () => {
@@ -342,23 +342,20 @@ export class NavBar extends HTMLElement {
 			header.input.checked = false;
 		});
 		this.userMenu.addEventListener('click', () => {
-			alert("hello"); 
+			alert("hello");
 			this.toggleMenu();
 			header.input.checked = false;
 		});
 	}
 
-	goHome(){
-		if (document.location.hash != null && document.location.hash != "#index" && document.location.hash !=''){
-			router.setState("", false);
-		}
+	goHome() {
+		router.navigate("/");
 	}
 
-	goBack(){
-		let parent = (document.location.hash.includes("#dailyLog")) ? "monthlyLog" : "futureLog";
-		router.setState(`#${parent}~${currentObject.parent}`, false);
+	goBack() {
+		let parent = (document.location.pathname.startsWith("/dailyLog")) ? "monthlyLog" : "futureLog";
+		router.navigate(`/${parent}/${currentObject.parent}`);
 	}
-
 
 	toggleTracker() {
 		const trackerMenu = document.querySelector("tracker-menu");

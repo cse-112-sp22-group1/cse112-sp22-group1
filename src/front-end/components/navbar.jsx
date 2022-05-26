@@ -1,7 +1,6 @@
 
 import { header } from "../index.js";
-import { currentState } from "../state/stateManager.js";
-import {SettingsMenu} from "./settings.jsx";
+import { SettingsMenu } from "./settings.jsx";
 import { router } from "../state/router.js";
 
 //const template = document.createElement("template");
@@ -64,7 +63,7 @@ export class NavBar extends HTMLElement {
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 
-		// Main nav bar 
+		// Main nav bar
 		this.mainNav = this.shadowRoot.querySelector("#mainNav");
 		this.navShown = true;
 
@@ -154,13 +153,11 @@ export class NavBar extends HTMLElement {
 	 * Goes to home page when the home button is pressed
 	 */
 	goHome () {
-		if (document.location.hash !== null && document.location.hash !== "#index" && document.location.hash !== "") {
-			router.setState("", false);
-		}
+		router.navigate("/");
 	}
 
 	/**
-	 * toggles the collapse of the navigation bar 
+	 * toggles the collapse of the navigation bar
 	 */
 	navToggle (navShown) {
 		this.mainNav.classList.toggle("open", !navShown);
@@ -174,35 +171,6 @@ export class NavBar extends HTMLElement {
 		} else {
 			this.navShown = true;
 		}
-	}
-
-	/**
-	 * Goes to the previous page when the back button is pressed
-	 */
-	goBack () {
-		let parent = document.location.hash.includes("#dailyLog") ? "monthlyLog" : "futureLog";
-		router.setState(`#${parent}~${currentState.parent}`, false);
-	}
-
-	/**
-	 * Goes to the futureLog if you are on a dailyLog when double arrow button is clicked
-	 */
-	goFarBack () {
-		let parent = document.location.hash.includes("#dailyLog") ? "futureLog" : "index";
-		localStorage.readUser((err, user) => {
-			if (err === null) {
-				let userArr = [];
-				Array.prototype.push.apply(userArr, user.dailyLogs);
-				Array.prototype.push.apply(userArr, user.monthlyLogs);
-				Array.prototype.push.apply(userArr, user.futureLogs);
-				Array.prototype.push.apply(userArr, user.collections);
-				let parsed = userArr.filter((object) => object.id === currentState.parent);
-				let firstParent = parsed[0];
-				router.setState(`#${parent}~${firstParent.parent}`, false);
-			} else {
-				console.log(err);
-			}
-		});
 	}
 
 	/**

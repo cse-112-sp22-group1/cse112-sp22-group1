@@ -1,4 +1,4 @@
-import {router} from "../router.js";
+import { router } from "../router.js";
 const tabspace = 3;
 
 export class DropdownBlock extends HTMLElement {
@@ -16,10 +16,10 @@ export class DropdownBlock extends HTMLElement {
 
 			#wrapper{
 				padding-bottom: 0;
-				user-select: none; 
+				user-select: none;
 				-webkit-user-select: none;
-				-moz-user-select: none; 
-				-khtml-user-select: none; 
+				-moz-user-select: none;
+				-khtml-user-select: none;
 				-ms-user-select: none;
 			}
 
@@ -124,7 +124,7 @@ export class DropdownBlock extends HTMLElement {
     }
 
 	navigateToObject() {
-		router.setState(`#${this.item.objectType}~${this.item.id}`, false);
+		router.navigate(`/${this.item.objectType}/${this.item.id}`);
 	}
 
     display() {

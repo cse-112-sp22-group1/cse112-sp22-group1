@@ -1,7 +1,7 @@
 import * as dropdown from "../fillDropdown.js";
-import {adderDropdown, creationMenu, navbar} from "../index.js";
+import { adderDropdown, creationMenu, navbar } from "../index.js";
 import { currentState } from "../state/stateManager.js";
-import {router} from "../state/router.js";
+import { router } from "../state/router.js";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -129,7 +129,7 @@ export class DropdownBlock extends HTMLElement {
 	 * When an object is clicked, it will toggle the page for that object
 	 */
 	navigateToObject () {
-		router.setState(`#${this.item.objectType}~${this.item.id}`, false);
+		router.navigate(`/${this.item.objectType}/${this.item.id}`);
 		navbar.open = false;
 	}
 

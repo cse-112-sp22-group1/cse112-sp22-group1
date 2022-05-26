@@ -6,8 +6,6 @@ import { CreationMenu } from "./components/creationMenu.jsx";
 import { InlineDropdown } from "./components/inlineDropdown.jsx";
 import { NavBar } from "./components/navbar.jsx";
 import { PageHeader } from "./components/header.jsx";
-import { router } from "./state/router.js";
-
 
 // CSS imports
 /* eslint-disable */
@@ -39,8 +37,6 @@ export let creationMenu = new CreationMenu("futureLog");
 let plusIndex = 0;
 /* eslint-disable */
 
-
-
 export let contentWrapper = document.getElementById("contentWrapper");
 document.getElementById("adderDropdown").appendChild(adderDropdown);
 document.getElementById("creationMenu").appendChild(creationMenu);
@@ -48,12 +44,4 @@ document.getElementById("topbar").appendChild(header);
 document.getElementById("sidebar").appendChild(navbar);
 document.getElementById("targetMenu").onclick = () => {
 	navbar.toggleTracker();
-};
-
-
-// Document.getElementById("")
-router.setState(document.location.hash, false);
-
-window.onpopstate = () => {
-	router.setState(document.location.hash, true);
 };

@@ -1,5 +1,4 @@
 import { contentWrapper, header } from "../index.js";
-import { setPageType, setUrl } from "./router.js";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
 
@@ -7,18 +6,10 @@ import { currentState } from "./stateManager.js";
  * Sets up the collection page with the textBlocks and trackers of the user.
  *
  * @param {Array} btn An array of the buttons in the collection page's navbar.
- * @param {String} newState The new url to go to.
  */
- export function setupCollection (btn, newState) {
-
+export function setupCollection (btn) {
 	header.title = currentState.title;
 
-	/*
-	 * PageNumber = 5;
-	 * url = newState;
-	 */
-	setPageType(5);
-	setUrl(newState);
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");

@@ -12,7 +12,8 @@
   "author": "CSE 110 Team 11",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "navigo": "^8.11.1"
   },
   "devDependencies": {
     "@babel/core": "^7.14.3",

@@ -1,6 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js";
-import { setPageType, setUrl } from "./router.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
@@ -8,14 +7,12 @@ import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
 
-
 /**
  * Sets up the monthlyLog page with the dailyLogs, textBlocks, and trackers of the user.
  *
  * @param {Array} btn An array of the buttons in the monthlyLog page's navbar.
- * @param {String} newState The new url to go to.
  */
- export function setupMonthlyLog (btn, newState) {
+export function setupMonthlyLog (btn) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -46,12 +43,6 @@ import { currentState } from "./stateManager.js";
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getFullYear()}`;
 
-	/*
-	 * PageNumber = 3;
-	 * url = newState;
-	 */
-	setPageType(3);
-	setUrl(newState);
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");

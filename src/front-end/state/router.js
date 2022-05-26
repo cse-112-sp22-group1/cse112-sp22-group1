@@ -3,62 +3,31 @@
  * @module router
  */
 
- import * as localStorage from "../localStorage/userOperations.js";
- import { fade, unfade } from "../transitions.js";
- import { getCurrentObject } from "./stateManager.js";
- import { navbar } from "../index.js";
- import { setupCollection } from "./setupCollection.js";
- import { setupDailyLog } from "./setupDailyLog.js";
- import { setupFutureLog } from "./setupFutureLog.js";
- import { setupIndex } from "./setupIndex.js"
- import { setupMonthlyLog } from "./setupMonthlyLog.js";
-
- /**
-  * @typedef {Object} Router
-  * @property {String} route the route urls for the site
-  */
- export const router = {};
-
- /**
-  * @type {String}
-  */
- export let state = "";
+import { fade, unfade } from "../transitions.js";
+import Navigo from "navigo";
+import { getCurrentObject } from "./stateManager.js";
+import { navbar } from "../index.js";
+import { setupCollection } from "./setupCollection.js";
+import { setupDailyLog } from "./setupDailyLog.js";
+import { setupFutureLog } from "./setupFutureLog.js";
+import { setupIndex } from "./setupIndex.js"
+import { setupMonthlyLog } from "./setupMonthlyLog.js";
 
 /**
- * Used for url of page
+ * @typedef {Object} Router
+ * @property {String} route the route urls for the site
  */
-export let url = "";
-
-/**
- * Setter for url
- */
-export function setUrl (newUrl) {
-	url = newUrl;
-}
-
-/**
- * Setter for url
- */
-export let pageType = 1;
-// PageNumber
-
-/**
- * Setter for pageType
- */
-export function setPageType (newPageType) {
-	pageType = newPageType;
-}
-
+export const router = new Navigo("/", { hash: true });
 
 /**
  * Sets the new state based on the new url to render and the previous url.
  *
  * @param {String} newState The url to render.
- * @param {Bool} shouldNotAddToHistory The url that was last rendered.
+ * @param {Function} setupFunction A function to setup a view.
  */
-function stateSwitch (newState, shouldNotAddToHistory) {
-	getCurrentObject(newState);
-	state = newState;
+const stateSwitch = (id, setupFunction) => {
+	getCurrentObject(id);
+
 	setTimeout(() => {
 		if (document.getElementById("trackerWrapper").childNodes.length > 0) {
 			document.getElementById("trackerWrapper").removeChild(document.getElementById("trackerWrapper").childNodes[0]);
@@ -72,29 +41,16 @@ function stateSwitch (newState, shouldNotAddToHistory) {
 		let btn = navbar.shadowRoot.querySelectorAll("button");
 
 		fade(content, () => {
-			localStorage.readUser((user) => {
-				console.log(user);
-				// Index page
-				if (state === null || state === "#index" || state === "") {
-					setupIndex(btn);
-				} else if (state.includes("#dailyLog")) {
-					setupDailyLog(btn, newState);
-				} else if (state.includes("#monthlyLog")) {
-					setupMonthlyLog(btn, newState);
-				} else if (state.includes("#futureLog")) {
-					setupFutureLog(btn, newState);
-				} else if (state.includes("#collection")) {
-					setupCollection(btn, newState);
-				}
-				if (!shouldNotAddToHistory) {
-					history.pushState({page: pageType}, "", url);
-				}
-				unfade(content, () => {
-					console.log("unfading the content");
-				});
-			});
+			setupFunction(btn);
+			unfade(content);
 		});
 	}, 150);
 }
 
-router.setState = stateSwitch;
+/* Adds the our JS routes for the application */
+router.on("/", () => stateSwitch(null, setupIndex));
+router.on("/dailyLog/:id", ({ data }) => stateSwitch(data.id, setupDailyLog));
+router.on("/monthlyLog/:id", ({ data }) => stateSwitch(data.id, setupMonthlyLog));
+router.on("/futureLog/:id", ({ data }) => stateSwitch(data.id, setupFutureLog));
+router.on("/collection/:id", ({ data }) => stateSwitch(data.id, setupCollection));
+router.resolve();

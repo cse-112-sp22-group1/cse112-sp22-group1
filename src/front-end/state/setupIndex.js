@@ -1,17 +1,15 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js"
-import { setPageType, setUrl } from "./router.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
 import { currentState } from "./stateManager.js";
-
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
  *
  * @param {Array} btn An array of the buttons in the index page's navbar.
  */
- export function setupIndex (btn) {
+export function setupIndex (btn) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -66,10 +64,7 @@ import { currentState } from "./stateManager.js";
 			contentWrapper.appendChild(new CreatorBlock());
 		}
 	});
-	console.log("we are here");
 	header.title = "Index";
-	setUrl("/");
-	setPageType(1);
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

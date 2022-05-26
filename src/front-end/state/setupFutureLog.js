@@ -1,6 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js";
-import { setPageType, setUrl } from "./router.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
@@ -8,14 +7,12 @@ import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
 
-
 /**
  * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
  *
  * @param {Array} btn An array of the buttons in the futureLog page's navbar.
- * @param {String} newState The new url to go to.
  */
- export function setupFutureLog (btn, newState) {
+export function setupFutureLog (btn) {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -43,9 +40,9 @@ import { currentState } from "./stateManager.js";
 						let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 						let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 2);
 						dropdownMonth.contentWrapper.appendChild(dropdownDay);
-                        /* eslint-disable */
-						createEditor(dropdownDay.contentWrapper, currentMonth, currentDay.id, () => {});
-                        /* eslint-enable */
+						/* eslint-disable */
+						createEditor(dropdownDay.contentWrapper, currentMonth, currentDay.id, () => { });
+						/* eslint-enable */
 					}
 				});
 			}
@@ -57,12 +54,6 @@ import { currentState } from "./stateManager.js";
 	let futureLogEnd = new Date(currentState.endDate);
 	header.title = futureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
 
-	/*
-	 * PageNumber = 4;
-	 * url = newState;
-	 */
-	setPageType(4);
-	setUrl(newState);
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {
 		btn[i].removeAttribute("disabled");
