@@ -34,19 +34,16 @@ let template = <template>
 	</nav>
 	<nav class="navigation">
 		<div id="menu" class="closed">
-			<div id="top">
-				<button id="homeMenu">  <img src="../public/resources/home_icon.png"/> <h1>&nbsp;Index</h1></button>
-			</div>
-			<button id="todayLogMenu"> <p>Today's Log</p> </button>
-			<button id="thisMonthMenu"> <p>This Month</p> </button>
-			<button id="futureLogMenu"> <p>Future Logs</p> </button>
-			<button id="collectionsMenu"> <p>Collections</p> </button>
-			<button id="retrospectiveMenu"> <p>Retrospective</p> </button>
+			<button id="phoneCollapse"><img id="collapseImage" src="../public/resources/left-chevron.png"/></button>
+			<button id="phoneHome"><img id="index" src="../public/resources/index.png"/><h1>Index</h1></button>
+			<button><img id="todaysLog" src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
+			<button><img id="monthlyLog" src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
+			<button><img id="futureLog" src="../public/resources/futureLog.png"/><h1>Future Logs</h1></button>
+			<button><img id="retrospective" src="../public/resources/retrospective.png"/><h1>Retrospective</h1></button>
 			<div id="bottom">
-				<button id="helpMenu">  <img src="../public/resources/question.png"/> <p2>&nbsp; Help </p2> </button>
-				<button id="userMenu">  <img src="../public/resources/user.png"/> <p2>&nbsp; My Account</p2> </button>
+				<button id="help"><img src="../public/resources/question.png"/><h1>Help </h1></button>
+				<button id="user"><img src="../public/resources/user.png"/><h1>My Account</h1></button>
 			</div>
-
 		</div>
 	</nav>
 </template>
@@ -83,15 +80,22 @@ export class NavBar extends HTMLElement {
 		this.futureLog = this.shadowRoot.querySelectorAll("button")[4];
 		this.retrospective = this.shadowRoot.querySelectorAll("button")[5];
 
-		console.log(this.shadowRoot.querySelectorAll("button"))
 		this.help = this.shadowRoot.querySelectorAll("button")[6];
 		this.user = this.shadowRoot.querySelectorAll("button")[7];
 		this.uncollapse = this.shadowRoot.querySelectorAll("button")[8];
 
 		// Would be used for a vertical screen size
 		this.menu = this.shadowRoot.querySelector("#menu");
-		this.homeMenu = this.shadowRoot.querySelector("#homeMenu");
-		this.userMenu = this.shadowRoot.querySelector("#userMenu");
+
+		this.collapseSmall = this.shadowRoot.querySelectorAll("button")[9];
+		this.homeSmall = this.shadowRoot.querySelectorAll("button")[10];
+		this.todayLogSmall = this.shadowRoot.querySelectorAll("button")[11];
+		this.monthLogSmall = this.shadowRoot.querySelectorAll("button")[12];
+		this.futureLogSmall = this.shadowRoot.querySelectorAll("button")[13];
+		this.retrospectiveSmall = this.shadowRoot.querySelectorAll("button")[14];
+
+		this.helpSmall = this.shadowRoot.querySelectorAll("button")[15];
+		this.userSmall = this.shadowRoot.querySelectorAll("button")[16];
 	}
 
 	/**
@@ -117,17 +121,19 @@ export class NavBar extends HTMLElement {
 
 		});
 
-
 		// Vertical sized screen related buttons
-		this.homeMenu.addEventListener("click", () => {
+		this.collapseSmall.addEventListener("click", () => {
+			this.toggle()
+		});
+
+		this.homeSmall.addEventListener("click", () => {
 			this.goHome();
 			this.open = false;
 		});
-		this.userMenu.addEventListener("click", () => {
+
+		this.userSmall.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
-			if (typeof settingsMenu === SettingsMenu) {
-				settingsMenu.toggle();
-			}
+			settingsMenu.toggle();
 		});
 	}
 

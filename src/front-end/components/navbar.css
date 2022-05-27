@@ -21,8 +21,8 @@
     position: fixed;
     width: 40px;
     height: 100%;
-    margin-top: 10px;
-    margin-left: 10px;
+    margin-top: 20px;
+    padding-left: 20px;
     display: block;
 
     background-color: transparent;
@@ -45,7 +45,7 @@ button img {
     height: 100%;
     filter: var(--icon-filter);
     opacity: 80%;
-    margin-right: 12px;
+    margin-right: 14px;
     margin-bottom: -7px;
     width: 27px;
     height: 27px;
@@ -118,8 +118,8 @@ button:hover h1 {
 }
 
 #uncollapseImage {
-    height: 18px;
-    width: 20px;
+    height: 20px;
+    width: 25px;
 }
 
 
@@ -167,7 +167,7 @@ button:hover h1 {
 @media only screen and (max-width:1100px) {
     #menu {
         position: fixed;
-        width: 30%;
+        width: 100%;
         height: 100%;
         box-shadow: 0 0 2px #85888C;
         top: 0;
@@ -190,6 +190,10 @@ button:hover h1 {
 
     .nav-bar {
         display:none;
+        height: 0px;
+    }
+    .collapsed-nav {
+        display: none;
     }
 
     .navigation {
@@ -201,13 +205,32 @@ button:hover h1 {
         left: 0;
         position:fixed;
     }
+
+    #phoneCollapse {
+        position:absolute;
+        top:0px;
+        right:0px;
+    }
+
+    button {
+        margin-bottom: 60px;
+    }
+
+    #phoneHome {
+        margin-top: 140px;
+    }
+    #phoneCollapse {
+        margin-top: 60px;
+        margin-right: 40px;
+        width: 20px;
+    }
 }
 
 /* Purpose of the code below is to change components with a smaller screen */
 /* I left the code below to have a framework for future work */ 
 @media only screen and (max-height: 1200px){
     #homeMenu {
-
+        
     }
     #userMenu {
 
