@@ -86,7 +86,7 @@ export let db = new PouchDB("Users");
  */
 export function loginUser (email, pwd, callback) {
 	fetch(`${api}/auth`, {
-        credentials: "same-origin",
+        credentials: "include",
 		headers: {
 			"content-type": "application/json; charset=UTF-8",
 			"Origin": origin
@@ -108,7 +108,7 @@ export function loginUser (email, pwd, callback) {
  */
 export function getUser (callback) {
 	fetch(`${api}/user`, {
-        credentials: "same-origin",
+        credentials: "include",
 		headers: {
 			"content-type": "application/json; charset=UTF-8",
 			"Origin": origin
