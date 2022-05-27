@@ -6,7 +6,7 @@
 /* open version of nav */
 .nav-bar {
     position: fixed;
-    width: 210px;
+    width: 275px;
     height: 100%;
     top: 0;
     bottom: 0;
@@ -33,9 +33,9 @@ button {
     background-color: transparent;
     border: none;
     padding: 0;
-    width: 150px;
-    height: 23px;
-    margin: 5px auto 32px auto;
+    width: 170px;
+    height: 27px;
+    margin: 0px auto 55px auto;
     cursor: pointer;
     text-align: left;
 }
@@ -45,31 +45,20 @@ button img {
     height: 100%;
     filter: var(--icon-filter);
     opacity: 80%;
-}
-button p {
-    display:inline-block;
-    font-family: "SF-Pro";
-    font-size: 15px;
-    opacity: 80%;
-    filter: var(--icon-filter);
-}
-
-button p2 {
-    display:inline-block;
-    font-family: "SF-Pro";
-    font-size: 15px;
-    opacity: 80%;
-    position: relative;
-    bottom: 7px;
-    filter: var(--icon-filter);
+    margin-right: 12px;
+    margin-bottom: -7px;
+    width: 27px;
+    height: 27px;
 }
 
 button h1 {
     display:inline-block;
     font-family: "SF-Pro";
     font-weight: bold;
-    font-size: 28px;
+    font-size: 18px;
+    font-weight: 700;
     opacity: 80%;
+    line-height: 18px;
     filter: var(--icon-filter);
 }
 
@@ -99,14 +88,15 @@ button:hover h1 {
 #bottom {
     position: absolute;
     bottom: 20px;
+    margin-bottom: 44px;
     width: 100%;
 }
 
 /* Differentiates header  */
 #top {
     margin-bottom: -10px;
-    margin-top: 10px;
-    margin-left: 30px;
+    margin-top: 55px;
+    margin-left: 53px;
 }
 
 /* home button shifted to incorporate the collapse button to the right */
@@ -122,7 +112,14 @@ button:hover h1 {
 }
 
 #collapseImage {
-    height: 75%;
+    height: 16px;
+    width: 10px;
+    margin-bottom: 1px;
+}
+
+#uncollapseImage {
+    height: 18px;
+    width: 20px;
 }
 
 
@@ -136,7 +133,7 @@ button:hover h1 {
 #help {
     position: static;
     height: 22px;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
 }
 
 /* Both of the below properties of the main navbar switch the state to open and closed */

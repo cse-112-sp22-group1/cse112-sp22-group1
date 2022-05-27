@@ -17,23 +17,20 @@ let template = <template>
 	<link type="text/css" rel="stylesheet" href="navbar.css" />
     <nav class="nav-bar" id="mainNav">
 		<div id="top">
-			<button id="home">  <img src="../public/resources/home_icon.png"/> <h1>&nbsp;Index</h1></button>
-			<button id="collapse"><img id="collapseImage" src="../public/resources/left-chevron.png"/> </button>
+			<button id="home"><img id="index" src="../public/resources/index.png"/><h1>Index</h1></button>
+			<button id="collapse"><img id="collapseImage" src="../public/resources/left-chevron.png"/></button>
 		</div>
-		<button id="todayLog"> <p>Today's Log</p> </button>
-		<button id="thisMonth"> <p>This Month</p> </button>
-		<button id="futureLog"> <p>Future Logs</p> </button>
-		<button id="collections"> <p>Collections</p> </button>
-		<button id="events"> <p>Events</p> </button>
-		<button id="retrospective"> <p>Retrospective</p> </button>
-		<button id="trackers"> <p>Trackers</p> </button>
+		<button><img id="todaysLog" src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
+		<button><img id="monthlyLog" src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
+		<button><img id="futureLog" src="../public/resources/futureLog.png"/><h1>Future Logs</h1></button>
+		<button><img id="retrospective" src="../public/resources/retrospective.png"/><h1>Retrospective</h1></button>
 		<div id="bottom">
-			<button id="help">  <img src="../public/resources/question.png"/> <p2>&nbsp; Help </p2> </button>
-			<button id="user">  <img src="../public/resources/user.png"/> <p2>&nbsp; My Account</p2> </button>
+			<button id="help"><img src="../public/resources/question.png"/><h1>Help </h1></button>
+			<button id="user"><img src="../public/resources/user.png"/><h1>My Account</h1></button>
 		</div>
 	</nav>
 	<nav class="collapsed-nav" id="closedNav">
-		<button id="uncollapse"><img id="collapseImage" src="../public/resources/closedNav.png"/> </button>
+		<button id="uncollapse"><img id="uncollapseImage" src="../public/resources/closedNav.png"/> </button>
 	</nav>
 	<nav class="navigation">
 		<div id="menu" class="closed">
@@ -44,9 +41,7 @@ let template = <template>
 			<button id="thisMonthMenu"> <p>This Month</p> </button>
 			<button id="futureLogMenu"> <p>Future Logs</p> </button>
 			<button id="collectionsMenu"> <p>Collections</p> </button>
-			<button id="eventsMenu"> <p>Events</p> </button>
 			<button id="retrospectiveMenu"> <p>Retrospective</p> </button>
-			<button id="trackersMenu"> <p>Trackers</p> </button>
 			<div id="bottom">
 				<button id="helpMenu">  <img src="../public/resources/question.png"/> <p2>&nbsp; Help </p2> </button>
 				<button id="userMenu">  <img src="../public/resources/user.png"/> <p2>&nbsp; My Account</p2> </button>
@@ -86,14 +81,12 @@ export class NavBar extends HTMLElement {
 		this.todayLog = this.shadowRoot.querySelectorAll("button")[2];
 		this.monthLog = this.shadowRoot.querySelectorAll("button")[3];
 		this.futureLog = this.shadowRoot.querySelectorAll("button")[4];
-		this.collections = this.shadowRoot.querySelectorAll("button")[5];
-		this.events = this.shadowRoot.querySelectorAll("button")[6];
-		this.retrospective = this.shadowRoot.querySelectorAll("button")[7];
-		this.trackers = this.shadowRoot.querySelectorAll("button")[8];
+		this.retrospective = this.shadowRoot.querySelectorAll("button")[5];
 
-		this.help = this.shadowRoot.querySelectorAll("button")[9];
-		this.user = this.shadowRoot.querySelectorAll("button")[10];
-		this.uncollapse = this.shadowRoot.querySelectorAll("button")[11];
+		console.log(this.shadowRoot.querySelectorAll("button"))
+		this.help = this.shadowRoot.querySelectorAll("button")[6];
+		this.user = this.shadowRoot.querySelectorAll("button")[7];
+		this.uncollapse = this.shadowRoot.querySelectorAll("button")[8];
 
 		// Would be used for a vertical screen size
 		this.menu = this.shadowRoot.querySelector("#menu");
@@ -112,9 +105,6 @@ export class NavBar extends HTMLElement {
 		this.collapse.addEventListener("click", () => {
 			this.navToggle(this.navShown)
 		});
-		this.trackers.addEventListener("click", () => {
-			this.toggleTracker();
-		});
 		this.user.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
 			settingsMenu.toggle();
@@ -122,7 +112,9 @@ export class NavBar extends HTMLElement {
 
 		// collapsed menu button
 		this.uncollapse.addEventListener("click", () => {
+			console.log("test")
 			this.navToggle(this.navShown)
+
 		});
 
 
