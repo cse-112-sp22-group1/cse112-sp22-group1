@@ -17,6 +17,7 @@ app.use((req, res, next) => {
 	res.header("Access-Control-Allow-Origin", constants.accessControlOrigin);
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
     res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header("Access-Control-Allow-Credentials", "true");
 
     /* https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Allow-Origin#cors_and_caching */
     if (constants.accessControlOrigin !== "*") {
