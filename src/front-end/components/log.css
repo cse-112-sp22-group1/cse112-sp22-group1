@@ -1,6 +1,33 @@
 #log {
-
     padding-bottom: 0;
     width: calc(100% - 70px);
     height: 1000px;
+    z-index: -1;
 }
+
+h1 {
+    height: 18px;
+    font-size: 19px;
+    font-family: "SF-Pro";
+}
+
+#monthlyLogs {
+    display: flex;
+}
+
+#monthlyLogs.closed {
+    display: none;
+}
+
+#monthlyName.closed {
+    display: none;
+}
+
+#dailyLogs.closed {
+    display: none;
+}
+
+#dailyName.closed {
+    display: none;
+}
+

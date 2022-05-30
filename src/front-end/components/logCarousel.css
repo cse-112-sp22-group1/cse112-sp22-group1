@@ -1,0 +1,21 @@
+#logCarousel {
+    border: none;
+    overflow: auto;
+    outline: none;
+    display: block;
+    z-index: -1;
+}
+
+#carousel {
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 118px;
+    white-space: nowrap;
+    width: 60%;
+}
+
+h1 {
+    height: 18px;
+    font-size: 19px;
+    font-family: "SF-Pro";
+}

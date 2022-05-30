@@ -1,0 +1,14 @@
+#logCalendar {
+    border: none;
+    overflow: auto;
+    outline: none;
+    display: block;
+    z-index: -1;
+}
+
+
+h1 {
+    height: 18px;
+    font-size: 19px;
+    font-family: "SF-Pro";
+}
