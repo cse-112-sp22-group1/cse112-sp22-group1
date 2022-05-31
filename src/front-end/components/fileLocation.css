@@ -1,0 +1,19 @@
+#fileLocaiton {
+    display: inline;  
+}
+
+#locationTitle {
+    display: inline;
+}
+
+.template {
+    display: inline;
+}
+
+#fileImg {
+    height: 14px;
+    width: 14px;
+    margin-left: 8px;
+    filter: var(--icon-filter);
+    display: inline;
+}

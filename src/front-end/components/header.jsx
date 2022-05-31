@@ -2,6 +2,7 @@ import * as dropdown from "../fillDropdown.js";
 import * as localStorage from "../localStorage/userOperations.js";
 import { navbar } from "../index.js";
 import { currentState } from "../state/stateManager.js";
+import { FileLocation } from "../components/fileLocation.jsx"
 
 // JSX Engine Import
 /* eslint-disable */
@@ -12,6 +13,8 @@ import { createElement, createFragment } from "../jsxEngine.js";
 
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="header.css" />
+	<div id="file">
+	</div>
 	<div id="container">
 		<div id="menuToggle">
 			<input type="checkbox" />
@@ -21,9 +24,8 @@ let template = <template>
 		</div>
 		<span class="header">
 			<div>
-				<button class="imgbutton" id="header_back"><img src="../public/resources/left-chevron.png" /></button>
 				<h1 id="title_page">Template Page Title</h1>
-				<button class="imgbutton" id="header_forward"><img src="../public/resources/right-chevron.png" /></button>
+				<button class="edit-button">Edit</button>
 			</div>
 			<button class="new-button">New</button>
 		</span> 
@@ -47,12 +49,23 @@ export class PageHeader extends HTMLElement {
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
 		this.h1 = this.shadowRoot.getElementById("title_page");
 
+		this.file = this.shadowRoot.getElementById("file");
+		this.futureLog = new FileLocation(" Future Log   ", "futureLog");
+		this.monthlyLog = new FileLocation(" Monthly log   ", "monthlyLog");
+		this.todaysLog = new FileLocation(" Today's log   ", "todaysLog");
+		this.file.appendChild(this.futureLog);
+		this.file.appendChild(this.monthlyLog);
+		this.file.appendChild(this.todaysLog);
+
+
+
 		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.shadowRoot.querySelector(".new-button");
 		this.titleHeader = this.shadowRoot.querySelector(".header");
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
 		this.searchBar = this.shadowRoot.getElementById("searchBar");
+
 	}
 
 	/**

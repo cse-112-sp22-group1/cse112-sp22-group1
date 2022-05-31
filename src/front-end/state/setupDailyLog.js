@@ -14,6 +14,13 @@ export function setupDailyLog (btn) {
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 	header.title = `${weekDays[new Date(currentState.date).getDay()]} ${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getUTCDate()}, ${new Date(currentState.date).getFullYear()}`;
+	header.futureLog.locationTitle = " Future Log /"
+	header.monthlyLog.locationTitle = " Monthly Log /";
+	header.todaysLog.locationTitle = " Today's Log ";
+	header.futureLog.style.display = "block";
+	header.monthlyLog.style.display = "block";
+	header.todaysLog.style.display = "block";
+
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

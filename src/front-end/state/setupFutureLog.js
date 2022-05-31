@@ -52,7 +52,14 @@ export function setupFutureLog (btn) {
 	document.getElementById("targetMenu").style.display = "block";
 	let futureLogStart = new Date(currentState.startDate);
 	let futureLogEnd = new Date(currentState.endDate);
+
 	header.title = futureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
+	header.futureLog.locationTitle = " Future Log "
+	header.futureLog.style.display = "block";
+	header.monthlyLog.style.display = "none";
+	header.todaysLog.style.display = "none";
+
+
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

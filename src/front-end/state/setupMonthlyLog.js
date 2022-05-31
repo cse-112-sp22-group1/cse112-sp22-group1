@@ -42,6 +42,13 @@ export function setupMonthlyLog (btn) {
 	});
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getFullYear()}`;
+	header.futureLog.locationTitle = " Future Log /";
+	header.monthlyLog.locationTitle = " Monthly Log";
+	header.futureLog.style.display = "block";
+	header.monthlyLog.style.display = "block";
+	header.todaysLog.style.display = "none";
+	
+
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

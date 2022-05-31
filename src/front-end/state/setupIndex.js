@@ -65,6 +65,9 @@ export function setupIndex (btn) {
 		}
 	});
 	header.title = "Index";
+	header.futureLog.style.display = "none";
+	header.monthlyLog.style.display = "none";
+	header.todaysLog.style.display = "none";
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {
