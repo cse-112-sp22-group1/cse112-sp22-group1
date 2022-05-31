@@ -1,12 +1,7 @@
 module.exports = {
+    "plugins": ["jest"],
     "env": {
-        "node": true
-    },
-    "globals": {
-        "describe": false,
-        "beforeAll": false,
-        "afterAll": false,
-        "it": false,
-        "expect": false
+        "node": true,
+        "jest/globals": true
     }
 }
