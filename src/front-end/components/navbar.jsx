@@ -19,10 +19,10 @@ let template = <template>
 			<button id="home"><img id="index" src="../public/resources/index.png"/><h1>Index</h1></button>
 			<button id="collapse"><img id="collapseImage" src="../public/resources/left-chevron.png"/></button>
 		</div>
-		<button><img id="todaysLog" src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
-		<button><img id="monthlyLog" src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
-		<button><img id="futureLog" src="../public/resources/futureLog.png"/><h1>Future Logs</h1></button>
-		<button><img id="retrospective" src="../public/resources/retrospective.png"/><h1>Retrospective</h1></button>
+		<button id="todaysLog"><img src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
+		<button id="monthlyLog"><img src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
+		<button id="futureLog"><img src="../public/resources/futureLog.png"/><h1>Future Logs</h1></button>
+		<button id="retrospective"><img src="../public/resources/retrospective.png"/><h1>Retrospective</h1></button>
 		<div id="bottom">
 			<button id="help"><img src="../public/resources/question.png"/><h1>Help </h1></button>
 			<button id="user"><img src="../public/resources/user.png"/><h1>My Account</h1></button>
@@ -34,7 +34,7 @@ let template = <template>
 	<nav class="navigation">
 		<div id="menu" class="closed">
 			<button id="phoneCollapse"><img id="collapseImage" src="../public/resources/left-chevron.png"/></button>
-			<button id="phoneHome"><img id="index" src="../public/resources/index.png"/><h1>Index</h1></button>
+			<button id="phoneHome"><img id="phoneIndex" src="../public/resources/index.png"/><h1>Index</h1></button>
 			<button><img id="todaysLog" src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
 			<button><img id="monthlyLog" src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
 			<button><img id="futureLog" src="../public/resources/futureLog.png"/><h1>Future Logs</h1></button>

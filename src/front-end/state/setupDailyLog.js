@@ -4,7 +4,6 @@ import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
-import { Log } from "../components/log.jsx";
 
 /**
  * Sets up the daillyLog page with the textBlocks, and trackers of the user.
@@ -21,43 +20,42 @@ export function setupDailyLog (btn) {
 		btn[i].removeAttribute("disabled");
 		btn[i].style.visibility = "visible";
 	}
-	contentWrapper.appendChild(new Log(currentState))
-	
-	// createEditor(contentWrapper, currentState, null, (success) => {
-	// 	console.log(success);
-	// });
-	// document.getElementById("targetMenu").style.display = "block";
-	// header.makeUneditable();
-	// let headerButtons = header.imgbuttons;
-	// for (let i = 0; i < headerButtons.length; i++) {
-	// 	headerButtons[i].classList.remove("hide");
-	// }
 
-	// let monthlyLogTrackerMenu = new TrackerMenu("Daily Log Trackers");
-	// document.getElementById("trackerWrapper").appendChild(monthlyLogTrackerMenu);
-	// let trackerBlockWrapper = monthlyLogTrackerMenu.shadowRoot.getElementById("editor");
-	// localStorage.readUser((err, user) => {
-	// 	if (err) {
-	// 		console.log(err);
-	// 	} else {
-	// 		let userArr = user.trackers;
-	// 		let trackerArr = [];
-	// 		for (let i = 0; i < currentState.trackers.length; i++) {
-	// 			console.log("hello");
-	// 			trackerArr.push(userArr.filter((object) => object.id === currentState.trackers[i])[0]);
-	// 		}
-	// 		console.log(trackerArr);
-	// 		setTimeout(() => {
-	// 			for (let i = 0; i < trackerArr.length; i++) {
-	// 				let currentTracker = trackerArr[i];
-	// 				let dropdownTracker = new TrackerBlock(currentTracker.title, currentState.id, 1);
-	// 				trackerBlockWrapper.appendChild(dropdownTracker);
-	// 			}
-	// 			createEditor(trackerBlockWrapper, null, null, (success) => {
-	// 				console.log(success);
-	// 			});
-	// 		}, 10);
-	// 	}
-	// });
+	createEditor(contentWrapper, currentState, null, (success) => {
+		console.log(success);
+	});
+	document.getElementById("targetMenu").style.display = "block";
+	header.makeUneditable();
+	let headerButtons = header.imgbuttons;
+	for (let i = 0; i < headerButtons.length; i++) {
+		headerButtons[i].classList.remove("hide");
+	}
+
+	let monthlyLogTrackerMenu = new TrackerMenu("Daily Log Trackers");
+	document.getElementById("trackerWrapper").appendChild(monthlyLogTrackerMenu);
+	let trackerBlockWrapper = monthlyLogTrackerMenu.shadowRoot.getElementById("editor");
+	localStorage.readUser((err, user) => {
+		if (err) {
+			console.log(err);
+		} else {
+			let userArr = user.trackers;
+			let trackerArr = [];
+			for (let i = 0; i < currentState.trackers.length; i++) {
+				console.log("hello");
+				trackerArr.push(userArr.filter((object) => object.id === currentState.trackers[i])[0]);
+			}
+			console.log(trackerArr);
+			setTimeout(() => {
+				for (let i = 0; i < trackerArr.length; i++) {
+					let currentTracker = trackerArr[i];
+					let dropdownTracker = new TrackerBlock(currentTracker.title, currentState.id, 1);
+					trackerBlockWrapper.appendChild(dropdownTracker);
+				}
+				createEditor(trackerBlockWrapper, null, null, (success) => {
+					console.log(success);
+				});
+			}, 10);
+		}
+	});
 
 }

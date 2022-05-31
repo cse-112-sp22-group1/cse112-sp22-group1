@@ -34,8 +34,8 @@ button {
     border: none;
     padding: 0;
     width: 170px;
-    height: 27px;
-    margin: 0px auto 55px auto;
+    height: 40px;
+    margin: 0px auto 42px auto;
     cursor: pointer;
     text-align: left;
 }
@@ -134,6 +134,11 @@ button:hover h1 {
     position: static;
     height: 22px;
     margin-bottom: 35px;
+}
+
+#retrospective {
+    width: 180px;
+    margin-left: 52.5px;
 }
 
 /* Both of the below properties of the main navbar switch the state to open and closed */
