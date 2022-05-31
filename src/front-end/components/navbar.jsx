@@ -1,7 +1,7 @@
-
 import { header } from "../index.js";
 import { SettingsMenu } from "./settings.jsx";
 import { router } from "../state/router.js";
+import { HelpMenu } from "./help.jsx";
 
 //const template = document.createElement("template");
 
@@ -107,6 +107,10 @@ export class NavBar extends HTMLElement {
 		});
 		this.collapse.addEventListener("click", () => {
 			this.navToggle(this.navShown)
+		});
+		this.help.addEventListener("click", () => {
+			let helpMenu = document.querySelector("help-menu");
+			helpMenu.toggle();
 		});
 		this.user.addEventListener("click", () => {
 			let settingsMenu = document.querySelector("settings-menu");
