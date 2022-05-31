@@ -88,7 +88,7 @@ button:hover h1 {
 #bottom {
     position: absolute;
     bottom: 20px;
-    margin-bottom: 44px;
+    margin-bottom: 0px;
     width: 100%;
 }
 
@@ -126,14 +126,14 @@ button:hover h1 {
 /* the properties below describe the change of the two bottom navbar buttons */
 #user {
     position: static;
-    height: 22px;
-    margin: 0 auto;
+    height: 40px;
+    margin-bottom: 22px;
 }
 
 #help {
     position: static;
-    height: 22px;
-    margin-bottom: 35px;
+    height: 40px;
+    margin-bottom: 17px;
 }
 
 #retrospective {
