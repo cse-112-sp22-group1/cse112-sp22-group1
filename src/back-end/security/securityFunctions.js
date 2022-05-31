@@ -41,9 +41,13 @@ const encrypt = (message, password) => {
  * @return Returns the decrypted data.
  */
 const decrypt = (data, password) => {
-    let decrypted = CryptoJS.AES.decrypt(data, password);
-    let originalText = decrypted.toString(CryptoJS.enc.Utf8);
-    return originalText;
+    try {
+        let decrypted = CryptoJS.AES.decrypt(data, password);
+        let originalText = decrypted.toString(CryptoJS.enc.Utf8);
+        return originalText;
+    } catch (err) {
+        return "";
+    }
 }
 
 /**
