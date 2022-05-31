@@ -4,7 +4,7 @@
   "description": "This is the server for the CSE 112 Team 1 project for spring 2022",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "npm --prefix ./test test"
   },
   "author": "CSE 110 Team 11 Spring 2021",
   "license": "ISC",
