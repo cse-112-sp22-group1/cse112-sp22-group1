@@ -37,7 +37,7 @@ const updateUser = async (email, key, userObject) => {
 	let newEvents = [];
 	for (let i = 0; i < userObject.events.length; i++) {
 		let block = userObject.events[i];
-		block.text = security.encrypt(block.text, key);
+		block.title = security.encrypt(block.title, key);
 		newEvents.push(block);
 	}
 	let newSignifiers = [];
