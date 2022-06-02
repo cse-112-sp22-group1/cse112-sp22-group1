@@ -3,6 +3,7 @@ import { contentWrapper, header } from "../index.js"
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
 import { currentState } from "./stateManager.js";
+import { FileLocation } from "../components/fileLocation.jsx";
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
@@ -65,9 +66,14 @@ export function setupIndex (btn) {
 		}
 	});
 	header.title = "Index";
-	header.futureLog.style.display = "none";
-	header.monthlyLog.style.display = "none";
-	header.todaysLog.style.display = "none";
+
+	// remove all child fileLocations first first
+	var child = header.file.lastElementChild; 
+	while (child) {
+		header.file.removeChild(child);
+		child = header.file.lastElementChild;
+	}
+	header.file.appendChild(new FileLocation("Index", "index", false))
 
 	// Setting navbar buttons
 	for (let i = 0; i < btn.length; i++) {

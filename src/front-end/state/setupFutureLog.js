@@ -6,6 +6,7 @@ import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
+import { FileLocation } from "../components/fileLocation.jsx";
 
 /**
  * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
@@ -54,10 +55,13 @@ export function setupFutureLog (btn) {
 	let futureLogEnd = new Date(currentState.endDate);
 
 	header.title = futureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
-	header.futureLog.locationTitle = " Future Log "
-	header.futureLog.style.display = "block";
-	header.monthlyLog.style.display = "none";
-	header.todaysLog.style.display = "none";
+	// remove all child fileLocations first first
+	var child = header.file.lastElementChild; 
+	while (child) {
+		header.file.removeChild(child);
+		child = header.file.lastElementChild;
+	}
+	header.file.appendChild(new FileLocation("Future Log", "futureLog", false))
 
 
 

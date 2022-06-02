@@ -6,6 +6,7 @@ import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
+import { FileLocation } from "../components/fileLocation.jsx";
 
 /**
  * Sets up the monthlyLog page with the dailyLogs, textBlocks, and trackers of the user.
@@ -42,12 +43,14 @@ export function setupMonthlyLog (btn) {
 	});
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getFullYear()}`;
-	header.futureLog.locationTitle = " Future Log /";
-	header.monthlyLog.locationTitle = " Monthly Log";
-	header.futureLog.style.display = "block";
-	header.monthlyLog.style.display = "block";
-	header.todaysLog.style.display = "none";
-	
+	// remove all child fileLocations first first
+	var child = header.file.lastElementChild; 
+	while (child) {
+		header.file.removeChild(child);
+		child = header.file.lastElementChild;
+	}
+	header.file.appendChild(new FileLocation("Future Log", "futureLog", true))
+	header.file.appendChild(new FileLocation("Monthly Log", "monthlyLog", false))
 
 
 	// Setting navbar buttons

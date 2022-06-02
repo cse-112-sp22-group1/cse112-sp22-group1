@@ -50,12 +50,12 @@ export class PageHeader extends HTMLElement {
 		this.h1 = this.shadowRoot.getElementById("title_page");
 
 		this.file = this.shadowRoot.getElementById("file");
-		this.futureLog = new FileLocation(" Future Log   ", "futureLog");
-		this.monthlyLog = new FileLocation(" Monthly log   ", "monthlyLog");
-		this.todaysLog = new FileLocation(" Today's log   ", "todaysLog");
-		this.file.appendChild(this.futureLog);
-		this.file.appendChild(this.monthlyLog);
-		this.file.appendChild(this.todaysLog);
+		// this.futureLog = new FileLocation(" Future Log   ", "futureLog");
+		// this.monthlyLog = new FileLocation(" Monthly log   ", "monthlyLog");
+		// this.todaysLog = new FileLocation(" Today's log   ", "todaysLog");
+		// this.file.appendChild(this.futureLog);
+		// this.file.appendChild(this.monthlyLog);
+		// this.file.appendChild(this.todaysLog);
 
 
 

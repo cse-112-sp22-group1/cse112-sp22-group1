@@ -24,7 +24,7 @@ export class FileLocation extends HTMLElement {
 	/**
 	 * Navbar constructor
 	 */
-	constructor (title, type) {
+	constructor (title, type, slash) {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
@@ -32,12 +32,18 @@ export class FileLocation extends HTMLElement {
         this.img = this.shadowRoot.getElementById("fileImg");
         this.locationTitle = this.shadowRoot.getElementById("locationTitle");
 
-        this.locationTitle.innerHTML = title 
+        if (slash) {
+            this.locationTitle.innerHTML = title + " /"
+        } else {
+            this.locationTitle.innerHTML = title 
+        }
 
         if(type == "dailyLog") {
             this.img.src = "../public/resources/todaysLog.png";
         } else if (type == "monthlyLog") {
             this.img.src = "../public/resources/monthlyLog.png";
+        } else if (type == "index") {
+            this.img.src = "../public/resources/index.png";
         } else {
             this.img.src = "../public/resources/futureLog.png";
         }
