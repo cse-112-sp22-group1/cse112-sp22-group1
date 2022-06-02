@@ -92,9 +92,13 @@ describe("decrypt() Tests", () => {
     });
 
     test("Invalid cyphertext", () => {
-        const CYPHERTEXT = Math.random().toString(36).slice(2);
-        const result = security.decrypt(CYPHERTEXT, "PASSWORD");
-        expect(result).toBe("");
+        try {
+            const CYPHERTEXT = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+            security.decrypt(CYPHERTEXT, "PASSWORD");
+            expect(true).toBe(false);
+        } catch (err) {
+            expect(true).toBe(true);
+        }
     });
 
     test("Decrypt empty string", () => {
