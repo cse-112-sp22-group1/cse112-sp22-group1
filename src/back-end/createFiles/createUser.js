@@ -8,13 +8,13 @@ const schema = require(`${__dirname}/../schema.js`);
  */
 const makeid = () => {
 	let length = 30;
-    let result = [];
-    let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    let charactersLength = characters.length;
-    for (let i = 0; i < length; i++) {
-      result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
-   }
-   return result.join("");
+	let result = [];
+	let characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	let charactersLength = characters.length;
+	for (let i = 0; i < length; i++) {
+		result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
+	}
+	return result.join("");
 }
 
 /**
@@ -23,56 +23,46 @@ const makeid = () => {
  * @param {String} email The email of the new user.
  * @param {String} pwdHash The hash of the user's password.
  * @param {String} key The encryption key for this user.
- * @callback (error) Sends an error if there is one.
+ * @resolve The newly created user.
+ * @reject An error.
  */
-const createUser = (email, pwdHash, key, callback) => {
-	schema.User.findOne({
-		email: email
-	}, (error, user) => {
-		if (error) {
-			callback(error);
-		} else if (user === null) {
-			const newUser = new schema.User({
-				email: email,
-				pwd: pwdHash,
-				theme: "lightmode",
-				index: {
-					objectType: "index",
-					contents: []
-				},
-				dailyLogs: [],
-				monthlyLogs: [],
-				futureLogs: [],
-				trackers: [],
-				collections: [],
-				imageBlocks: [],
-				audioBlocks: [],
-				textBlocks: [],
-				events: [],
-				tasks: [],
-				signifiers: [
-					{
-						id: makeid(),
-						objectType: "signifier",
-						meaning: security.encrypt("general", key),
-						symbol: "&#x1F7E0;"
-					}
-				]
-			});
-
-			newUser.save((err, createdUser) => {
-				if (err) {
-					callback(err);
-				} else {
-					createdUser.signifiers[0].meaning = "general";
-					callback(createdUser);
-				}
-			});
-		} else {
-			callback({ error: "This email already has an account!" });
-		}
+const createUser = async (email, pwdHash, key) => {
+	let user = await schema.User.findOne({ email: email }).exec();
+	if (user !== null) {
+		throw new Error("This email already has an account!");
+	}
+	user = new schema.User({
+		email: email,
+		pwd: pwdHash,
+		theme: "lightmode",
+		index: {
+			objectType: "index",
+			contents: []
+		},
+		dailyLogs: [],
+		monthlyLogs: [],
+		futureLogs: [],
+		trackers: [],
+		collections: [],
+		imageBlocks: [],
+		audioBlocks: [],
+		textBlocks: [],
+		events: [],
+		tasks: [],
+		signifiers: [
+			{
+				id: makeid(),
+				objectType: "signifier",
+				meaning: security.encrypt("general", key),
+				symbol: "&#x1F7E0;"
+			}
+		]
 	});
-}
+	user = await user.save();
+	user.signifiers[0].meaning = "general";
+	delete user.pwd;
+	return user;
+};
 
 module.exports = {
 	createUser: createUser

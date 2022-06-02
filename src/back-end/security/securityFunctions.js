@@ -54,17 +54,18 @@ const decrypt = (data, password) => {
  * Authenticates the user based on email and password in userDate
  * @memberof securityFunctions
  * @param {Object} userData The object that contains the email and password to authenticate.
- * @callback (response) Sends either true or false based on whether the email and password were authenticated or not.
+ * @resolve true if the user authenticated successfully, false otherwise.
  */
-const authenticate = (userData, callback) => {
-    schema.User.findOne({ email: userData.email }, (error, user) => {
-        if (error || user === null) {
-            callback(false);
-        } else {
-            let hashedPwd = passHash(userData.pwd);
-            callback(user.pwd === hashedPwd);
+const authenticate = async (userData) => {
+    try {
+        const user = await schema.User.findOne({ email: userData.email });
+        if (user === null) {
+            return false;
         }
-    })
+        return passHash(userData.pwd) === user.pwd;
+    } catch (err) {
+        return false;
+    }
 }
 
 /* For exporting */

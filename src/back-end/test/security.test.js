@@ -164,19 +164,17 @@ describe("authenticate() Tests", () => {
         await mongoose.connection.close();
     });
 
-    test("Successful auth", async (done) => {
+    test("Successful auth", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
-        security.authenticate(user, (success) => {
-            expect(success).toBe(true);
-            done();
-        });
+        const success = await security.authenticate(user);
+        expect(success).toBe(true);
     });
 
-    test("Multiple users successful auth", async (done) => {
+    test("Multiple users successful auth", async () => {
         const user1 = {
             email: "user1@example.com",
             pwd: "PASSWORD"
@@ -192,114 +190,114 @@ describe("authenticate() Tests", () => {
             pwd: "wordPASS"
         };
         await insertUser(user3.email, user3.pwd);
-        security.authenticate(user1, (suc1) => {
-            expect(suc1).toBe(true);
-            security.authenticate(user2, (suc2) => {
-                expect(suc2).toBe(true);
-                security.authenticate(user3, (suc3) => {
-                    expect(suc3).toBe(true);
-                    done();
-                });
-            });
-        });
+        let success = await security.authenticate(user1);
+        expect(success).toBe(true);
+        success = await security.authenticate(user2);
+        expect(success).toBe(true);
+         success = await security.authenticate(user2);
+        expect(success).toBe(true);
     });
 
-    test("Wrong password", async (done) => {
+    test("Wrong password", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser(user.email, "password");
-        security.authenticate(user, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate(user);
+        expect(success).toBe(false);
     });
 
-    test("Non-existant username", (done) => {
+    test("Non-existent username", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
-        security.authenticate(user, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate(user);
+        expect(success).toBe(false);
     });
 
-    test("Non-existant username with other users in DB", async (done) => {
+    test("Non-existant username with other users in DB", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser("user@gmail.com", "diffpassword");
-        security.authenticate(user, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate(user);
+        expect(success).toBe(false);
     });
 
-    test("Null email", async (done) => {
+    test("Null email", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
         user.email = null;
-        security.authenticate(user, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate(user);
+        expect(success).toBe(false);
     });
 
-    test("Null password", async (done) => {
+    test("Null password", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
         user.pwd = null;
-        security.authenticate(user, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate(user);
+        expect(success).toBe(false);
     });
 
-    test("Undefined email", async (done) => {
+    test("Undefined email", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
         delete user.email;
-        security.authenticate(user, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate(user);
+        expect(success).toBe(false);
     });
 
-    test("Undefined password", async (done) => {
+    test("Undefined password", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
         delete user.pwd;
-        security.authenticate(user, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate(user);
+        expect(success).toBe(false);
     });
 
-    test("Empty userdata", async (done) => {
+    test("Empty userdata", async () => {
         const user = {
             email: "user@example.com",
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
-        security.authenticate({}, (success) => {
-            expect(success).toBe(false);
-            done();
-        });
+        let success = await security.authenticate({});
+        expect(success).toBe(false);
+    });
+
+    test("Undefined userdata", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "PASSWORD"
+        };
+        await insertUser(user.email, user.pwd);
+        let success = await security.authenticate();
+        expect(success).toBe(false);
+    });
+
+    test("Null userdata", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "PASSWORD"
+        };
+        await insertUser(user.email, user.pwd);
+        let success = await security.authenticate(null);
+        expect(success).toBe(false);
     });
 });

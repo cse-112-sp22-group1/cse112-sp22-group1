@@ -9,20 +9,17 @@ const schema = require(`${__dirname}/../schema.js`);
  * Deletes the user from the online db.
  * @memberof mongoDelete
  * @param {String} email The email of the user to delete.
- * @callback (res) Sends either the user deleted or and error if there was one.
+ * @resolve The deleted user.
+ * @reject An error.
  */
-const deleteUser = (email, callback) => {
-	schema.User.findOneAndDelete({ email: email }, (error, user) => {
-		if (error) {
-			callback(error);
-		} else {
-
-            /* Don't send back the password */
-            delete user.pwd;
-			callback(user);
-		}
-	});
-}
+const deleteUser = async (email) => {
+	const user = await schema.User.findOneAndDelete({ email: email }).exec();
+	if (user === null) {
+		throw new Error("User does not exist!");
+	}
+	delete user.pwd;
+	return user;
+};
 
 module.exports = {
 	deleteUser: deleteUser
