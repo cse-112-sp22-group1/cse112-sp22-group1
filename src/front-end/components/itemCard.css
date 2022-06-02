@@ -2,7 +2,7 @@
 	font-family:"SF-Pro";
 }
 .card{
-    font: "SF-Pro";
+    font-family: "SF-Pro";
     display: inline-block;
     overflow: hidden;
     border-radius: 15px;

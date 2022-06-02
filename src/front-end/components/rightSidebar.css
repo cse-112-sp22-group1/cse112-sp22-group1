@@ -1,0 +1,112 @@
+@font-face {
+	font-family:"SF-Pro";
+}
+#container{
+    font-family: "SF-Pro";
+    max-width: 25vw;
+}
+.search_bar {
+    display: flex;
+    align-items: center;
+    margin: 15px auto 15px 10px;
+    padding: 0 5px;
+    border-radius: 5px;
+    border-color: var(--border-color); /*rgba(0, 0, 0, 0.1);*/
+    border-width: 2px;
+    border-style: solid;
+    opacity: 60%;
+    max-width: 24vw;
+}
+
+.search_bar img {
+    display: inline-block;
+
+    opacity: 50%;
+    height: 21px;
+
+    vertical-align: middle;
+
+    filter: var(--icon-filter);
+}
+
+.search_bar input{
+
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--content-foreground-color);
+    font-size: 14pt;
+    opacity: 90%;
+    height: 35px;
+    text-align: left;
+    width: 24vw;
+    border: solid;
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0);
+    outline: none;
+}
+
+#sideCardWrapper{
+    display: block;
+    max-width: 27vw;
+    max-height: 91.4%;
+    overflow-y:hidden;
+}
+
+#sideCardWrapper:hover{
+    overflow-y:auto;
+}
+::-webkit-scrollbar {
+    width: 0.5vw;
+}
+  
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    height:3vw;
+    border-radius: 10px;
+}
+  
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Fade in for search bar */
+.search_bar:hover img {
+    opacity: 50%;
+    transition: opacity 150ms;
+}
+
+.search_bar:hover {
+    transition: 150ms;
+    opacity: 90%;
+    
+}
+
+.search_bar input:focus .search_bar{
+    transition: 150ms;
+    opacity: 90%;
+}
+
+
+@media screen and (max-width: 1450px) {
+    .search_bar input {
+        width: 220px;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .search_bar input {
+        width: 170px;
+    }
+}
+
+@media screen and (max-width: 1220px) {
+    .search_bar {
+        display: none;
+    }
+}

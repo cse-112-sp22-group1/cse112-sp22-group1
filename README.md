@@ -1,52 +1,76 @@
-# CSE 110 Group 11
-This is the repository for Team 11's CSE 110 project.  
+<div align="center">
 
-## Team Name: It's not a bug, It's a feature
+[![BooJo Logo](admin/branding/logo.png)](https://boojo.bitfrost.app/)
 
-Team Members:   
-- Carlos Guerrero
-- Chang Liu
-- Claudia Handoyo
-- Liu He 
-- Samuel Reda
-- Sanat Bhandarkar (TA)
-- Thomas Fischer
-- Trisa Leung
-- Waynar Bocangel  
-<hr></hr>
+## A Notion-inspired bullet journal
 
-### Project Goal  
+</div>
 
-The project is to create a virtual bullet journal that will help users organize tasks and projects in agile fashion.
-Agile is an organization technique used by teams in industries. 
-<hr></hr> 
+# Mission Statement
 
-### Final Public Video
-[https://youtu.be/x8fMTuzM9ps](https://youtu.be/x8fMTuzM9ps)
+We hope to create a virtual bullet journal that will help users organize tasks
+and projects in agile fashion.
 
-### Learn About Our Team!
-- [Team Page: team.md](/admin/team.md)
-<hr></hr>
+In pursuit of improving on existing software, BooJo hopes to create a truly
+cohesive user experience without having to start from scratch.
 
-### Admin 
-The [admin](/admin) folder holds logistics for our team.
-- [Meeting Notes](/admin/meetings)
-- [Team Contract](/admin/misc)
-<hr></hr>
+# Building
 
+1. Clone the repository with `git clone https://github.com/cse-112-sp22-group1/cse112-sp22-group1.git`
+2. Download and install [NodeJS](https://nodejs.org/en/).
+3. Set up a MongoDB server.
+   There are several ways to do this.
+   One method is to use [MongoDB's hosting service](https://www.mongodb.com/).
+4. Open the project root directory in a terminal and run `npm install`
 
-### Design
-You can find documents for our design and planning in the [specs](/specs) directory. 
+## Backend
 
-This includes:
-- Architectural Decision Records (ADRs)
-- Our Brainstorming, which includes our Miro Board and Figma design
-- Our Pitch, which contains our user personas, the purpose of our project, rabbit holes, and more
-<hr> </hr>
+1. Navigate to `src/back-end` with `cd src/back-end`
+2. Run `npm install`
+3. Create a file named `.env`
+4. Add the following keys. The values below are just placeholders.
+   ```
+   DB=<address of the MongoDB server>
+   SESSION_SECRET=ARandomlyGeneratedStringOfCharactersToKeepSecret
+   HASHKEY=ADifferentRandomlyGeneratedStringOfCharactersToKeepSecret
+   ```
+5. Start the server with `npm run index.js`
+6. Leave this server running in the background.
 
-### Source and Testing
-Our source code for the team's Bujo app is contained in the [src](/src) folder. Within src, we have folders for backend, frontend, and testing.
+## Frontend
 
-Our test reports are also included here.
+1. Navigate to with `cd src/front-end`
+2. Run `npm install`
+3. Run `npm run dev`
+4. A window should open in your default browser with BooJo.
 
+# Team
 
+Built by CSE 112, Team 1: Caffeinated Fast Fingers.
+
+Members:
+* [Waynar Bocangel](https://github.com/waynarbocangel)
+* [e5chang](https://github.com/e5chang)
+* [Ed5443](https://github.com/Ed5443)
+* [Darin8](https://github.com/Darin8)
+* [Ehson12](https://github.com/Ehson12)
+* [jamestylee](https://github.com/jamesytlee)
+* [rr-zhou](https://github.com/rr-zhou)
+* [forschoolandnothingelse](https://github.com/forschoolandnothingelse)
+* [rltoSD](https://github.com/rltoSD)
+
+Based on the work of [CSE 110, Group 11](https://github.com/forschoolandnothingelse/cse112-sp22-group1).
+
+# Project Layout
+
+* `src`: The source code directory.
+  * `back-end`: Source code for the back-end API.
+  * `front-end`: Source code for the front-end.
+  * `unitTests`: Unit tests for our CI pipeline.
+* `docs`: JSDoc files for our codebase.
+* `specs`: Project design documents.
+* `admin`: Administrative files such as product branding, planning documents, etc.
+
+# Contributing
+
+For contributing guidelines, please read [CONTRIBUTING.md](CONTRIBUTING.md).

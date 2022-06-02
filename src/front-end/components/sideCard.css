@@ -1,0 +1,128 @@
+@font-face {
+	font-family:"SF-Pro";
+}
+.card{
+    font-family: "SF-Pro";
+    display: inline-block;
+    overflow: auto;
+    border-radius: 15px;
+    justify-content: space-between;
+    padding: 0 0 1rem;
+    width:23vw;
+    background-color: var(--card-backgound);
+    box-shadow: 0 0 10px var(--card-shadow);
+    margin-top: 0.5vw;
+    margin-bottom: 0.5vw;
+    margin-left:1vw;
+}
+#titleWrapper{
+    display:flex;
+    flex-wrap: nowrap;
+    vertical-align: middle;
+    padding-top: 1vw;
+    padding-left: 2.5vw;
+    padding-right: 2vw;
+}
+#title{
+    font-size: 18pt;
+    text-align: left;
+    text-decoration: underline;
+    max-width: 14vw;
+    flex-grow: 1;
+    line-height: 2.4vw;
+}
+#buttonwrapper{
+    margin-top: 1.3vw;
+    align-self:top;    
+}
+#deleteButton{
+    cursor: pointer;    
+    font-size: 16px;
+    border: none;
+    color:white;
+    padding: 4px 8px;
+    text-decoration: none;
+    margin: 4px 5px;
+    border-radius: 6px;
+    background-color: var(--danger-button-color);
+}
+#trackerWrapper{
+    padding-left: 2.5vw;
+    padding-right: 2vw;
+    padding-bottom: 1vw;
+}
+#titleblock > * {
+    vertical-align:middle; 
+}
+
+#editorIcons{
+    display: inline-block;
+    margin-left: 1.5vw;
+}
+#editorIcon{
+	display: inline-block;
+	vertical-align:middle;
+}
+
+#editorIcons img{
+	height: 15px;
+	cursor: pointer;
+	filter: var(--icon-filter);
+}
+
+.unfocusedIcons{
+	opacity: 0.3;
+	transition: 0.2s;
+}
+
+.focusedIcons{
+	opacity: 0.5;
+	transition: 0.2s;
+}
+
+#more:hover{
+	opacity: 0.8;
+	transition: opacity 0.2s;
+}
+.paragraphIcons{
+	margin-top: 0px;
+}
+
+#trackerTitle {
+	font-family: "SF-Pro";
+	border: none;
+	overflow: auto;
+	outline: none;
+	resize: none;
+	display: inline-block;
+    margin: 7px 0 12px;
+	font-size: 18px;
+	line-height: 28px;
+	width: calc(100% - 44px);
+}
+.tracker-block{
+    display: block;
+}
+.tracker-text{
+    display: inline-block;
+    line-height: 28px;
+}
+
+#editorIcon img{
+	margin-right: 7px;
+	height: 15px;
+	cursor: pointer;
+	filter: var(--icon-filter);
+}
+#hide{
+    opacity: 0;
+    vertical-align:top;
+    margin-top:0px;
+    padding-left: 1vw;
+}
+
+.tracker-block:hover #hide{
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    vertical-align:top;
+}

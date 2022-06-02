@@ -9,3 +9,4 @@ documentation/scripts/linenumber.js
 documentation/scripts/prettify/lang-css.js
 documentation/scripts/prettify/prettify.js
 .vscode
+src/front-end/jestendtoend.config.js
