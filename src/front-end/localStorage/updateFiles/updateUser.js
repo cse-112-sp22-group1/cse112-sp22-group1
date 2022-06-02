@@ -17,7 +17,7 @@ import { api, origin } from "../../constants.js";
 				console.log("this is the user now", doc);
 				console.log("about to fetch");
 				fetch(`${api}/user`, {
-                    credentials: "same-origin",
+                    credentials: "include",
 					headers: {
 						"content-type": "application/json; charset=UTF-8",
 						"Origin": origin
