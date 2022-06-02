@@ -2,8 +2,8 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js"
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
-import { currentState } from "./stateManager.js";
 import { FileLocation } from "../components/fileLocation.jsx";
+import { currentState } from "./stateManager.js";
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
@@ -67,8 +67,8 @@ export function setupIndex (btn) {
 	});
 	header.title = "Index";
 
-	// remove all child fileLocations first first
-	var child = header.file.lastElementChild; 
+	// Remove all child fileLocations first first
+	let child = header.file.lastElementChild;
 	while (child) {
 		header.file.removeChild(child);
 		child = header.file.lastElementChild;

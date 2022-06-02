@@ -2,11 +2,11 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js";
 import { CreatorBlock } from "../components/creator.jsx";
 import { DropdownBlock } from "../components/dropdown.jsx";
+import { FileLocation } from "../components/fileLocation.jsx";
 import { TrackerBlock } from "../components/trackerBlock.jsx";
 import { TrackerMenu } from "../components/tracker.jsx";
 import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
-import { FileLocation } from "../components/fileLocation.jsx";
 
 /**
  * Sets up the monthlyLog page with the dailyLogs, textBlocks, and trackers of the user.
@@ -43,8 +43,9 @@ export function setupMonthlyLog (btn) {
 	});
 	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getFullYear()}`;
-	// remove all child fileLocations first first
-	var child = header.file.lastElementChild; 
+
+	// Remove all child fileLocations first first
+	let child = header.file.lastElementChild;
 	while (child) {
 		header.file.removeChild(child);
 		child = header.file.lastElementChild;
