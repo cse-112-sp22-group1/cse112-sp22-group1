@@ -1,3 +1,7 @@
+/**
+ * User Creation Functions
+ * @namespace createUser
+ */
 require("dotenv").config();
 const security = require(`${__dirname}/../security/securityFunctions.js`);
 const schema = require(`${__dirname}/../schema.js`);
@@ -64,6 +68,7 @@ const createUser = async (email, pwdHash, key) => {
 	return user;
 };
 
+/* For exporting */
 module.exports = {
 	createUser: createUser
 }
