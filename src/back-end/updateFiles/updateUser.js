@@ -3,6 +3,7 @@
  * @namespace mongoUpdate
  */
 require("dotenv").config();
+const readUser = require(`${__dirname}/../readFiles/readUser`);
 const security = require(`${__dirname}/../security/securityFunctions.js`);
 const schema = require(`${__dirname}/../schema.js`);
 
@@ -65,7 +66,7 @@ const updateUser = async (email, key, userObject) => {
 		newTrackers.push(tracker);
 	}
 
-	const user = await schema.User.findOne({ email: email }).exec();
+	let user = await schema.User.findOne({ email: email }).exec();
 	if (user === null) {
 		throw new Error("User does not exist");
 	}
@@ -83,9 +84,9 @@ const updateUser = async (email, key, userObject) => {
 	user.events = newEvents;
 	user.signifiers = newSignifiers;
 
-	const newUser = await user.save();
-	delete newUser.pwd;
-	return newUser;
+	await user.save();
+	user = await readUser.readUser(user.email, key);
+	return user;
 };
 
 module.exports = {
