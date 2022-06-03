@@ -96,7 +96,7 @@ describe("authenticate() Tests", () => {
      */
     const insertUser = async (user) => {
         await new schema.User(user).save();
-        let insertedUser = await updateUser(user.email, ENCRYPTION_KEY, JSON.parse(JSON.stringify(user)));
+        let insertedUser = await updateUser(user.email, ENCRYPTION_KEY, user);
         return insertedUser;
     };
 
