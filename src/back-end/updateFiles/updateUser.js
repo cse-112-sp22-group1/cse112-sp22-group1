@@ -69,7 +69,7 @@ const updateUser = async (email, key, userObject) => {
 
 	let user = await schema.User.findOne({ email: email }).exec();
 	if (user === null) {
-		throw new Error("User does not exist");
+		throw new Error("User does not exist!");
 	}
 	user.index = userCopy.index;
 	user.theme = userCopy.theme;
