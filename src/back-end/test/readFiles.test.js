@@ -11,7 +11,7 @@ const { readUser } = require("../readFiles/readUser.js");
 const { updateUser } = require("../updateFiles/updateUser.js");
 const mongoose = require("mongoose");
 
-describe("authenticate() Tests", () => {
+describe("readUser() Tests", () => {
     const ENCRYPTION_KEY = "KEYKEYKEYKEYKEYKEYKEYKEY";
 
     /**
