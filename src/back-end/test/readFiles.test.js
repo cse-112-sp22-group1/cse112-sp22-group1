@@ -394,13 +394,16 @@ describe("readUser() Tests", () => {
         expect(user).toEqual(insertedUser);
     });
 
-    test("User does not exist", async () => {
-        try {
-            await readUser("user@example.com", ENCRYPTION_KEY);
+    test("User does not exist", (done) => {
+        readUser("user@example.com", ENCRYPTION_KEY).
+        then(() => {
             expect(true).toBe(false);
-        } catch (err) {
+            done();
+        }).
+        catch((err) => {
             expect(err.message).toBe("User does not exist!");
-        }
+            done();
+        });
     });
 
     test("User password isn't returned", async () => {
