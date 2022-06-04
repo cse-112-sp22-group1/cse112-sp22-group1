@@ -28,6 +28,7 @@ app.use((req, res, next) => {
 app.use(session({
     secret: constants.sessionSecret,
     saveUninitialized: false,
+    proxy: constants.reverseProxy,
     cookie: constants.sessionCookieObject,
     resave: false,
     name: "sessionAuth"
