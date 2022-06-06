@@ -4,18 +4,53 @@
     outline: none;
     display: block;
     z-index: -1;
+    margin-bottom: 30px;
 }
 
 #carousel {
     overflow-x: scroll;
     overflow-y: hidden;
-    height: 118px;
+    height: auto;
+    display: flex;
     white-space: nowrap;
-    width: 60%;
+    width: 100%;
+}
+
+#carousel item-card {
+    margin: 10px 11px 10px 4.5px;
+    padding-right: 3px;
+}
+
+#sectionTitle {
+    display: inline;
+    margin-right: 18px;
+}
+
+button {
+    user-select: none;
+    vertical-align: middle;
+    border: none;
+    font-size: 13px;
+    font-weight: 700;
+    font-weight: bold; 
+    background-color: rgba(0,0,0,0);
+    display: inline;
+}
+
+#new-button {
+    color: var(--highlighted-font-color);
+    background-color: var(--primary-button-color);
+    height: 20px;
+    width: 40px;
+    border-radius: 6px;
+    margin-bottom: 5px;
+    display: inline;
+    cursor: pointer;
 }
 
 h1 {
     height: 18px;
     font-size: 19px;
     font-family: "SF-Pro";
+    font-weight: bold;
 }

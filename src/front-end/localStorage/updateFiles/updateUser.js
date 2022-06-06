@@ -1,4 +1,5 @@
 import { api, origin } from "../../constants.js";
+import { readUser } from "../userOperations.js";
 
 /**
  * Finds and update the user in the local db from the online db.
@@ -6,32 +7,49 @@ import { api, origin } from "../../constants.js";
  * @param {database} db The local pouch database.
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
- export function updateUserOnline (db, callback) {
-	console.log("getting user");
-	db.get("0000", (err, doc) => {
+ export function updateUserOnline (callback) {
+	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
-			console.log("the user is broken in pouch");
+			/* istanbul ignore next */
 			callback(err);
 		} else {
 			try {
-				console.log("this is the user now", doc);
-				console.log("about to fetch");
-				fetch(`${api}/user`, {
-                    credentials: "same-origin",
+				return fetch(`${api}/user`, {
+                    credentials: "include",
 					headers: {
 						"content-type": "application/json; charset=UTF-8",
 						"Origin": origin
 					},
-					body: JSON.stringify(doc),
+					body: JSON.stringify(user),
 					method: "PUT"
-				}).then((data) => data.json()).then((userData) => {
-					console.log("fetch succesful");
-					console.log(userData);
+				}).then((data) => data.json()).then((res) => {
+					if (res.error === "couldn't update") {
+						console.log("retrying");
+						fetch(`${api}/user`, {
+							credentials: "include",
+							headers: {
+								"content-type": "application/json; charset=UTF-8",
+								"Origin": origin
+							},
+							body: JSON.stringify(user),
+							method: "PUT"
+						}).then((data) => data.json()).then((response) => {
+							if (response.error) {
+								callback(response.error);
+							} else {
+								callback(null);
+							}
+						});
+					} else {
+						callback(null);
+					}
 				});
 			} catch (error) {
 				console.log("there is an error when fetching");
 				console.log(error.text);
+				callback(error);
 			}
 		}
-	})
+	});
 }

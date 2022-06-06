@@ -1,67 +1,80 @@
+import * as aux from "./deleteAuxiliarFunctions.js";
+import * as localStorage from "../userOperations";
 
 /**
  * Finds and deletes the collection.
  * @memberof deleteFunctions
  * @param {database} db The local pouch database.
- * @param {String} id The id of the object to be deleted.
+ * @param {Object} collection The object to be deleted.
+ * @param {Object} parent The parent of the collection
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function deleteCollectionPouch (db, id, callback) {
-	db.get("0000", (err, doc) => {
-		if (err) {
-			callback(err);
+export function deleteCollectionPouch (db, collection, parent, callback) {
+	aux.handleContent(collection, (failContentHandle, preProcessedCollection) => {
+		if (failContentHandle) {
+			callback(failContentHandle);
 		} else {
-			let collectionArr = doc.collections.filter((collection) => collection.id === id);
-			let block = null;
-			if (collectionArr.length > 0) {
-				block = collectionArr[0];
-			}
-			console.log(block);
-			let userArr = [];
-			Array.prototype.push.apply(userArr, doc.dailyLogs);
-			Array.prototype.push.apply(userArr, doc.monthlyLogs);
-			Array.prototype.push.apply(userArr, doc.futureLogs);
-
-			let parentArr = userArr.filter((object) => object.id === block.parent);
-
-			let parent = parentArr[0];
-			let newContents = parent.contents.filter((obj) => obj !== id);
-			parent.contents = newContents;
-
-			let newCollections = doc.collections.filter((collection) => collection.id !== id);
-			let newIndexContents = doc.index.contents.filter((tracker) => tracker.id !== id);
-			let indexObj = {
-				objectType: "index",
-				contents: newIndexContents
-			}
-
-			doc.collections = newCollections;
-			doc.index = indexObj;
-			doc[parent.objectType].push(parent);
-
-			return db.put({_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: indexObj,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					callback(error);
+			aux.handleTrackers(preProcessedCollection, (failedTrackerHandle, processedCollection) => {
+				if (failedTrackerHandle) {
+					callback(failedTrackerHandle);
 				} else {
-					console.log(res);
-					callback(null);
+					localStorage.readUser((error, user) => {
+						if (error) {
+							callback(error);
+						} else {
+							if (processedCollection.parent === null) {
+								user.index.collections = user.index.collections.filter((id) => id !== processedCollection.id);
+							} else {
+								if (parent === null) {
+									let userArr = [];
+									Array.prototype.push.apply(userArr, user.dailyLogs);
+									Array.prototype.push.apply(userArr, user.monthlyLogs);
+									Array.prototype.push.apply(userArr, user.futureLogs);
+									Array.prototype.push.apply(userArr, user.collections);
+
+									let parentArr = userArr.filter((object) => object.id === processedCollection.parent);
+									if (parentArr.length > 0) {
+										parent = parentArr[0];
+										parent.collections = parent.collections.filter((id) => id !== processedCollection.id);
+									}
+
+								} else {
+									parent.collections = parent.collections.filter((id) => id !== processedCollection.id);
+								}
+								user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
+								user[`${parent.objectType}s`].push(parent);
+							}
+
+							user.collections = user.collections.filter((newCollection) => newCollection.id !== processedCollection.id);
+
+							let newUser = {
+								_id: "0000",
+								_rev: user._rev,
+								email: user.email,
+								theme: user.theme,
+								index: user.index,
+								dailyLogs: user.dailyLogs,
+								monthlyLogs: user.monthlyLogs,
+								futureLogs: user.futureLogs,
+								collections: user.collections,
+								trackers: user.trackers,
+								imageBlocks: user.imageBlocks,
+								audioBlocks: user.audioBlocks,
+								textBlocks: user.textBlocks,
+								tasks: user.tasks,
+								events: user.events,
+								signifiers: user.signifiers
+							};
+
+							return db.put(newUser).then((res) => {
+								if (res.ok) {
+									callback(null);
+								}
+							});
+						}
+					});
 				}
-			});
+			})
 		}
-	})
+	});
 }

@@ -1,4 +1,6 @@
+import * as localStorage from "../userOperations.js";
 import {makeid} from "./makeId.js";
+
 let eventObject = {};
 
 /**
@@ -6,72 +8,59 @@ let eventObject = {};
  * @memberof createFunctions
  * @param {database} db The local pouch database.
  * @param {String} title The title of the event.
- * @param {String} parent The id of the parent of the new dailyLog.
+ * @param {Array<String>} references The id of the references of the new dailyLog.
  * @param {Date} date The date of the event (optional).
- * @param {String} signifier The id of the signifier used for the event.
  * @param {doubleParameterCallback} callback Eihter sends the newly created dailyLog or an error if there is one to the callback.
  */
-export function createEventPouch (db, title, parent, date, signifier, callback) {
-	db.get("0000", (err, doc) => {
+export function createEventPouch (db, title, references, date, callback) {
+	localStorage.readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err, null);
 		} else {
-			console.log(doc);
-			let id = makeid();
-			let arrays = [];
-			Array.prototype.push.apply(arrays, doc.dailyLogs);
-			Array.prototype.push.apply(arrays, doc.monthlyLogs);
-			Array.prototype.push.apply(arrays, doc.futureLogs);
-			Array.prototype.push.apply(arrays, doc.collections);
-			Array.prototype.push.apply(arrays, doc.trackers);
-			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.tasks);
-			Array.prototype.push.apply(arrays, doc.events);
-			Array.prototype.push.apply(arrays, doc.signifiers);
-			Array.prototype.push.apply(arrays, doc.imageBlocks);
-			Array.prototype.push.apply(arrays, doc.audioBlocks);
+			let id = makeid(user);
 
-			while (arrays.filter((element) => element.id === id).length > 0) {
-				id = makeid();
-			}
 			eventObject = {
 				id: id,
 				objectType: "event",
 				title: title,
-				parent: parent,
-				date: date,
-				signifier: signifier
+				references: references,
+				date: date
 			};
 
 
-			doc.events.push(eventObject);
+			user.events.push(eventObject);
 
-			return db.put({
+			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
-				console.log(res);
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
+				if (res.ok) {
+					callback(null, eventObject);
+				}
+				/* istanbul ignore next */
 			}).catch((error) => {
+				/* istanbul ignore next */
 				callback(error, null);
 			});
-		}
-	}).then((res) => {
-		if (res.ok) {
-			callback(null, eventObject);
 		}
 	});
 }

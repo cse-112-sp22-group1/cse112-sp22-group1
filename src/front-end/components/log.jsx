@@ -10,6 +10,7 @@ import { LogCalendar } from "./logCalendar.jsx";
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
+import { currentState, getCurrentObject } from "../state/stateManager.js";
 /* eslint-enable */
 
 let template = <template>
@@ -35,26 +36,44 @@ export class Log extends HTMLElement {
 
 		// this.notes = this.shadowRoot.querySelector("#notes");
 		this.main = this.shadowRoot.getElementById("log");
-
-		let state = currentState;
-		this.main.appendChild(new LogNotes("Notes", currentState));
+		this.hasCollections = false;
+		this.notesSection = new LogNotes("Notes", currentState);
+		this.main.appendChild(this.notesSection);
 
 		if (currentState.objectType == "futureLog") {
-			this.main.appendChild(new LogCarousel("Monthly Logs", currentState))
+			this.monthlyLogsSection = new LogCarousel("Monthly Logs", currentState.months, "monthlyLog");
+			this.main.appendChild(this.monthlyLogsSection);
 		}
-
-		this.main.appendChild(new LogCarousel("Collections", currentState));
+		if (currentState.collections.length > 0) {
+			this.hasCollections = true;
+			this.collectionSection = new LogCarousel("Collections", currentState.collections, "collections");
+			this.main.appendChild(this.collectionSection);
+		}
 
 		if (currentState.objectType == "monthlyLog") {
-			this.main.appendChild(new LogCalendar("Daily Logs", currentState))
+			this.dailyLogsSection = new LogCalendar("Daily Logs", currentState);
+			this.main.appendChild(this.dailyLogsSection);
 		}
 
 
 
-		console.log(currentState)
+		// console.log(currentState);
 
 	}
 
+	/**
+	 * Adds a collection to the log
+	 * 
+	 * @param {Object} collection the collection to add 
+	 */
+	addCollection (collection) {
+		if (!this.hasCollections) {
+			this.collectionSection = new LogCarousel("Collections", [], "collections");
+			this.main.appendChild(this.collectionSection);
+		}
+		this.collectionSection.addCard(collection);
+		getCurrentObject(currentState.id);
+	}
 
 	/**
 	 * When a log instance is created sets event listeners for all header buttons in the callback

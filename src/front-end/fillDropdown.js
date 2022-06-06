@@ -29,6 +29,13 @@ export let creationDropdownContents = {
             }
         },
         {
+            title: "New Collection",
+            listener: () => {
+                creationMenu.setKind("collection");
+                creationMenu.show();
+            }
+        },
+        {
             title: "New Tracker",
             listener: () => {
                 creationMenu.setKind("tracker");

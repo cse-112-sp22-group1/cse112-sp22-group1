@@ -16,7 +16,7 @@ let template = <template>
         <div id="titleWrapper">
             <h1 id="title" contenteditable="true">Title</h1>
             <div id="buttonwrapper">
-                <button id="deleteButton">Delete</button>
+                <button id="editButton">Edit</button>
             </div>
         </div>
         <div id="trackerWrapper">
@@ -60,7 +60,6 @@ export class SideCard extends HTMLElement {
     }
 
     addTracker (tracker) {
-        console.log(tracker);
         this.tracker = tracker;
         const trackerTitle = this.shadowRoot.getElementById("trackerTitle");
         trackerTitle.innerText = tracker.title;
@@ -78,7 +77,7 @@ export class SideCard extends HTMLElement {
     }
 
     bindDeleteButton () {
-        this.shadowRoot.getElementById("deleteButton").addEventListener("click", () => {
+        this.shadowRoot.getElementById("editButton").addEventListener("click", () => {
             let pressed = this.shadowRoot.getElementById("title").innerText + " delete button was pressed!";
             console.log(pressed);
             this.remove();

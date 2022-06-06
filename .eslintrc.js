@@ -129,7 +129,7 @@ module.exports = {
         "no-new-wrappers": "error",
         "no-nonoctal-decimal-escape": "error",
         "no-octal-escape": "error",
-        "no-param-reassign": "error",
+        "no-param-reassign": 0,
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "no-promise-executor-return": "error",
         "no-proto": "error",

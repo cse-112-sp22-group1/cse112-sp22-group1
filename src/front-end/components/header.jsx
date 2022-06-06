@@ -13,8 +13,7 @@ import { createElement, createFragment } from "../jsxEngine.js";
 
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="header.css" />
-	<div id="file">
-	</div>
+	<div id="file"></div>
 	<div id="container">
 		<div id="menuToggle">
 			<input type="checkbox" />
@@ -22,17 +21,17 @@ let template = <template>
 			<span></span>
 			<span></span>
 		</div>
-		<span class="header">
+		<section class="header">
 			<div>
 				<h1 id="title_page">Template Page Title</h1>
 				<button class="edit-button">Edit</button>
 			</div>
 			<button class="new-button">New</button>
-		</span> 
-		<span class="search_bar" id="searchBar">
+		</section> 
+		<aside class="search_bar" id="searchBar">
 			<input type="text" placeholder="Search" />
 			<img src="../public/resources/search_icon.png" />
-		</span>
+		</aside>
 	</div>
 </template>
 
@@ -47,19 +46,10 @@ export class PageHeader extends HTMLElement {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(template.content.cloneNode(true));
-		this.h1 = this.shadowRoot.getElementById("title_page");
+		this.headerTitle = this.shadowRoot.getElementById("title_page");
 
 		this.file = this.shadowRoot.getElementById("file");
-		// this.futureLog = new FileLocation(" Future Log   ", "futureLog");
-		// this.monthlyLog = new FileLocation(" Monthly log   ", "monthlyLog");
-		// this.todaysLog = new FileLocation(" Today's log   ", "todaysLog");
-		// this.file.appendChild(this.futureLog);
-		// this.file.appendChild(this.monthlyLog);
-		// this.file.appendChild(this.todaysLog);
 
-
-
-		this.createFutureLog = this.createFutureLog.bind(this);
 		this.futureLogButton = this.shadowRoot.querySelector(".new-button");
 		this.titleHeader = this.shadowRoot.querySelector(".header");
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
@@ -83,14 +73,22 @@ export class PageHeader extends HTMLElement {
 			navbar.toggle();
 		});
 
-		this.h1.onblur = () => {
-			if (this.h1.contentEditable) {
-				currentState.title = this.h1.innerText;
-				localStorage.updateCollection(currentState, true, (err) => {
-					if (err) {
-						console.log(err);
-					}
-				});
+		this.headerTitle.onblur = () => {
+			if (this.headerTitle.contentEditable) {
+				currentState.title = this.headerTitle.innerText;
+				if (currentState.objectType === "futureLog") {
+					localStorage.updateFutureLog(currentState, true, (err) => {
+						if (err) {
+							console.log(err);
+						}
+					});
+				} else {
+					localStorage.updateCollection(currentState, null, null, true, (err) => {
+						if (err) {
+							console.log(err);
+						}
+					});
+				}
 			}
 		};
 	}
@@ -99,14 +97,14 @@ export class PageHeader extends HTMLElement {
 	 * Makes header content editable
 	 */
 	makeEditable () {
-		this.h1.contentEditable = true;
+		this.headerTitle.contentEditable = true;
 	}
 
 	/**
 	 * Makes header content uneditable
 	 */
 	makeUneditable () {
-		this.h1.contentEditable = false;
+		this.headerTitle.contentEditable = false;
 	}
 
 	set title (title) {
@@ -117,7 +115,7 @@ export class PageHeader extends HTMLElement {
 	 * Gets the header's current title
 	 */
 	get title () {
-		return this.h1.innerText;
+		return this.headerTitle.innerText;
 	}
 
 	/**

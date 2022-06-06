@@ -27,6 +27,7 @@ export function getCurrentObject (id) {
 			Array.prototype.push.apply(userArr, user.collections);
 			let parsed = userArr.filter((object) => object.id === id);
 			currentState = parsed[0];
+			console.log(currentState);
 		} else {
 			currentState = user.index;
 		}

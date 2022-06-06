@@ -6,6 +6,7 @@ require("dotenv").config();
 module.exports = {
     accessControlOrigin: "https://boojo.bitfrost.app",
     sessionSecret: process.env.SESSION_SECRET,
+    reverseProxy: true,
     sessionCookieObject: {
         path: "/",
         httpOnly: true,

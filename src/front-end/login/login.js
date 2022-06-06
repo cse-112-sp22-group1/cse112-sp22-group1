@@ -44,7 +44,6 @@ logIn.onclick = (e) => {
                     alert("Wrong username or password");
                 } else {
                     user.pwd = password.value;
-                    console.log(user.index);
                     createUserPouch(db, user, (userData) => {
                         console.log(userData);
                         window.location.href = "/";
@@ -68,10 +67,14 @@ createAccount.onclick = (e) => {
 			} else if (user.email === undefined) {
 				alert("Wrong username or password");
 			} else {
-				user.pwd = password.value;
-				createUserPouch(db, user, (userData) => {
-					console.log(userData);
-					window.location.href = "/";
+				createUserPouch(db, user, () => {
+					loginUser(email.value, password.value, (err) => {
+						if (err.error) {
+							alert(err.error);
+						} else {
+							window.location.href = "/";
+						}
+					});
 				});
 			}
 		});

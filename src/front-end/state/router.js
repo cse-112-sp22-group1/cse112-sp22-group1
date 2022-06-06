@@ -6,7 +6,6 @@
 import { fade, unfade } from "../transitions.js";
 import Navigo from "navigo";
 import { getCurrentObject } from "./stateManager.js";
-import { navbar } from "../index.js";
 import { setupCollection } from "./setupCollection.js";
 import { setupDailyLog } from "./setupDailyLog.js";
 import { setupFutureLog } from "./setupFutureLog.js";
@@ -38,10 +37,9 @@ const stateSwitch = (id, setupFunction) => {
 		let body = document.querySelector("body");
 		body.className = "";
 		let content = document.querySelector("body");
-		let btn = navbar.shadowRoot.querySelectorAll("button");
 
 		fade(content, () => {
-			setupFunction(btn);
+			setupFunction();
 			unfade(content);
 		});
 	}, 150);

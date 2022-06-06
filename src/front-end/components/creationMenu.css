@@ -18,8 +18,8 @@
 
 /* Pop up  window */
 .menu {
-	color: var(--content-foreground-color);
-	background-color: var(--content-background-color); /*#fefefe;*/
+	color: var(--normal-font-color);
+	background-color: var(--sidebar-background); /*#fefefe;*/
 	display: flex;
 	flex-direction: column;
 	position: absolute;
@@ -31,14 +31,14 @@
 	max-height: 800px;
 	transform: translate(-50%,-50%);
 	-ms-transform: translate(-50%,-50%);
-	border: 1px solid #888;
 	min-height: 450px;
 	min-width: 400px;
-	border-radius: 10px;
+	border-radius: 6px;
 }
 
 .popup-content {
 	display: flex;
+	width: 70%;
 	flex-direction: column;
 	flex: 1;
 }
@@ -55,39 +55,46 @@
 
 header {
 	display: grid;
-	grid-template-columns: 1fr auto 1fr;
+	grid-template-columns: 40px auto 40px;
 	align-items: center;
-	height: 60px;
-	margin: 0 10px;
-	border-bottom: 2px solid var(--border-color);
+	margin-top: 20px;
+	height: 90px;
+	border-bottom: 1px solid var(--divider-color);
 }
 
 header h1 {
 	text-align: center;
 	grid-column-start: 2;
+	margin: 0;
 }
 
 /* The Close Button */
 .close {
-	color: var(--content-foreground-color);
-
-	width: 40px;
-	height: 40px;
+	color: var(--normal-font-color);
+	align-self: start !important;
+	width: 30px;
+	height: 30px;
 	margin-left: auto;
-
+	margin-right: 20px;
+	margin-top: 0;
+	padding: 0;
 	border: none;
 	background-color: transparent;
 	cursor: pointer;
-}
-
-.close img {
-	filter: var(--icon-filter);
-	width: 20px;
-	opacity: 0.5;
+	opacity: 0.7;
+	border-radius: 6px;
 	transition: 0.2s;
 }
 
-.close:hover img {
+.close img {
+	filter: var(--highlighted-icon-filter) hue-rotate(40%);
+	height: 100%;
+	width: 20px;
+	height: 20px;
+	transition: 0.2s;
+}
+
+.close:hover {
 	opacity: 1;
 	transition: 0.2s;
 }
@@ -101,15 +108,13 @@ header h1 {
 #createButton {
 	grid-column-start: 2;
 	display: inline-block;
-	background-color: var(--content-foreground-color);
-
+	background-color: var(--primary-button-color);
 	border: none;
-	color: var(--content-background-color);
+	color: var(--highlighted-font-color);
 	cursor: pointer;
 	text-align: center;
-	width: 140px;
-	padding: 5px 0;
-	border-radius: 10px;
+	padding: 10px 15px;
+	border-radius: 6px;
 }
 
 #loadingWheel {
@@ -121,25 +126,85 @@ header h1 {
 form {
 	display: flex;
 	flex-direction: column;
-	align-items: stretch;
-
 	flex: 1;
 }
 
 label, input {
-	font-size: 2vh;
+	font-size: 20px;
 }
 
 label {
 	text-align: left;
-	margin-bottom: 20px;
+	margin-top: 20px;
+	margin-bottom: 5px;
 }
 
 input {
-	color: var(--content-foreground-color);
+	color: var(--normal-font-color);
 	width: 100%;
-	border: 2px solid var(--border-color);
+	border: 1px solid var(--divider-color);
 	border-radius: 5px;
-	background-color: var(--content-background-color);
+	height: 45px;
+	background-color: var(--sidebar-background);
 	box-sizing: border-box;
+	outline: none;
+	padding: 10px;
+}
+
+#futureTimes{
+	display: flex;
+	margin-top: 20px;
+}
+
+#futureTimes div:first-of-type {
+	margin-right: 10px;
+}
+
+#futureTimes div:last-of-type {
+	margin-left: 10px;
+}
+
+#tracker-recurring-check{
+	margin-top: 20px;
+}
+
+#tracker-recurring{
+	border: none;
+	display: inline-block;
+	vertical-align: middle;
+	background-color: var(--body-background);
+	margin-top: -4px;
+	user-select: none;
+	border: 1px solid var(--dim-font-color);
+	width: 18px;
+	height: 18px;
+	border-radius: 3px;
+}
+
+#checkerContainer {
+	display: inline-block;
+	position: relative;
+	margin-left: 10px;
+	height: 18px;
+}
+
+#tracker-recurring:active, #checkerContainer[checked="checked"]:active #tracker-recurring{
+	box-shadow: 0 1px 2px rgba(0,0,0,0.05), inset 0 1px 3px rgba(0,0,0,0.1);
+}
+
+#checkerContainer[checked="checked"] #tracker-recurring{
+	background-color: var(--primary-button-color);
+	border: 1px solid var(--primary-button-color);
+	box-shadow: 0 1px 2px rgba(0, 87, 168, 0.05);
+	color: var(--primary-button-color);
+}
+
+#checkerContainer[checked="checked"]:after {
+	position: absolute;
+	left: 5px;
+	content: '\2714';
+	font-size: 13px;
+	vertical-align: middle;
+	height: 18px;
+	color: var(--highlighted-font-color);
 }

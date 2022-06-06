@@ -1,4 +1,3 @@
-
 /**
  * Creates and stores a new user created from the given parameters.
  * @memberof createFunctions
@@ -7,7 +6,8 @@
  * @param {singleParameterCallback} callback Eihter sends the newly created user or an error if there is one to the callback.
  */
 export function createUserPouch (db, userObject, callback) {
-	db.put({
+	console.log(userObject);
+	let newUser = {
 		_id: "0000",
 		email: userObject.email,
 		theme: userObject.theme,
@@ -23,10 +23,10 @@ export function createUserPouch (db, userObject, callback) {
 		tasks: userObject.tasks,
 		events: userObject.events,
 		signifiers: userObject.signifiers
-	}).then((res) => {
-		if (res.ok) {
-			callback(userObject);
-		}
+	};
+
+	return db.put(newUser).then(() => {
+		callback(userObject);
 	}).catch((err) => {
 		callback(err);
 	});

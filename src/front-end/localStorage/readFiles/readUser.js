@@ -6,7 +6,9 @@
  */
  export function readUserPouch (db, callback) {
 	db.get("0000", (err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err, null);
 		} else {
 			callback(null, user);

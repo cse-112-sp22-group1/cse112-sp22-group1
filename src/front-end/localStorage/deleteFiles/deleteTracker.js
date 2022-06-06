@@ -1,3 +1,5 @@
+import { readUser } from "../userOperations";
+
 /**
  * Finds and deletes the tracker.
  * @memberof deleteFunctions
@@ -6,55 +8,64 @@
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function deleteTrackerPouch (db, id, callback) {
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err);
+			/* istanbul ignore next */
 		} else {
-			let trackerArr = doc.trackers.filter((tracker) => tracker.id === id);
+			let trackerArr = user.trackers.filter((tracker) => tracker.id === id);
 			let block = null;
 			if (trackerArr.length > 0) {
 				block = trackerArr[0];
 			}
 
 			let userArr = [];
-			Array.prototype.push.apply(userArr, doc.dailyLogs);
-			Array.prototype.push.apply(userArr, doc.monthlyLogs);
-			Array.prototype.push.apply(userArr, doc.futureLogs);
+			Array.prototype.push.apply(userArr, user.dailyLogs);
+			Array.prototype.push.apply(userArr, user.monthlyLogs);
+			Array.prototype.push.apply(userArr, user.futureLogs);
+			Array.prototype.push.apply(userArr, user.collections);
 
 			let parentArr = userArr.filter((object) => object.id === block.parent);
-
 			let parent = parentArr[0];
-			let newTrackers = parent.trackers.filter((obj) => obj !== block.id);
-			parent.trackers = newTrackers;
+			parent.trackers = parent.trackers.filter((obj) => obj !== block.id);
+			parent.recurringTrackers = parent.recurringTrackers.filter((obj) => obj !== block.id);
+			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
+			user[`${parent.objectType}s`].push(parent);
+			let allReferences = userArr.filter((reference) => reference.trackers.includes(id));
+			for (let i = 0; i < allReferences.length; i++) {
+				let reference = allReferences[i];
+				reference.trackers = reference.trackers.filter((tracker) => tracker !== id);
+				user[`${reference.objectType}s`] = user[`${reference.objectType}s`].filter((object) => object.id !== reference.id);
+				user[`${reference.objectType}s`].push(reference);
+			}
+			user.trackers = user.trackers.filter((tracker) => tracker.id !== id);
 
-			let newTrackerList = doc.trackers.filter((tracker) => tracker.id !== id);
-
-			doc.trackers = newTrackerList;
-
-			return db.put({
+			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
-			}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else if (res.ok) {
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
 					callback(null);
 				}
 			});
 		}
-	})
+	});
 }

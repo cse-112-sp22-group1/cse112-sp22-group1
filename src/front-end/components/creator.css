@@ -1,9 +1,8 @@
-@font-face {
-	font-family:"SF-Pro";
-	src: url("./public/fonts/SF-Pro.ttf");
+:host {
+	font-family:"SF-Pro", "Roboto";
 }
 #textBlock {
-	font-family: "SF-Pro";
+	font-family: "SF-Pro", "Roboto";
 	border: none;
 	overflow: auto;
 	outline: none;
@@ -52,10 +51,8 @@
 
 .paragraphIcons{
 	margin-top: 10px;
-}@font-face {
-	font-family:"SF-Pro";
-	src: url("./public/fonts/SF-Pro.ttf");
 }
+
 #textBlock {
 	font-family: "SF-Pro";
 	border: none;

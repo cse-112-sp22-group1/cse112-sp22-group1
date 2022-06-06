@@ -1,47 +1,39 @@
+import { readUser } from "../userOperations";
+
 /**
  * Finds and deletes the event.
  * @memberof deleteFunctions
  * @param {database} db The local pouch database.
- * @param {String} id The id of the object to be deleted.
+ * @param {String} id The event of the object to be deleted.
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function deleteEventPouch (db, id, callback) {
-	console.log("deleteEvent" + id);
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			let eventArr = doc.events.filter((event) => event.id === id);
-			let block = null;
-			if (eventArr.length > 0) {
-				block = eventArr[0];
-			}
-			console.log(block);
-			let userArr = [];
-			Array.prototype.push.apply(userArr, doc.textBlocks);
+			user.events = user.events.filter((event) => event.id !== id);
+			let newUser = {
+				_id: "0000",
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				trackers: user.trackers,
+				collections: user.collections,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
 
-			let newEvents = doc.events.filter((event) => event.id !== id);
-
-			return db.put({_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				trackers: doc.trackers,
-				collections: doc.collections,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: newEvents,
-				signifiers: doc.signifiers}, (error, res) => {
-				if (error) {
-					callback(error);
-				} else {
-					console.log(res);
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
 					callback(null);
 				}
 			});

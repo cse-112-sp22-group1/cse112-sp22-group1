@@ -1,4 +1,4 @@
-@font-face {
+:host {
 	font-family:"SF-Pro";
 }
 .card{
@@ -8,18 +8,18 @@
     border-radius: 15px;
     justify-content: space-between;
     padding: 0 0 1rem;
-    width:23vw;
+    width: calc(100% - 98px);
     background-color: var(--card-backgound);
     box-shadow: 0 0 10px var(--card-shadow);
     margin-top: 0.5vw;
     margin-bottom: 0.5vw;
-    margin-left:1vw;
 }
 #titleWrapper{
     display:flex;
     flex-wrap: nowrap;
     vertical-align: middle;
-    padding-top: 1vw;
+    padding-top: 0.8vw;
+    width: calc(100% - 43.57px - 2.5vw);
     padding-left: 2.5vw;
     padding-right: 2vw;
 }
@@ -27,7 +27,7 @@
     font-size: 18pt;
     text-align: left;
     text-decoration: underline;
-    max-width: 14vw;
+    width: 100%;
     flex-grow: 1;
     line-height: 2.4vw;
 }
@@ -35,16 +35,18 @@
     margin-top: 1.3vw;
     align-self:top;    
 }
-#deleteButton{
-    cursor: pointer;    
+#editButton{
+    cursor: pointer;
+    position: relative;
     font-size: 16px;
     border: none;
-    color:white;
+    color: var(--highlighted-font-color);
     padding: 4px 8px;
     text-decoration: none;
-    margin: 4px 5px;
+    margin: 4px 0;
+    right: 0;
     border-radius: 6px;
-    background-color: var(--danger-button-color);
+    background-color: var(--secondary-button-color);
 }
 #trackerWrapper{
     padding-left: 2.5vw;

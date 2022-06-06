@@ -7,10 +7,8 @@ import { currentState } from "./stateManager.js";
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
- *
- * @param {Array} btn An array of the buttons in the index page's navbar.
  */
-export function setupIndex (btn) {
+export function setupIndex () {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
@@ -22,8 +20,8 @@ export function setupIndex (btn) {
 
 			let parentArr = [];
 			console.log(currentState);
-			for (let i = 0; i < currentState.contents.length; i++) {
-				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.contents[i]));
+			for (let i = 0; i < currentState.futureLogs.length; i++) {
+				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.futureLogs[i]));
 			}
 
 			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -74,29 +72,8 @@ export function setupIndex (btn) {
 		child = header.file.lastElementChild;
 	}
 	header.file.appendChild(new FileLocation("Index", "index", false))
-
-	// Setting navbar buttons
-	for (let i = 0; i < btn.length; i++) {
-		btn[i].removeAttribute("disabled");
-		btn[i].style.visibility = "visible";
-	}
 	document.getElementById("targetMenu").style.display = "none";
 
-	/*
-	 * I have been told to just comment out these for right now
-	 * Main purpose of these was previously to remove certain navbar icons
-	 * but with the new nav bar it is no longer necessary.
-	 *   navbar.target.setAttribute("disabled", "disabled");
-	 *   navbar.target.style.visibility = "hidden";
-	 *   navbar.single.setAttribute("disabled", "disabled");
-	 *   navbar.single.style.visibility = "hidden";
-	 *   navbar.double.setAttribute("disabled", "disabled");
-	 *   navbar.double.style.visibility = "hidden";
-	 *   navbar.singleMenu.setAttribute("disabled", "disabled");
-	 *   navbar.singleMenu.style.visibility = "hidden";
-	 *   navbar.doubleMenu.setAttribute("disabled", "disabled");
-	 *   navbar.doubleMenu.style.visibility = "hidden";
-	 */
 	header.makeUneditable();
 	let headerButtons = header.imgbuttons;
 	for (let i = 0; i < headerButtons.length; i++) {

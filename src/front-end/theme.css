@@ -5,24 +5,7 @@
  *      border: 2px solid var(--border-color);
  */
  :root {
-    --border-color: #F2F2F2;
-
-    --content-background-color: #FFFFFF;
-    --content-foreground-color: #000000;
-
-    --tracker-background-color: #2B2D42;
-    --tracker-foreground-color: #FFFFFF;
-    --tracker-border-color:     #48486f;
-
-    --navbar-background-color: #F7F2EC;
-    --navbar-foreground-color: #FFFFFF;
-
-    --dropdown-background-color: #000000;
-    --dropdown-foreground-color: #FFFFFF;
-    --dropdown-hover-color: #FFFFFF;
-
-    --icon-filter: ;
-
-    background-color: var(--content-background-color);
-    color: var(--content-foreground-color);
+    -webkit-font-smoothing: antialiased;
+    background-color: var(--body-background);
+    color: var(--normal-font-color);
 }

@@ -8,9 +8,10 @@ import { createEditor } from "../components/blockController.js";
 
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="logNotes.css" />
-	<section id="logNotes">
-        <h1 id="sectionTitle"></h1> 
-	</section>
+	<main id="content">
+        <h1 id="sectionTitle"></h1>
+		<section id="logNotes"></section>
+	</main>
 </template>
 
 /**

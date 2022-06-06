@@ -20,22 +20,35 @@ const themeColors = {
     },
 
     lightmode: {
-        "--border-color": "#F2F2F2",
-        "--content-background-color": "#FFFFFF",
-        "--content-foreground-color": "#000000",
+        "--body-background": "#FFFFFF",
+        "--sidebar-background": "#FCFCFCFF",
+        "--normal-font-color": "#000000",
+        "--highlighted-font-color": "#FFFFFF",
+        "--dim-font-color": "#C1C1C1",
+        "--icon-filter": "",
+        "--highlighted-icon-filter": "invert()",
+
+        "--primary-button-color": "rgba(51, 181, 229, 1)",
+        "--secondary-button-color": "rgba(255, 187, 51, 1)",
+        "--danger-button-color": "rgba(249, 49, 84, 1)",
+
+        "--card-shadow": "rgba(0, 0, 0, 0.25)",
+        "--card-background": "rgba(252, 252, 252, 0.8)",
+        "--card-background-dim": "rgba(236, 236, 236)",
+        "--card-background-dimmer": "rgba(218, 218, 218)",
+
+        "--divider-color": "rgba(0, 0, 0, 0.1)",
+        "--lighter-divider-color": "rgba(140, 140, 140, 0.1)",
 
         "--tracker-background-color": "#2B2D42",
         "--tracker-foreground-color": "#FFFFFF",
         "--tracker-border-color": "#48486f",
 
-        "--navbar-background-color": "#F7F2EC",
         "--navbar-foreground-color": "#FFFFFF",
 
         "--dropdown-background-color": "#f7f2ec",
         "--dropdown-foreground-color": "#000000",
-        "--dropdown-hover-color": "#dfdcd8",
-
-        "--icon-filter": ""
+        "--dropdown-hover-color": "#dfdcd8"
     },
 
     highcontrast: {

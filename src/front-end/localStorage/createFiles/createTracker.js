@@ -1,4 +1,6 @@
+import * as localStorage from "../userOperations.js";
 import {makeid} from "./makeId.js";
+
 let trackerObject = {};
 
 /**
@@ -8,31 +10,21 @@ let trackerObject = {};
  * @param {String} title The title of the tracker.
  * @param {Array} content The id's of the textBlocks of the new tracker.
  * @param {String} parent The id of the parent of the tracker.
+ * @param {Object} addToParent A parent object to which to add tracker
+ * @param {Object} recurring  Tells if it should be recurring in parent
  * @param {doubleParameterCallback} callback Eihter sends the newly created tracker or an error if there is one to the callback.
  */
-export function createTrackerPouch (db, title, content, parent, callback) {
-	console.log("making tracjer");
-	db.get("0000", (err, doc) => {
+export function createTrackerPouch (db, title, content, parent, addToParent, recurring, callback) {
+	/* istanbul ignore next */
+	localStorage.readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err, null);
+			/* istanbul ignore next */
 		} else {
-			let id = makeid();
-			let arrays = [];
-			Array.prototype.push.apply(arrays, doc.dailyLogs);
-			Array.prototype.push.apply(arrays, doc.monthlyLogs);
-			Array.prototype.push.apply(arrays, doc.futureLogs);
-			Array.prototype.push.apply(arrays, doc.collections);
-			Array.prototype.push.apply(arrays, doc.trackers);
-			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.tasks);
-			Array.prototype.push.apply(arrays, doc.events);
-			Array.prototype.push.apply(arrays, doc.signifiers);
-			Array.prototype.push.apply(arrays, doc.imageBlocks);
-			Array.prototype.push.apply(arrays, doc.audioBlocks);
+			let id = makeid(user);
 
-			while (arrays.filter((element) => element.id === id).length > 0) {
-				id = makeid();
-			}
 			trackerObject = {
 				id: id,
 				objectType: "tracker",
@@ -40,41 +32,49 @@ export function createTrackerPouch (db, title, content, parent, callback) {
 				content: content,
 				parent: parent
 			};
-			console.log(arrays);
-			console.log(parent);
-			let parentObject = arrays.filter((element) => element.id === parent);
-			console.log(parentObject);
-			parentObject[0].trackers.push(trackerObject.id);
 
-			doc.trackers.push(trackerObject);
-			// Tracker array of parent should be updated in callback of this funciton
-			return db.put({
+			user.trackers.push(trackerObject);
+
+			if (addToParent) {
+				if (recurring) {
+					addToParent.recurringTrackers.push(trackerObject.id);
+					recurring.trackers.push(trackerObject.id);
+					user[`${recurring.objectType}s`] = user[`${recurring.objectType}s`].filter((element) => element.id !== recurring.id);
+					user[`${recurring.objectType}s`].push(recurring);
+				} else {
+					addToParent.trackers.push(trackerObject.id);
+				}
+				user[`${addToParent.objectType}s`] = user[`${addToParent.objectType}s`].filter((element) => element.id !== addToParent.id);
+				user[`${addToParent.objectType}s`].push(addToParent);
+			}
+
+			let newUser = {
 				_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: doc.audioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers
-			}).then((res) => {
-				console.log(res);
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
+					callback(null, trackerObject);
+				}
 			}).catch((error) => {
-				console.log(error);
 				callback(error, null);
+
 			});
 		}
-	}).then((res) => {
-		console.log(res);
-		console.log(trackerObject);
-		callback(null, trackerObject);
 	});
 }

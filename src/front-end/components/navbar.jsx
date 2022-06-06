@@ -21,7 +21,7 @@ let template = <template>
 		</div>
 		<button id="todaysLog"><img src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
 		<button id="monthlyLog"><img src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
-		<button id="futureLog"><img src="../public/resources/futureLog.png"/><h1>Future Logs</h1></button>
+		<button id="futureLog"><img src="../public/resources/futureLog.png"/><h1>Future Log</h1></button>
 		<button id="retrospective"><img src="../public/resources/retrospective.png"/><h1>Retrospective</h1></button>
 		<div id="bottom">
 			<button id="help"><img src="../public/resources/question.png"/><h1>Help </h1></button>
@@ -166,10 +166,11 @@ export class NavBar extends HTMLElement {
 	navToggle (navShown) {
 		this.mainNav.classList.toggle("open", !navShown);
 		this.mainNav.classList.toggle("closed", navShown);
-
+		document.getElementById("contentWrapper").classList.toggle("centerContent");
+		document.querySelector("page-header").classList.toggle("centerHeader");
 		this.closedNav.classList.toggle("open", navShown);
 		this.closedNav.classList.toggle("closed", !navShown);
-		console.log(navShown)
+		console.log(navShown);
 		if (navShown) {
 			this.navShown = false;
 		} else {

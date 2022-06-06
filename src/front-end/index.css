@@ -28,11 +28,25 @@ div {
 	border: none;
 	overflow: auto;
 	outline: none;
-	display: block;
+	display: flex;
 	margin-left: 325px;
-	margin-right: 20px;
+	padding: 0;
+	margin-right: 0;
 	position: relative;
 	z-index: -1;
+	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+}
+
+.centerContent {
+	margin-left: 187px !important;
+	margin-right: 138px !important;
+	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+}
+
+.centerHeader {
+	margin-left: 187px !important;
+	margin-right: 138px !important;
+	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
 text-block {
@@ -51,6 +65,22 @@ creator-block {
 	width: 100%;
 	left: 0;
 	right: 0;
+}
+
+page-header {
+	display: block;
+    margin-left: 325px;
+    margin-top: 20px;
+    text-align: left;
+	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+}
+
+log-component {
+	width: 63.7%;	
+}
+
+right-sidebar{
+	width: 36.3%;
 }
 
 .noteContainer {

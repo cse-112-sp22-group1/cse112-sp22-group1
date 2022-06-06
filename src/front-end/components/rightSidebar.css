@@ -1,52 +1,17 @@
-@font-face {
+:host {
 	font-family:"SF-Pro";
 }
+
 #container{
     font-family: "SF-Pro";
-    max-width: 25vw;
-}
-.search_bar {
-    display: flex;
-    align-items: center;
-    margin: 15px auto 15px 10px;
-    padding: 0 5px;
-    border-radius: 5px;
-    border-color: var(--border-color); /*rgba(0, 0, 0, 0.1);*/
-    border-width: 2px;
-    border-style: solid;
-    opacity: 60%;
-    max-width: 24vw;
-}
-
-.search_bar img {
-    display: inline-block;
-
-    opacity: 50%;
-    height: 21px;
-
-    vertical-align: middle;
-
-    filter: var(--icon-filter);
-}
-
-.search_bar input{
-
-    background-color: rgba(0, 0, 0, 0);
-    color: var(--content-foreground-color);
-    font-size: 14pt;
-    opacity: 90%;
-    height: 35px;
-    text-align: left;
-    width: 24vw;
-    border: solid;
-    border-radius: 5px;
-    border-color: rgba(0, 0, 0, 0);
-    outline: none;
+    max-width: 100%;
+    text-align: center;
+    margin: calc(15.77px - 0.5vw) 0 0;
 }
 
 #sideCardWrapper{
     display: block;
-    max-width: 27vw;
+    max-width: 100%;
     max-height: 91.4%;
     overflow-y:hidden;
 }
@@ -54,6 +19,26 @@
 #sideCardWrapper:hover{
     overflow-y:auto;
 }
+
+#createNewGoal{
+    border: none;
+    color: var(--highlighted-font-color);
+    background-color: var(--primary-button-color);
+    font-size: 17px;
+    border-radius: 6px;
+    height: 50px;
+    padding: 0 7px;
+    width: calc(100% - 98px);
+    opacity: 0.85;
+    cursor: pointer;
+    transition: ease-in-out 0.3s;
+}
+
+#createNewGoal:hover{
+    opacity: 1;
+    transition: ease-in-out 0.3s;
+}
+
 ::-webkit-scrollbar {
     width: 0.5vw;
 }
@@ -73,40 +58,4 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
-}
-
-/* Fade in for search bar */
-.search_bar:hover img {
-    opacity: 50%;
-    transition: opacity 150ms;
-}
-
-.search_bar:hover {
-    transition: 150ms;
-    opacity: 90%;
-    
-}
-
-.search_bar input:focus .search_bar{
-    transition: 150ms;
-    opacity: 90%;
-}
-
-
-@media screen and (max-width: 1450px) {
-    .search_bar input {
-        width: 220px;
-    }
-}
-
-@media screen and (max-width: 1280px) {
-    .search_bar input {
-        width: 170px;
-    }
-}
-
-@media screen and (max-width: 1220px) {
-    .search_bar {
-        display: none;
-    }
 }

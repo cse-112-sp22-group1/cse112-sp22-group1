@@ -38,7 +38,9 @@ const createUser = (email, pwdHash, key, callback) => {
 				theme: "lightmode",
 				index: {
 					objectType: "index",
-					contents: []
+					futureLogs: [],
+					collections: []
+
 				},
 				dailyLogs: [],
 				monthlyLogs: [],

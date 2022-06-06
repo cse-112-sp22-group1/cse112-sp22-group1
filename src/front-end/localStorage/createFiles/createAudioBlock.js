@@ -1,75 +1,71 @@
+import * as localStorage from "../userOperations.js";
 import {makeid} from "./makeId.js";
-let audioBlockObject = {};
 
 /**
  * Creates and stores a new audioBlock created from the given parameters.
  * @memberof createFunctions
  * @param {database} db The local pouch database.
- * @param {String} parent The id of the parent of new audioBlock.
+ * @param {Object} parent The parent of new audioBlock.
+ * @param {Number} index The index at which to put block in parent
  * @param {String} arrangement Arrangement of the audioBlock.
  * @param {Buffer} data audio of the audioBlock stored as a buffer.
  * @param {doubleParameterCallback} callback Eihter sends the newly created audioBlock or an error if there is one to the callback.
  */
-export function createAudioBlockPouch (db, parent, arrangement, data, callback) {
-	db.get("0000", (err, doc) => {
+export function createAudioBlockPouch (db, parent, index, arrangement, data, callback) {
+	let audioBlockObject = {};
+	/* istanbul ignore next */
+	localStorage.readUser((err, user) => {
+		/* istanbul ignore next */
 		if (err) {
+			/* istanbul ignore next */
 			callback(err, null);
+			/* istanbul ignore next */
 		} else {
-			let id = makeid();
-			let arrays = [];
-			Array.prototype.push.apply(arrays, doc.dailyLogs);
-			Array.prototype.push.apply(arrays, doc.monthlyLogs);
-			Array.prototype.push.apply(arrays, doc.futureLogs);
-			Array.prototype.push.apply(arrays, doc.collections);
-			Array.prototype.push.apply(arrays, doc.trackers);
-			Array.prototype.push.apply(arrays, doc.textBlocks);
-			Array.prototype.push.apply(arrays, doc.tasks);
-			Array.prototype.push.apply(arrays, doc.events);
-			Array.prototype.push.apply(arrays, doc.signifiers);
-			Array.prototype.push.apply(arrays, doc.imageBlocks);
-			Array.prototype.push.apply(arrays, doc.audioBlocks);
-
-			while (arrays.filter((element) => element.id === id).length > 0) {
-				id = makeid();
-			}
+			let id = makeid(user);
 			audioBlockObject = {
 				id: id,
 				objectType: "audioBlock",
-				parent: parent,
+				parent: parent.id,
 				arrangement: arrangement,
 				data: data
 			};
+			if (index) {
+				parent.content.splice(index, 0, id);
+			} else {
+				parent.content.push(id);
+			}
+			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
+			user[`${parent.objectType}s`].push(parent);
+			user.audioBlocks.push(audioBlockObject);
 
-			let newAudioBlocks = []
-			Array.prototype.push.apply(newAudioBlocks, doc.audioBlocks);
-
-			newAudioBlocks.push(audioBlockObject);
-
-			return db.put({_id: "0000",
-				_rev: doc._rev,
-				email: doc.email,
-				theme: doc.theme,
-				index: doc.index,
-				dailyLogs: doc.dailyLogs,
-				monthlyLogs: doc.monthlyLogs,
-				futureLogs: doc.futureLogs,
-				collections: doc.collections,
-				trackers: doc.trackers,
-				imageBlocks: doc.imageBlocks,
-				audioBlocks: newAudioBlocks,
-				textBlocks: doc.textBlocks,
-				tasks: doc.tasks,
-				events: doc.events,
-				signifiers: doc.signifiers}).then((res) => {
-				console.log(res);
-			}).
-catch((error) => {
-				console.log(error);
+			let newUser = {
+				_id: "0000",
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				collections: user.collections,
+				trackers: user.trackers,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+			return db.put(newUser).then((res) => {
+				/* istanbul ignore next */
+				if (res.ok) {
+					callback(null, audioBlockObject);
+				}
+				/* istanbul ignore next */
+			}).catch((error) => {
+				/* istanbul ignore next */
 				callback(error, null);
 			});
 		}
-	}).then((res) => {
-		console.log(res);
-		callback(null, audioBlockObject);
 	});
 }

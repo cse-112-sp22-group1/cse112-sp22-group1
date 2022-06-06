@@ -21,9 +21,10 @@ const protectedKeys = ["Control", "Alt", "CapsLock", "Escape", "PageUp", "PageDo
 
 let blockTemplate = <template>
 	<link type="text/css" rel="stylesheet" href="./block.css" />
-	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /><div id="signifier"></div></div>
+	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
 	<div id="checkerContainer" checked=""><div id="taskChecker"></div></div>
 	<div id="textBlock" contentEditable="true" ondrop={()=>false} placeholder='Type "/" to create a block'></div>
+	<aside id="signifiers">&#128540;</aside>
 </template>;
 
 /**
@@ -37,7 +38,7 @@ export class TextBlock extends HTMLElement {
 	 * @param {Object} signifier - the editor's current signifier
 	 * @param {singleParameterCallback} callback - callback for the end of the constructor function
 	 */
-	constructor (controller, itemObject, signifier, callback) {
+	constructor (controller, itemObject, signifiers, callback) {
 		super();
 		this.attachShadow({ mode: "open" });
 		this.shadowRoot.appendChild(blockTemplate.content.cloneNode(true));
@@ -68,9 +69,8 @@ export class TextBlock extends HTMLElement {
 		this.timeSetter = false;
 		this.dateSetter = false;
 		this.eventDelete = true;
-		this.signifier = signifier;
+		this.signifiers = signifiers
 		this.signifierIcon = this.shadowRoot.getElementById("signifier");
-		this.signifierIcon.innerHTML = this.signifier.symbol;
 		this.plus = this.shadowRoot.getElementById("plus");
 		this.more = this.shadowRoot.getElementById("more");
 		this.setupTabLevel();
@@ -474,7 +474,7 @@ export class TextBlock extends HTMLElement {
 					}, 150);
 				}
 			} else if (textBlock.textContent !== "") {
-				localStorage.createTextBlock(this.controller.parent.id, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifier.id, date, true, (err, block) => {
+				localStorage.createTextBlock(this.controller.parent, this.controller.subParent, this.controller.currentBlockIndex, textBlock.textContent, this.tabLevel, this.kind, null, this.signifiers, date, true, (err, block) => {
 					if (err) {
 						console.log(err);
 					} else {

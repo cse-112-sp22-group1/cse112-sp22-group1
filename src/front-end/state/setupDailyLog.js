@@ -1,72 +1,47 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { contentWrapper, header } from "../index.js";
 import { FileLocation } from "../components/fileLocation.jsx";
-import { TrackerBlock } from "../components/trackerBlock.jsx";
-import { TrackerMenu } from "../components/tracker.jsx";
-import { createEditor } from "../components/blockController.js";
+import { Log } from "../components/log.jsx";
+import { RightSidebar } from "../components/rightSidebar.jsx";
+// Import { createEditor } from "../components/blockController.js";
 import { currentState } from "./stateManager.js";
 
 /**
  * Sets up the daillyLog page with the textBlocks, and trackers of the user.
- *
- * @param {Array} btn An array of the buttons in the dailyLog page's navbar.
  */
-export function setupDailyLog (btn) {
-	let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-	let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-	header.title = `${weekDays[new Date(currentState.date).getDay()]} ${monthNames[new Date(currentState.date).getMonth()]} ${new Date(currentState.date).getUTCDate()}, ${new Date(currentState.date).getFullYear()}`;
+export function setupDailyLog () {
+	contentWrapper.appendChild(new Log(currentState));
+	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
+	let currentDate = new Date(currentState.date);
+	let day = `${currentDate.getDate()}`;
+	if (currentDate.getDate() % 10 === 1) {
+		day = `${day}st`;
+	} else if (currentDate.getDate() % 10 === 2) {
+		day = `${day}nd`
+	} else if (currentDate.getDate() % 10 === 3) {
+		day = `${day}rd`
+	} else {
+		day = `${day}th`
+	}
+	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+	header.title = `${months[currentDate.getMonth()]} ${day}, ${currentDate.getFullYear()}`;
+	// FutureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
+
 	// Remove all child fileLocations first first
 	let child = header.file.lastElementChild;
 	while (child) {
 		header.file.removeChild(child);
 		child = header.file.lastElementChild;
 	}
-	header.file.appendChild(new FileLocation("Future Log", "futureLog", true))
-	header.file.appendChild(new FileLocation("Monthly Log", "monthlyLog", true))
-	header.file.appendChild(new FileLocation("Daily Log", "dailyLog", false))
-
-
-	// Setting navbar buttons
-	for (let i = 0; i < btn.length; i++) {
-		btn[i].removeAttribute("disabled");
-		btn[i].style.visibility = "visible";
-	}
-
-	createEditor(contentWrapper, currentState, null, (success) => {
-		console.log(success);
-	});
-	document.getElementById("targetMenu").style.display = "block";
-	header.makeUneditable();
-	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++) {
-		headerButtons[i].classList.remove("hide");
-	}
-
-	let monthlyLogTrackerMenu = new TrackerMenu("Daily Log Trackers");
-	document.getElementById("trackerWrapper").appendChild(monthlyLogTrackerMenu);
-	let trackerBlockWrapper = monthlyLogTrackerMenu.shadowRoot.getElementById("editor");
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
 		} else {
-			let userArr = user.trackers;
-			let trackerArr = [];
-			for (let i = 0; i < currentState.trackers.length; i++) {
-				console.log("hello");
-				trackerArr.push(userArr.filter((object) => object.id === currentState.trackers[i])[0]);
-			}
-			console.log(trackerArr);
-			setTimeout(() => {
-				for (let i = 0; i < trackerArr.length; i++) {
-					let currentTracker = trackerArr[i];
-					let dropdownTracker = new TrackerBlock(currentTracker.title, currentState.id, 1);
-					trackerBlockWrapper.appendChild(dropdownTracker);
-				}
-				createEditor(trackerBlockWrapper, null, null, (success) => {
-					console.log(success);
-				});
-			}, 10);
+			let month = user.monthlyLogs.filter((reference) => reference.id === currentState.parent)[0];
+			let futureLog = user.futureLogs.filter((reference) => reference.id === month.parent)[0];
+			header.file.appendChild(new FileLocation(futureLog.title, "futureLog", month.parent, true));
+			header.file.appendChild(new FileLocation(`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`, "monthlyLog", currentState.parent, true));
+			header.file.appendChild(new FileLocation(`${months[currentDate.getMonth()]} ${day}, ${currentDate.getFullYear()}`, "dailyLog", currentState.id, false));
 		}
 	});
-
 }

@@ -12,8 +12,8 @@
     bottom: 0;
     left: 0;
     display: block;
-
-    background-color: var(--navbar-background-color);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+    background-color: var(--sidebar-background);
 }
 
 /* exclusively for the collapsed version of nav */
@@ -24,7 +24,6 @@
     margin-top: 20px;
     padding-left: 20px;
     display: block;
-
     background-color: transparent;
 }
 
@@ -117,9 +116,14 @@ button:hover h1 {
     margin-bottom: 1px;
 }
 
+#uncollapse {
+    height: 20px;
+}
+
 #uncollapseImage {
     height: 20px;
     width: 25px;
+    margin-bottom: 0px;
 }
 
 

@@ -15,11 +15,13 @@ const deleteUser = (email, callback) => {
 	schema.User.findOneAndDelete({ email: email }, (error, user) => {
 		if (error) {
 			callback(error);
-		} else {
+		} else if (user) {
 
             /* Don't send back the password */
             delete user.pwd;
 			callback(user);
+		} else {
+			callback(null);
 		}
 	});
 }

@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
  * @typedef userSchema
  * @property {String} email The user's email
  * @property {String} pwd The user's password
- * @property {String} teme The user's theme
+ * @property {String} theme The user's theme
  * @property {Index} index The user's index
  * @property {Array<DailyLog>} dailyLogs An array of the user's dailyLogs
  * @property {Array<MonthlyLog>} monthlyLogs An array of the user's monthlyLogs
@@ -35,7 +35,8 @@ const userSchema = {
      */
 	index: {
 		objectType: String,
-		contents: [String]
+		futureLogs: [String],
+		collections: [String]
 	},
 
 
@@ -48,6 +49,7 @@ const userSchema = {
          * @property {Date} date Date of the daily log
          * @property {String} parent ID of the parent
          * @property {Array<String>} content List of id's of textBlocks in the log
+         * @property {Array<String>} collections List of id's of collections referenced by the log
          * @property {Array<String>} trackers List of id's of trackers in the log
          */
 		{
@@ -56,6 +58,7 @@ const userSchema = {
 			date: Date,
 			parent: String,
 			content: [String],
+			collections: [String],
 			trackers: [String]
 		}
 	],
@@ -67,23 +70,30 @@ const userSchema = {
          * @property {String} id The monthly log's id
          * @property {String} objectType The type of object
          * @property {String} parent ID of the parent
-         * @property {Date} date The month date
+         * @property {Date} startDate The start date for the month
+         * @property {Date} endDate The end date for the month
+         * @property {Array<String>} content List of id's of textBlocks in the log
+         * @property {Array<String>} collections List of id's of collections referenced by the log
          * @property {Array<Day>} days List of days in log
-         * @property {Array<String>} trackers List of id's of trackers in days
+         * @property {Array<String>} trackers List of id's of trackers in month
+         * @property {Array<String>} recurringTrackers List of recuring trackers in days
          */
 		{
 			id: String,
 			objectType: String,
 			parent: String,
-			date: Date,
+			startDate: Date,
+			endDate: Date,
+			content: [String],
+			collections: [String],
 			days: [
 				{
 					id: String,
-					content: [String],
-					dailyLog: String
+					date: Date
 				}
 			],
-			trackers: [String]
+			trackers: [String],
+			recurringTrackers: [String]
 		}
 	],
 
@@ -93,23 +103,31 @@ const userSchema = {
          * @typedef {Object} FutureLog
          * @property {String} id The future log's id
          * @property {String} objectType The type of object
+         * @property {String} title The title of the future log
          * @property {Date} startDate The future log start date
          * @property {Date} endDate The future log end date
+         * @property {Array<String>} content List of ids of textBlocks in the log
+         * @property {Array<String>} collections List of ids of collections referenced by the log
          * @property {Array<Month>} months List of months in log
-         * @property {Array<String>} trackers List id's of trackers in days
+         * @property {Array<String>} trackers List ids of trackers in futureLog
+         * @property {Array<String>} recurringTrackers List of ids of trackers in months
          */
 		{
 			id: String,
 			objectType: String,
+			title: String,
 			startDate: Date,
 			endDate: Date,
+			content: [String],
+			collections: [String],
 			months: [
 				{
 					id: String,
-					monthlyLog: String
+					date: Date
 				}
 			],
-			trackers: [String]
+			trackers: [String],
+			recurringTrackers: [String]
 		}
 	],
 
@@ -119,16 +137,17 @@ const userSchema = {
          * @typedef {Object} Tracker
          * @property {String} id The tracker's id
          * @property {String} objectType The type of object
+         * @property {String} title Title of the tracker
          * @property {String} parent ID of the parent
          * @property {Array<String>} content List of id's of textBlocks in the tracker
-         * @property {String} title Title of the tracker
          */
 		{
 			id: String,
 			objectType: String,
 			title: String,
-			content: [String],
-			parent: String
+			parent: String,
+			content: [String]
+
 		}
 	],
 
@@ -140,14 +159,18 @@ const userSchema = {
          * @property {String} objectType The type of object
          * @property {String} parent The id of the parent
          * @property {String} title The collection's title
-         * @property {Array<String>} content List of id's of the textBlocks in collection
+         * @property {Array<String>} content List of ids of the textBlocks in collection
+         * @property {Array<String>} collections List of ids of collections referenced by the collection
+         * @property {Array<String>} trackers List of ids of trackers referenced by the colection
          */
 		{
 			id: String,
 			objectType: String,
 			title: String,
 			parent: String,
-			content: [String]
+			content: [String],
+			collections: [String],
+			trackers: [String]
 		}
 	],
 
@@ -159,14 +182,14 @@ const userSchema = {
          * @property {String} objectType The type of object
          * @property {String} parent Id of the parent
          * @property {String} arrangement Arrangement of imageBlock
-         * @property {Buffer} data image as a buffer
+         * @property {String} data image as a String
          */
 		{
 			id: String,
 			objectType: String,
 			parent: String,
 			arrangement: String,
-			data: Buffer
+			data: String
 		}
 	],
 
@@ -178,14 +201,14 @@ const userSchema = {
          * @property {String} objectType The type of object
          * @property {String} parent Id of the parent
          * @property {String} arrangement Arrangement of audioBlock
-         * @property {Buffer} data audio as a buffer
+         * @property {String} data audio as a String
          */
 		{
 			id: String,
 			objectType: String,
 			parent: String,
 			arrangement: String,
-			data: Buffer
+			data: String
 		}
 	],
 
@@ -197,22 +220,20 @@ const userSchema = {
          * @property {String} objectType The type of object
          * @property {Number} tabLevel the tab level of the textBlock
          * @property {String} parent Id of the parent
-         * @property {String} subParent Id of the child within the parent's content list.
          * @property {String} kind textBlock identifier for event and task creation
          * @property {String} objectReference id of the task or event or null if kind not either of those
          * @property {String} text the text inside textBlock
-         * @property {String} signifier id of the signifier for this textBlock
+         * @property {Array<String>} signifiers id of the signifier for this textBlock
          */
 		{
 			id: String,
 			objectType: String,
 			tabLevel: Number,
 			parent: String,
-			subParent: String,
 			kind: String,
 			objectReference: String,
 			text: String,
-			signifier: String
+			signifiers: [String]
 		}
 	],
 
@@ -223,17 +244,15 @@ const userSchema = {
          * @property {String} id The event's id
          * @property {String} objectType The type of object
          * @property {String} title title of the event
-         * @property {String} parent id of the parent
+         * @property {Array<String>} references id of the references
          * @property {Date} date date of the event (optional)
-         * @property {String} signifier id of the signifier for the event
          */
 		{
 			id: String,
 			objectType: String,
 			title: String,
-			parent: String,
-			date: Date,
-			signifier: String
+			references: [String],
+			date: Date
 		}
 	],
 
@@ -243,18 +262,16 @@ const userSchema = {
          * @typedef {Object} Task
          * @property {String} id The task's id
          * @property {String} objectType The type of object
-         * @property {String} parent id of the parent
+         * @property {Array<String>} references id of the references
          * @property {String} text task description
          * @property {Number} complete non zero if task complete
-         * @property {String} signifier id of the signifier for the task
          */
 		{
 			id: String,
 			objectType: String,
-			parent: String,
+			references: [String],
 			text: String,
-			complete: Number,
-			signifier: String
+			complete: Number
 		}
 	],
 

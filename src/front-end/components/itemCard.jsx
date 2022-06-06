@@ -1,3 +1,5 @@
+import { router } from "../state/router.js";
+
 /**
  * Card Module
  * @module itemCardModule
@@ -103,8 +105,11 @@ export class ItemCard extends HTMLElement {
 
     bindOpenButton () {
         this.shadowRoot.getElementById("openButton").addEventListener("click", () => {
-            let pressed = this.shadowRoot.getElementById("title").innerText + " open button was pressed!";
-            console.log(pressed);
+            if (this.shadowRoot.getElementById("date").innerText) {
+                router.navigate(`/monthlyLog/${this.ID}`);
+            } else {
+                router.navigate(`/collection/${this.ID}`);
+            }
         })
     }
 

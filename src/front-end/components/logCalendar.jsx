@@ -5,6 +5,7 @@
 import { createElement, createFragment } from "../jsxEngine.js";
 import { createEditor } from "../components/blockController.js";
 import { Calendar } from "../components/calendar.jsx"
+import { readUser } from "../localStorage/userOperations.js";
 /* eslint-enable */
 
 let template = <template>
@@ -40,7 +41,7 @@ export class LogCalendar extends HTMLElement {
         }
 
         // TEST MATERIAL
-        let start = 1;
+        let start = 6;
         let end = 25;
 
         let eventsMock = [
@@ -61,7 +62,7 @@ export class LogCalendar extends HTMLElement {
             currentDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), i);
             let newLog = {
                 id: i.toString(),
-                objectType: "Log",
+                objectType: "dailyLog",
                 date: currentDate,
                 parent: null,
                 content: [],
@@ -72,11 +73,27 @@ export class LogCalendar extends HTMLElement {
             }
             logMock.push(newLog);
         }
-
+        console.log(logMock);
         // TEST MATERIAL
-
-
-        this.logCalendar.appendChild(new Calendar(new Date(), start, end, eventsMock, logMock))
+        let startDate = new Date(currentState.startDate);
+        let endDate = new Date(currentState.endDate);
+        readUser((err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+                let eventReferences = user.textBlocks.filter(block => currentState.content.includes(block.id) && block.kind === "event");
+                let events = [];
+                eventReferences.forEach(reference => {
+                    events.push(user.events.filter(event => event.id === reference.objectReference));
+                });
+                let dailyLogs = []
+                currentState.days.forEach(day => {
+                    dailyLogs.push(user.dailyLogs.filter(reference => reference.id === day.id)[0]);
+                })
+                this.logCalendar.appendChild(new Calendar(startDate, startDate.getDate(), endDate.getDate(), events, dailyLogs));
+            }
+        })
+        
 
 	}
 

@@ -1,241 +1,173 @@
 import * as localStorage from "../userOperations.js";
 
 /**
- * Updates textBlock in the local db
- * @static
- * @memberof updateFunctions
- * @param {Object} db The local db.
- * @param {Array} textBlockArr Updated array of textBlocks to save to db.
- * @param {singleParameterCallback} callback Sends an error to callback if there is one.
+ * Handles sub-component deletion for a given block if needed
+ * @memberof createFunctions
+ * @param {Object} textBlock The textblock parent object
+ * @param {Object} originalBlock The original textblock parent object
+ * @param {doubleParameterCallback} callback Callback after sub-component has been handled
  */
-function updateBlock (db, textBlockArr, callback) {
+ function handleOriginalSubComponent (textBlock, originalBlock, callback) {
 	localStorage.readUser((err, user) => {
-		if (err === null) {
-			return db.put({
-				_id: "0000",
-				_rev: user._rev,
-				email: user.email,
-				theme: user.theme,
-				index: user.index,
-				dailyLogs: user.dailyLogs,
-				monthlyLogs: user.monthlyLogs,
-				futureLogs: user.futureLogs,
-				trackers: user.trackers,
-				collections: user.collections,
-				imageBlocks: user.imageBlocks,
-				audioBlocks: user.audioBlocks,
-				textBlocks: textBlockArr,
-				tasks: user.tasks,
-				events: user.events,
-				signifiers: user.signifiers
-			}, (error, res) => {
-				if (error) {
-					console.log(error);
-					callback(error);
+		if (err) {
+			callback(err, null);
+		} else if (textBlock.objectReference === originalBlock.objectReference) {
+				callback(null, textBlock);
+			} else if (originalBlock.kind === "event") {
+					let originalEvent = user.events.filter((event) => event.id === originalBlock.objectReference)[0];
+					originalEvent.references = originalEvent.references.filter((reference) => reference !== textBlock.id);
+					localStorage.updateEvent(originalEvent, null, null, false, (error) => {
+						callback(error, textBlock);
+					});
+				} else if (originalBlock.kind === "task") {
+					let originalTask = user.tasks.filter((task) => task.id === originalBlock.objectReference)[0];
+					originalTask.references = originalTask.references.filter((reference) => reference !== textBlock.id);
+					localStorage.updateTask(originalTask, null, null, false, (error) => {
+						callback(error, textBlock);
+					});
 				} else {
-					callback(res);
+					callback(null, textBlock);
 				}
-			});
-		}
-			console.log(err);
-			callback(err);
-
 	});
-}
+ }
+
+ /**
+  * Handles sub-component alteration and creation for a given block if needed
+  * @memberof createFunctions
+  * @param {database} db
+  * @param {Object} textBlock The textblock parent object
+  * @param {Object} originalBlock The original textblock parent object
+  * @param {Date}
+  * @param {doubleParameterCallback} callback Callback after sub-component has been handled
+  */
+  function handleNewSubComponent (textBlock, originalBlock, date, callback) {
+	localStorage.readUser((err, user) => {
+		if (err) {
+			callback(err, null);
+		} else if (textBlock.objectReference === originalBlock.objectReference && date) {
+				if (textBlock.objectReference && originalBlock.kind === "event") {
+					let event = user.events.filter((reference) => reference.id === textBlock.objectReference)[0];
+					event.references = event.references.filter((reference) => reference !== textBlock.id);
+					localStorage.updateEvent(event, null, null, false, (error) => {
+						callback(error, textBlock);
+					});
+				} else {
+					callback(null, textBlock);
+				}
+			} else if (textBlock.kind === "task") {
+					/* istanbul ignore next */
+					localStorage.createTask([textBlock.id], textBlock.text, 0, false, (failedCreateTask, task) => {
+						/* istanbul ignore next */
+						if (failedCreateTask) {
+							/* istanbul ignore next */
+							callback(failedCreateTask, null);
+
+							/* istanbul ignore next */
+						} else {
+							textBlock.objectReference = task.id;
+							callback(null, textBlock);
+
+						}
+					});
+				} else if (textBlock.kind === "event") {
+					/* istanbul ignore next */
+					localStorage.createEvent(textBlock.text, [textBlock.id], date, false, (failedCreateEvent, journalEvent) => {
+						/* istanbul ignore next */
+						if (failedCreateEvent) {
+							/* istanbul ignore next */
+							callback(failedCreateEvent, null);
+
+							/* istanbul ignore next */
+						} else {
+							textBlock.objectReference = journalEvent.id;
+							callback(null, textBlock);
+
+						}
+					});
+				} else {
+					/* istanbul ignore next */
+					callback(null, textBlock);
+				}
+	});
+ }
 
 /**
  * Finds and update the textBlock passed in.
  * @memberof updateFunctions
  * @param {database} db The local pouch database.
- * @param {Object} textBlock The textBlock to be deleted.
+ * @param {Object} textBlock The textBlock to be updated.
+ * @param {Object} date The date
+ * @param {Object} parent The parent of the textBlock being updated
+ * @param {Object} addParent The new parent of the textBlock
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
-export function updateTextBlockPouch (db, textBlock, date, callback) {
-	console.log(textBlock);
-	db.get("0000", (err, doc) => {
+export function updateTextBlockPouch (db, textBlock, date, parent, addParent, callback) {
+	localStorage.readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			console.log(textBlock);
-			let textBlockArr = doc.textBlocks;
-			let oldBlock = {};
-			for (let i = 0; i < textBlockArr.length; i++) {
-				if (textBlockArr[i].id === textBlock.id) {
-					oldBlock = textBlockArr[i];
-					textBlockArr[i] = textBlock;
-				}
-			}
 
-			if (textBlock.kind === "task") {
-				if (oldBlock.kind === "event") {
-					let eventArr = [];
-					Array.prototype.push.apply(eventArr, doc.events);
-					let events = eventArr.filter((element) => element.id === textBlock.objectReference);
-					let event = events[0];
+			let oldBlock = user.textBlocks.filter((block) => block.id === textBlock.id)[0];
+			handleOriginalSubComponent(textBlock, oldBlock, (failedOriginalChange, processedBlock) => {
+				if (failedOriginalChange) {
+					callback(failedOriginalChange);
 
-					localStorage.deleteEvent(event, false, (error) => {
-						if (error) {
-							console.log(error);
+				} else {
+					handleNewSubComponent(processedBlock, oldBlock, date, (failedNewChange, newTextBlock) => {
+						if (failedNewChange) {
+							callback(failedNewChange);
+
 						} else {
-							localStorage.createTask(textBlock.id, textBlock.text, 0, textBlock.signifier, false, (error2, task) => {
-								if (error2) {
-									console.log(error2);
-									callback(error2, null);
+							localStorage.readUser((failedToRead, updatedUser) => {
+								if (failedToRead) {
+									callback(failedToRead);
+
 								} else {
-									textBlock.objectReference = task.id;
-									updateBlock(db, textBlockArr, (error3) => {
-										if (error3) {
-											console.log(error3);
-											callback(error3);
-										}
-									})
-								}
-							})
-						}
-					})
-				} else if (oldBlock.kind === "task") {
-					let taskArr = doc.tasks;
-					let tasks = taskArr.filter((element) => element.id === textBlock.objectReference);
-					let task = tasks[0];
+									if (parent && addParent && newTextBlock.parent !== parent.id) {
+										parent.content = parent.content.filter((block) => block !== textBlock.id);
+										updatedUser[`${parent.objectType}s`] = updatedUser[`${parent.objectType}s`].filter((object) => object.id !== parent.id);
+										updatedUser[`${parent.objectType}s`].push(parent);
+										addParent.content.push(textBlock.id);
+										updatedUser[`${addParent.objectType}s`] = updatedUser[`${addParent.objectType}s`].filter((object) => object.id !== addParent.id);
+										updatedUser[`${addParent.objectType}s`].push(addParent);
+									} else if (updatedUser.textBlocks.filter((block) => block.id === textBlock.id)[0].parent !== textBlock.parent) {
+										callback("You are changing the parent without providing the original and old one");
+										return;
+									}
+									updatedUser.textBlocks = updatedUser.textBlocks.filter((block) => block.id !== newTextBlock.id);
+									updatedUser.textBlocks.push(newTextBlock);
+									let newUser = {
+										_id: "0000",
+										_rev: updatedUser._rev,
+										email: updatedUser.email,
+										theme: updatedUser.theme,
+										index: updatedUser.index,
+										dailyLogs: updatedUser.dailyLogs,
+										monthlyLogs: updatedUser.monthlyLogs,
+										futureLogs: updatedUser.futureLogs,
+										trackers: updatedUser.trackers,
+										collections: updatedUser.collections,
+										imageBlocks: updatedUser.imageBlocks,
+										audioBlocks: updatedUser.audioBlocks,
+										textBlocks: updatedUser.textBlocks,
+										tasks: updatedUser.tasks,
+										Tasks: updatedUser.events,
+										signifiers: updatedUser.signifiers
+									};
 
-					task.text = textBlock.text;
-					console.log("task before updating it is ", task);
-					localStorage.updateTask(task, false, (error) => {
-						if (error) {
-							console.log(error);
-							callback(error);
-						} else {
-							console.log("textBlockArr before updateBlock @65 is, ", textBlockArr);
-							updateBlock(db, textBlockArr, (error2) => {
-								if (error2) {
-									console.log(error2);
-									callback(error2);
-								}
-							})
-						}
-					})
-				} else if (oldBlock.kind !== "task") {
-					localStorage.createTask(textBlock.id, textBlock.text, 0, textBlock.signifier, false, (error, task) => {
-						if (error) {
-							console.log(error);
-							callback(error);
-						} else {
-							textBlock.objectReference = task.id;
-							updateBlock(db, textBlockArr, (error2) => {
-								if (error2) {
-									console.log(error2);
-									callback(error2);
+									return db.put(newUser).then((res) => {
+										/* istanbul ignore next */
+										if (res.ok) {
+											callback(null);
+										}
+										/* istanbul ignore next */
+									}).catch((error) => callback(error));
 								}
 							});
 						}
-					})
+					});
 				}
-			} else if (textBlock.kind !== "task" && oldBlock.kind === "task") {
-				let taskArr = [];
-				Array.prototype.push.apply(taskArr, doc.tasks);
-				let tasks = taskArr.filter((element) => element.id === oldBlock.objectReference);
-				let task = tasks[0];
-
-				localStorage.deleteTask(task, false, (error) => {
-					if (error) {
-						console.log(error);
-						callback(error);
-					} else {
-						textBlock.objectReference = null;
-						updateBlock(db, textBlockArr, (error2) => {
-							if (error2) {
-								console.log(error2);
-								callback(error2);
-							}
-						})
-					}
-				})
-			} else if (textBlock.kind !== "event" && oldBlock.kind === "event") {
-				let eventArr = [];
-				Array.prototype.push.apply(eventArr, doc.events);
-				let events = eventArr.filter((element) => element.id === textBlock.objectReference);
-				let event = events[0];
-
-				localStorage.deleteEvent(event, false, (error) => {
-					if (error) {
-						console.log(error);
-						callback(error);
-					} else {
-						textBlock.objectReference = null;
-						updateBlock(db, textBlockArr, (error2) => {
-							if (error2) {
-								console.log(error2);
-								callback(error2);
-							}
-						})
-					}
-				})
-			} else if (textBlock.kind === "event") {
-				if (oldBlock.kind === "event") {
-					let eventArr = [];
-					Array.prototype.push.apply(eventArr, doc.events);
-					let events = eventArr.filter((element) => element.id === textBlock.objectReference);
-					let event = events[0];
-					console.log("event is ", doc);
-					event.title = textBlock.text;
-					event.date = date;
-					localStorage.updateEvent(event, false, (error) => {
-						if (error) {
-							console.log(error);
-							callback(error);
-						} else {
-							updateBlock(db, textBlockArr, (error2) => {
-								if (error2) {
-									console.log(error2);
-									callback(error2);
-								}
-							})
-						}
-					})
-				} else if (oldBlock.kind === "task") {
-					let taskArr = [];
-					Array.prototype.push.apply(taskArr, doc.tasks);
-					let tasks = taskArr.filter((element) => element.id === textBlock.objectReference);
-					let task = tasks[0];
-
-					localStorage.deleteTask(task, false, (error) => {
-						if (error) {
-							console.log(error);
-						} else {
-							localStorage.createEvent(textBlock.text, textBlock.id, date, textBlock.signifier, false, (error2, event) => {
-								if (error2) {
-									console.log(error2);
-									callback(error2, null);
-								} else {
-									textBlock.objectReference = event.id;
-									updateBlock(db, textBlockArr, (error3) => {
-										if (error3) {
-											console.log(error3);
-											callback(error3);
-										}
-									})
-								}
-							})
-						}
-					})
-
-				} else if (oldBlock.kind !== "event") {
-					localStorage.createEvent(textBlock.text, textBlock.id, date, textBlock.signifier, false, (error, event) => {
-						if (error) {
-							console.log(error);
-							callback(error);
-						} else {
-							textBlock.objectReference = event.id;
-							updateBlock(db, textBlockArr, (error2) => {
-								if (error2) {
-									console.log(error2);
-									callback(error2);
-								}
-							})
-						}
-					})
-				}
-			}
+			});
 		}
-	})
+	});
 }

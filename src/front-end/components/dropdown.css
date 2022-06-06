@@ -1,5 +1,5 @@
 :host {
-    font-family:"SF-Pro";
+    font-family:"SF-Pro", "roboto";
     --level: 0;
     --tabspace: 0;
     user-select: none; 

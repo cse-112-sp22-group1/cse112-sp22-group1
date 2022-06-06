@@ -1,7 +1,6 @@
 #log {
     padding-bottom: 0;
-    width: calc(100% - 70px);
-    height: 1000px;
+    width: 100%;
     z-index: -1;
 }
 

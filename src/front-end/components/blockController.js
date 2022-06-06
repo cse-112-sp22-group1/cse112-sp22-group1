@@ -238,6 +238,7 @@ export function createEditor (container, parent, subParent, callback) {
 				Array.prototype.push.apply(arrays, doc.futureLogs);
 				Array.prototype.push.apply(arrays, doc.collections);
 				Array.prototype.push.apply(arrays, doc.trackers);
+
 				let generalSignifier = doc.signifiers.filter((signifer) => signifer.meaning === "general")[0];
 				controller.generalSignifier = generalSignifier;
 
@@ -248,10 +249,14 @@ export function createEditor (container, parent, subParent, callback) {
 
 						let tempArr = doc.textBlocks;
 
-						if (subParent === null) {
+						if (!subParent) {
+							if (!itemObject.content) {
+								itemObject.content = [];
+							}
 							for (let i = 0; i < itemObject.content.length; i++) {
 								Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === itemObject.content[i]));
 							}
+
 						} else if (itemObject.objectType === "monthlyLog") {
 							let day = itemObject.days.filter((currentDay) => currentDay.dailyLog === subParent)[0];
 							for (let i = 0; i < day.content.length; i++) {

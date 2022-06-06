@@ -17,7 +17,7 @@
 }
 
 .close {
-    color: var(--content-foreground-color);
+    color: var(--normal-font-color);
 
     width: 40px;
     height: 40px;
@@ -53,7 +53,7 @@
     max-height: 800px;
     transform: translate(-50%,-50%);
     -ms-transform: translate(-50%,-50%);
-    background-color: var(--content-background-color);
+    background-color: var(--sidebar-background);
 }
 
 .sidebar {
@@ -64,7 +64,7 @@
     left: 0;
     top: 0;
     bottom: 0;
-    background-color: var(--navbar-background-color);
+    background-color: var(--card-background-dim);
 }
 
 .content {
@@ -93,11 +93,11 @@ header {
     height: 60px;
     margin-left: 10px;
     margin-right: 10px;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--divider-color);
 }
 
 ::slotted(settings-tab[selected]) {
-    background-color: var(--content-background-color);
+    background-color: var(--sidebar-background);
 }
 
 ::slotted(settings-panel) {

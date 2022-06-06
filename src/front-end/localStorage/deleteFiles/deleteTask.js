@@ -1,3 +1,5 @@
+import { readUser } from "../userOperations";
+
 /**
  * Finds and deletes the task.
  * @memberof deleteFunctions
@@ -6,34 +8,33 @@
  * @param {singleParameterCallback} callback Sends an error if there is one to the callback.
  */
 export function deleteTaskPouch (db, id, callback) {
-	db.get("0000", (err, doc) => {
+	readUser((err, user) => {
 		if (err) {
 			callback(err);
 		} else {
-			let newTasks = doc.tasks.filter((task) => task.id !== id);
-
-			return db.put({_id: "0000",
-					_rev: doc._rev,
-					email: doc.email,
-					theme: doc.theme,
-					index: doc.index,
-					dailyLogs: doc.dailyLogs,
-					monthlyLogs: doc.monthlyLogs,
-					futureLogs: doc.futureLogs,
-					trackers: doc.trackers,
-					collections: doc.collections,
-					imageBlocks: doc.imageBlocks,
-					audioBlocks: doc.audioBlocks,
-					textBlocks: doc.textBlocks,
-					tasks: newTasks,
-					events: doc.events,
-					signifiers: doc.signifiers}, (error, res) => {
-					if (error) {
-						callback(error);
-					} else {
-						console.log(res);
-						callback(null);
-					}
+			user.tasks = user.tasks.filter((task) => task.id !== id);
+			let newUser = {
+				_id: "0000",
+				_rev: user._rev,
+				email: user.email,
+				theme: user.theme,
+				index: user.index,
+				dailyLogs: user.dailyLogs,
+				monthlyLogs: user.monthlyLogs,
+				futureLogs: user.futureLogs,
+				trackers: user.trackers,
+				collections: user.collections,
+				imageBlocks: user.imageBlocks,
+				audioBlocks: user.audioBlocks,
+				textBlocks: user.textBlocks,
+				tasks: user.tasks,
+				events: user.events,
+				signifiers: user.signifiers
+			};
+			return db.put(newUser).then((res) => {
+				if (res.ok) {
+					callback(null);
+				}
 			});
 		}
 	})

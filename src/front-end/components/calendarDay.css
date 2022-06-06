@@ -4,11 +4,13 @@
 
 section {
 	position: relative;
-	width: 155px;
-	height: 155px;
+	width: 100%;
+	height: 100%;
+	aspect-ratio: 1 / 1;
 	margin: 0;
+	color: var(--normal-font-color);
 	transition: 0.2s ease-in-out;
-	background-color: #F9F7F3FF;
+	background-color: var(--card-background);
 	border-top: var(--border-top);
 	border-right: var(--border-right);
 	border-bottom: var(--border-bottom);
@@ -20,60 +22,46 @@ section {
 }
 
 .dim {
-	background-color: rgb(239, 237, 234);
+	background-color: var(--card-background-dim);
 }
 .dimmer {
-	background-color: rgb(223, 221, 217);
+	background-color: var(--card-background-dimmer);
 }
 
 .isDate{
 	cursor: text;
 }
 
-.isDate:hover {
-	box-shadow: 1px 1px 9px 0 rgba(0, 0, 0, 0.2);
-	transition: 0.2s ease-in-out;
-	z-index: 1;
-}
-
-.isDate:hover > footer{
-	bottom: 15px;
-	transition: 0.2s ease-in-out;
-}
-
-.isDate:hover > footer button {
-	opacity: 0.95;
-	transition: 0.2s ease-in-out;
-}
-
-.isDate:hover > main {
-	height: calc(100% - 35px - 23px - 30px);
-	transition: 0.1s ease-in-out;
-}
-
 section #title {
 	position: relative;
 	font-size: 20px;
 	font-weight: 600;
-	top: 7.5px;
-	left: 7.5px;
-	height: 35px;
-	width: 35px !important;
+	top: 8.08px;
+	left: 9px;
+	height: 36px;
+	width: 36px !important;
 	text-align: center;
 	line-height: 35px;
-	margin: 0 0 7.5px;
+	margin: 0 0 11px;
 	cursor: pointer;
 	width: auto;
 }
 
-section .today {
-	background-color: #33B5E5FF;
-	border-radius: 50%;
-	color: white;
-}
-
 .extend, .unlogged {
 	opacity: 0.3;
+}
+
+#events {
+	display: block;
+}
+
+#eventsMobile {
+	display: none;
+	position: absolute;
+	justify-content: space-between;
+	width: calc(100% - 40px);
+	left: calc(50% - ((100% - 40px) / 2));
+	bottom: 10px;
 }
 
 main {
@@ -81,17 +69,30 @@ main {
 	overscroll-behavior: auto contain;
 	height: calc(100% - 35px);
 	transition: 0.3s ease-in-out;
+	scrollbar-width: none;
+}
+
+::-webkit-scrollbar{
+	display: none;
 }
 
 main .event {
 	position: relative;
 	font-size: 15px;
 	font-weight: 400;
-	margin: 7.5px 10px 10px;
-	padding: 1px 5px;
-	color: white;
+	margin: 0 10.925px 5px;
+	padding: 2px 5px;
+	color: var(--highlighted-font-color);
 	border-radius: 5px;
-	background-color: #33B5E5FF;
+	background-color: var(--primary-button-color);
+}
+
+aside .eventCircle {
+	width: 11px;
+	height: 11px;
+	background-color: var(--secondary-button-color);
+	border-radius: 50%;
+	opacity: 0.53;
 }
 
 footer {
@@ -101,6 +102,7 @@ footer {
 	width: calc(100% - 20px);
 	text-align: center;
 	transition: 0.2s ease-in-out;
+	display: block;
 }
 
 footer button {
@@ -114,26 +116,107 @@ footer button {
 	cursor: pointer;
 }
 
-footer button:hover {
-	box-shadow: 2px 2px 9px 0 rgba(0, 0, 0, 0.3);
-	opacity: 1;
-	transition: 0.2s ease-in-out;
-}
-
 footer #open{
-	background-color: #33B5E5FF;
-	color: white;
+	background-color: var(--primary-button-color);
+	color: var(--highlighted-font-color);
 	margin-right: 5px;
 }
 
 
 footer #peak{
-	background-color: #FFBB33FF;
-	color: white;
+	background-color: var(--secondary-button-color);
+	color: var(--highlighted-font-color);
 	margin-left: 5px;
 }
 
 #create, #extend{
-	background-color: #33B5E5FF;
-	color: white;
+	background-color: var(--primary-button-color);
+	color: var(--highlighted-font-color);
+}
+
+@media only screen and (min-width: 1024.1px){
+	.isDate:hover {
+		box-shadow: 1px 1px 9px 0 var(--card-shadow);
+		transition: 0.2s ease-in-out;
+		z-index: 1;
+	}
+	
+	.isDate:hover > footer{
+		bottom: 10px;
+		transition: 0.2s ease-in-out;
+	}
+	
+	.isDate:hover > footer button {
+		opacity: 0.95;
+		transition: 0.2s ease-in-out;
+	}
+	
+	.isDate:hover > main {
+		height: calc(100% - 35px - 23px - 30px);
+		transition: 0.1s ease-in-out;
+	}
+
+	section .today {
+		background-color: var(--primary-button-color);
+		border-radius: 50%;
+		color: var(--highlighted-font-color);
+	}
+
+	footer button:hover {
+		box-shadow: 2px 2px 9px 0 var(--card-shadow);
+		opacity: 1;
+		transition: 0.2s ease-in-out;
+	}
+}
+
+@media only screen and (max-width: 1024px){
+	section{
+		width: 87px;
+		height: 87px;
+	}
+
+	.isDate{
+		cursor: pointer;
+	}
+
+	.isSelected {
+		background-color: var(--primary-button-color);
+		box-shadow: 1px 1px 9px 0 var(--card-shadow);
+		transition: 0.2s ease-in-out;
+		z-index: 1;
+	}
+
+	.isSelected #title {
+		color: var(--highlighted-font-color) !important;
+	}
+
+	.isSelected .eventCircle{
+		background-color: var(--highlighted-font-color);
+		opacity: 0.9 !important;
+	}
+
+	section #title{
+		font-size: 28px;
+		left: calc(50% - 18px);
+		top: 18.53px;
+		height: 28px;
+		line-height: 28px;
+	}
+
+	section .today {
+		border-radius: 0;
+		color: var(--primary-button-color);
+	}
+
+	#events {
+		display: none;
+	}
+
+	#eventsMobile {
+		display: flex;
+	}
+
+	#footer{
+		display: none;
+	}
 }

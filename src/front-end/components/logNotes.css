@@ -6,6 +6,15 @@
     z-index: -1;
 }
 
+#logNotes text-block{
+	display: block;
+	margin: 0;
+	padding: 0 0 8px 0;
+	width: 100%;
+	left: 0;
+	right: 0;
+}
+
 h1 {
     height: 18px;
     font-size: 19px;
