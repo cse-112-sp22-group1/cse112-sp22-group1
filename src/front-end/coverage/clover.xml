@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1654334755663" clover="3.2.0">
-  <project timestamp="1654334755663" name="All files">
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<coverage generated="1654395881420" clover="3.2.0">
+  <project timestamp="1654395881420" name="All files">
+=======
+<coverage generated="1654373623568" clover="3.2.0">
+  <project timestamp="1654373623568" name="All files">
+>>>>>>> 5c39c72 (finished merge)
+=======
+<coverage generated="1654375374794" clover="3.2.0">
+  <project timestamp="1654375374794" name="All files">
+>>>>>>> 3638013 (Testing workflow updated, testing if it works)
+=======
+<coverage generated="1654395080488" clover="3.2.0">
+  <project timestamp="1654395080488" name="All files">
+>>>>>>> 911c4e0 (adds mock testing server and removes env vars)
+=======
+<coverage generated="1654395577064" clover="3.2.0">
+  <project timestamp="1654395577064" name="All files">
+>>>>>>> 118419b (server auto closes after tests)
+=======
+<coverage generated="1654395881420" clover="3.2.0">
+  <project timestamp="1654395881420" name="All files">
+>>>>>>> c41e6da (makes server run in the background)
     <metrics statements="666" coveredstatements="319" conditionals="311" coveredconditionals="115" methods="340" coveredmethods="187" elements="1317" coveredelements="621" complexity="0" loc="666" ncloc="666" packages="6" files="42" classes="42"/>
     <package name="front-end">
       <metrics statements="2" coveredstatements="2" conditionals="4" coveredconditionals="2" methods="0" coveredmethods="0"/>

@@ -3,3 +3,4 @@ node_modules
 prod/dist
 package-lock.json
 coverage
+__tests__/coverage
