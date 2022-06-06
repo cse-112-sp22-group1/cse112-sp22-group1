@@ -22,6 +22,18 @@ const makeid = () => {
 }
 
 /**
+ * Validates a string if it is a proper email 
+ * 
+ * @param {String} email The email of the user 
+ * @returns true if valid email, otherwise false 
+ */
+const validateEmail = (email) => {
+	return email.match(
+	  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+	);
+}
+  
+/**
  * Creates a user in the remote db.
  *
  * @param {String} email The email of the new user.
@@ -31,6 +43,9 @@ const makeid = () => {
  * @reject An error.
  */
 const createUser = async (email, pwdHash, key) => {
+	if (!validateEmail(email)) {
+		throw new Error("Invalid email!"); 
+	}
 	let user = await schema.User.findOne({ email: email }).exec();
 	if (user !== null) {
 		throw new Error("This email already has an account!");
