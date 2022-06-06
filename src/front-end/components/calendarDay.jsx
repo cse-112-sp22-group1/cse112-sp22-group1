@@ -152,6 +152,16 @@ export class CalendarDay extends HTMLElement {
 			this.openLog();
 		}
 	}
+
+	connectedCallback() {
+		this.content.onclick = () => {
+			this.selectDay();
+		}
+
+		this.dayTitle.onclick = () => {
+			this.openLog();
+		}
+	}
 }
 
 window.customElements.define("calendar-day", CalendarDay);

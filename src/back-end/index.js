@@ -2,7 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
 const mongoose = require("mongoose");
-const constants = require(`${__dirname}/constants.js`)
+const constants = require(`${__dirname}/constants.js`);
 const deleteUser = require(`${__dirname}/deleteFiles/deleteUser.js`);
 const createUser = require(`${__dirname}/createFiles/createUser.js`);
 const updateUser = require(`${__dirname}/updateFiles/updateUser.js`);
@@ -43,6 +43,9 @@ mongoose.set("useCreateIndex", true);
 
 /* Listen for connection on port 2827 */
 app.listen("2827", () => {
+    console.log("Environment");
+    let db = process.env.DB;
+    console.log(db);
 	console.log("server has started listening to port 2827");
 });
 
