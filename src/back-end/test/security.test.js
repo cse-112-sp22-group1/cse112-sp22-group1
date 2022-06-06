@@ -87,8 +87,13 @@ describe("decrypt() Tests", () => {
     test("Wrong key", () => {
         const MESSAGE = "This is a message";
         const cyphertext = security.encrypt(MESSAGE, "PASSWORD");
-        const result = security.decrypt(cyphertext, "password");
-        expect(result).not.toBe(MESSAGE);
+        try {
+            const result = security.decrypt(cyphertext, "password");
+            expect(result).not.toBe(MESSAGE);
+        } catch (err) {
+
+            /* Empty */
+        }
     });
 
     test("Invalid cyphertext", () => {
