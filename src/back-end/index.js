@@ -90,7 +90,7 @@ app.post("/auth", express.json({ type: "*/*" }), (req, res) => {
 app.post("/user", express.json({ type: "*/*" }), (req, res) => {
     const passHash = security.passHash(req.body.pwd);
     const key = security.passHash(security.encrypt(passHash, constants.sessionSecret));
-    createUser.createUser(req.body.email, passHash, key).
+    createUser.createUser(req.body.email, req.body.pwd, key).
         then((user) => res.json(user)).
         catch((err) => sendServerError(res, err));
 });

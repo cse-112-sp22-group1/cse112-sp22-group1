@@ -21,30 +21,31 @@ const makeid = () => {
 	return result.join("");
 }
 
+/* eslint-disable no-useless-escape */
 /**
- * Validates a string if it is a proper email 
- * 
- * @param {String} email The email of the user 
- * @returns true if valid email, otherwise false 
+ * Validates a string if it is a proper email
+ *
+ * @param {String} email The email of the user
+ * @returns true if valid email, otherwise false
  */
-const validateEmail = (email) => {
-	return email.match(
-	  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-	);
-}
-  
+const validateEmail = (email) => email.match(/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+/* eslint-enable no-useless-escape */
+
 /**
  * Creates a user in the remote db.
  *
  * @param {String} email The email of the new user.
- * @param {String} pwdHash The hash of the user's password.
+ * @param {String} pwd The user's password.
  * @param {String} key The encryption key for this user.
  * @resolve The newly created user.
  * @reject An error.
  */
-const createUser = async (email, pwdHash, key) => {
+const createUser = async (email, pwd, key) => {
 	if (!validateEmail(email)) {
-		throw new Error("Invalid email!"); 
+		throw new Error("Invalid email!");
+	}
+	if (pwd.length === 0) {
+		throw new Error("Password is empty!");
 	}
 	let user = await schema.User.findOne({ email: email }).exec();
 	if (user !== null) {
@@ -52,7 +53,7 @@ const createUser = async (email, pwdHash, key) => {
 	}
 	user = new schema.User({
 		email: email,
-		pwd: pwdHash,
+		pwd: security.passHash(pwd),
 		theme: "lightmode",
 		index: {
 			objectType: "index",
