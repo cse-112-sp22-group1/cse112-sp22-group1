@@ -7,41 +7,49 @@ import { createUserPouch } from "../localStorage/createFiles/createUser.js";
 import "./login.css";
 /* eslint-enable */
 
-let email = document.getElementById("email-field");
-let password = document.getElementById("password-field");
-let logIn = document.getElementById("login-form-submit");
-let createAccount = document.getElementById("login-form-create");
+const form = document.getElementById("login-form");
+const email = document.getElementById("input-email");
+const password = document.getElementById("input-password");
+const logIn = document.getElementById("btn-login");
+const createAccount = document.getElementById("btn-create");
 
-readUser((err, user) => {
-	if (err) {
-		console.log(user);
-	} else {
+/**
+ * Displays an error message to the user.
+ *
+ * @param {String} err The error string to display.
+ */
+function displayError (err) {
+	const errorContainer = document.getElementById("error-msg");
+	errorContainer.innerText = err;
+}
+
+readUser((err) => {
+	if (!err) {
 		window.location.href = origin;
 	}
 });
 
-document.onsubmit = (e) => {
-	console.log(e);
+form.addEventListener("submit", (e) => {
 	e.preventDefault();
-}
+});
 
-logIn.onclick = (e) => {
+logIn.addEventListener("click", (e) => {
 	e.preventDefault();
 	if (email.value === "") {
-		alert("You need to fill in the email field");
+		displayError("You need to fill in the email field!");
 	} else if (password.value === "") {
-		alert("You need to fill in the password field");
+		displayError("You need to fill in the password field!");
 	} else {
         loginUser(email.value, password.value, (err) => {
             if (err.error) {
-                alert(err.error);
+                displayError(err.error);
                 return;
             }
             getUser((user) => {
                 if (user.error !== undefined) {
-                    alert(user.error);
+                    displayError(user.error);
                 } else if (user.email === undefined) {
-                    alert("Wrong username or password");
+                    displayError("Wrong username or password");
                 } else {
                     user.pwd = password.value;
                     createUserPouch(db, user, (userData) => {
@@ -52,25 +60,25 @@ logIn.onclick = (e) => {
             });
         });
 	}
-};
+});
 
-createAccount.onclick = (e) => {
+createAccount.addEventListener("click", (e) => {
 	e.preventDefault();
 	if (email.value === "") {
-		alert("You need to fill in the email field");
+		displayError("You need to fill in the email field");
 	} else if (password.value === "") {
-		alert("You need to fill in the password field");
+		displayError("You need to fill in the password field");
 	} else {
 		createUser(email.value, password.value, (user) => {
 			if (user.error !== undefined) {
-				alert(user.error);
+				displayError(user.error);
 			} else if (user.email === undefined) {
-				alert("Wrong username or password");
+				displayError("Wrong username or password");
 			} else {
 				createUserPouch(db, user, () => {
 					loginUser(email.value, password.value, (err) => {
 						if (err.error) {
-							alert(err.error);
+							displayError(err.error);
 						} else {
 							window.location.href = "/";
 						}
@@ -79,4 +87,4 @@ createAccount.onclick = (e) => {
 			}
 		});
 	}
-};
+});
