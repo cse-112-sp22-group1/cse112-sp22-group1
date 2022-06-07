@@ -1,6 +1,6 @@
-import * as dropdown from "../fillDropdown.js";
+
 import * as localStorage from "../localStorage/userOperations.js";
-import { navbar } from "../index.js";
+import { adderDropdown, navbar } from "../index.js";
 import { currentState } from "../state/stateManager.js";
 import { FileLocation } from "../components/fileLocation.jsx"
 
@@ -39,6 +39,7 @@ let template = <template>
  * Class that creates Page Header
  */
 export class PageHeader extends HTMLElement {
+
 	/**
 	 * PageHeader constructor
 	 */
@@ -51,6 +52,7 @@ export class PageHeader extends HTMLElement {
 		this.file = this.shadowRoot.getElementById("file");
 
 		this.futureLogButton = this.shadowRoot.querySelector(".new-button");
+		this.editButton = this.shadowRoot.querySelector(".edit-button");
 		this.titleHeader = this.shadowRoot.querySelector(".header");
 		this.imgbuttons = this.shadowRoot.querySelectorAll(".imgbutton");
 		this.menuToggle = this.shadowRoot.querySelector("#menuToggle input");
@@ -65,8 +67,15 @@ export class PageHeader extends HTMLElement {
 		this.futureLogButton.addEventListener("click", () => {
 			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight;
 			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 206;
-			/* dropDown window appears to be 206 px, not sure why previous value was 210 */
-			dropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
+
+			/* DropDown window appears to be 206 px, not sure why previous value was 210 */
+			adderDropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
+		});
+
+		this.editButton.addEventListener("click", ()=>{
+			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight - 100;
+			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 548;
+			adderDropdown.openEditDropdown(headerTopOffset, headerLeftOffset);
 		});
 
 		this.menuToggle.addEventListener("change", () => {

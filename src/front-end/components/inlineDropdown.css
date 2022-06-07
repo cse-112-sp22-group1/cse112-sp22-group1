@@ -7,16 +7,17 @@
 .dropdown-content {
 	display: none;
 	position: absolute;
-	background-color: var(--dropdown-background-color);
+	background-color: var(--card-background);
 	overflow: auto;
+	border-radius: 6px;
+	box-shadow: 0 0 10px var(--card-shadow);
 }
 
 .dropdown-content ul {
-	padding: 5px 8px;
+	padding: 5px 5px;
 	margin: 0;
 	list-style-type: none;
 }
-
 #myDropdown button {
 	background-color: transparent;
 	border: none;
@@ -25,16 +26,63 @@
 	text-align: left;
 	text-decoration: none;
 	display: inline-block;
-	font-size: 18px;
+	font-size: 16px;
 	cursor: pointer;
 	width: 100%;
-	min-width: 190px;
+	min-width: 150px;
 }
-
+img{
+	height: 18px;
+	align-self:top;
+	margin-top:10px;
+	margin-left:10px;
+	filter: var(--icon-filter)
+}
+li{
+	border-radius: 6px;
+	display: flex;
+	flex-wrap: nowrap;
+    vertical-align: middle;
+}
 li:hover {
-	background-color: var(--dropdown-hover-color);
+	background-color: var(--card-background-dim);
 }
 
+
+.extra-dropdown-content {
+	display: none;
+	position: absolute;
+	background-color:var(--card-background);
+	overflow: auto;
+	border-radius: 6px;
+	box-shadow: 0 0 10px var(--card-shadow);
+}
+
+.extra-dropdown-content ul {
+	padding: 5px 5px;
+	margin: 0;
+	list-style-type: none;
+}
+#extraDropdown button {
+	background-color: transparent;
+	border: none;
+	color: var(--dropdown-foreground-color);
+	padding: 10px 1px 10px 18px;
+	text-align: left;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	width: 100%;
+	min-width: 180px;
+}
+.arrow{
+	height: 10px;
+	align-self:top;
+	margin-top:14px;
+	margin-right:10px;
+	filter: var(--icon-filter)
+}
 .show {
 	display: block;
 }

@@ -2,7 +2,7 @@
  * Creator Module
  * @module creatorModule
  */
- import * as dropdown from "../fillDropdown.js";
+
  import * as localStorage from "../localStorage/userOperations.js";
  import {adderDropdown, creationMenu} from "../index.js";
  import { currentState } from "../state/stateManager.js";
@@ -17,7 +17,7 @@ import { createElement, createFragment } from "../jsxEngine.js";
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="creator.css" />
 	<div id="editorIcons" class="paragraphIcons"><img src="../public/resources/plusIcon.png" class="unfocusedIcons" id="plus" /><img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" /></div>
-	<div id="textBlock" contentEditable="true" ondrop={()=>{return false;}} class="unstylized" placeholder='Type "/" to create an item: future log, collection, etc'></div>
+	<div id="textBlock" contentEditable="true" ondrop={()=>false} class="unstylized" placeholder='Type "/" to create an item: future log, collection, etc'></div>
 </template>
 
 export class CreatorBlock extends HTMLElement {
@@ -37,7 +37,11 @@ export class CreatorBlock extends HTMLElement {
 		let textBlock = this.shadowRoot.getElementById("textBlock");
 		this.plus.onclick = () => {
             let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
-            dropdown.openCreationDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+            adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+		}
+		this.more.onclick = () => {
+            let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+            adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
 		}
 		textBlock.onkeydown = (e) => {
 			let key = e.key;
