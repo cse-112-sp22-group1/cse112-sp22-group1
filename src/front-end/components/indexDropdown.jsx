@@ -1,6 +1,7 @@
 //import { router } from "../state/router.js";
 
 import { ItemCard } from "./itemCard.jsx";
+import { LogCarousel } from "./logCarousel.jsx";
 
 // JSX Engine Import
 /* eslint-disable */
@@ -47,8 +48,9 @@ export class IndexDropdown extends HTMLElement {
 		this.monthlyLogs = this.shadowRoot.getElementById("monthlyLogs");
 		this.collections = this.shadowRoot.getElementById("collections");
 		this.log = log;
+        console.log(log)
 
-		this.loadContent();
+		this.loadContent("futureLog");
     }
 
     connectedCallback () {
@@ -112,12 +114,13 @@ export class IndexDropdown extends HTMLElement {
      */
     convertTimeframe (start, end) {
 		const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-		let startDay = start.getDate();
-		let endDay = end.getDate();
+        let Start = new Date(start);
+        let End = new Date(end);
+		let startDay = Start.getDate();
+		let endDay = End.getDate();
 
         let dateString = "";
-		dateString+=months[start.getMonth()] + " ";
+		dateString+=months[Start.getMonth()] + " ";
         switch (startDay % 10) {
             case 1:
                 dateString = dateString + startDay.toString() + "st ";
@@ -131,7 +134,7 @@ export class IndexDropdown extends HTMLElement {
             default:
                 dateString = dateString+ startDay.toString() + "th ";
         }
-		dateString+=start.getFullYear().toString() + " → " + months[end.getMonth()] + " ";
+		dateString+=Start.getFullYear().toString() + " → " + months[End.getMonth()] + " ";
         switch (endDay % 10) {
             case 1:
                 dateString = dateString + endDay.toString() + "st ";
@@ -145,24 +148,48 @@ export class IndexDropdown extends HTMLElement {
             default:
                 dateString = dateString + endDay.toString() + "th ";
         }
-		dateString+=end.getFullYear().toString();
+		dateString+=End.getFullYear().toString();
 		return dateString;
     }
 
 	/**
 	 * Reads info from the log and fills the component.
 	 */
-	loadContent() {
+	loadContent(type) {
 		// Timeframe
 		if (this.log.startDate && this.log.endDate) {
 			this.timeframe.innerText = this.convertTimeframe(this.log.startDate, this.log.endDate);
 		}
 		// Future Log Title
 		this.header.innerText = this.log.title;
-		// TODO: Add Monthly Logs and Collections
-		let filler = document.createElement('h2');
-		filler.innerText = "This will be filled later.";
-		this.contentWrapper.appendChild(filler);
+
+
+        if(type == "futureLog") {
+            // Monthly Logs and Headers
+            if(this.log.months.length > 0) {
+                let monthlyLogs = new LogCarousel("Monthly Logs", this.log.months, "monthlyLog")
+                this.contentWrapper.appendChild(monthlyLogs);
+            }
+
+            if(this.log.collections.length > 0) {
+                let collections = new LogCarousel("Collections", this.log.collections, "collections")
+                this.contentWrapper.appendChild(collections);
+            }
+        }
+        
+        if(type == "collections") {
+            // Monthly Logs and Headers
+            if(this.log.months.length > 0) {
+                let monthlyLogs = new LogCarousel("Monthly Logs", this.log.months, "monthlyLog")
+                this.contentWrapper.appendChild(monthlyLogs);
+            }
+
+            if(this.log.collections.length > 0) {
+                let collections = new LogCarousel("Collections", this.log.collections, "collections")
+                this.contentWrapper.appendChild(collections);
+            }
+        }
+
 	}
 }
 

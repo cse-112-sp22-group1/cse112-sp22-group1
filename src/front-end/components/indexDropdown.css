@@ -12,11 +12,11 @@
 #wrapper {
     padding-bottom: 0;
     width: calc(100% - 70px);
+    
 }
 
 #timeframe {
     font-family: "SF-Pro";
-    margin-left: 7.5px;
     font-size: 16px;
     color: #9b9b9b;
     margin-bottom: 0px; 
@@ -25,7 +25,6 @@
 #title {
     display: inline-block;
     font-family: "SF-Pro";
-    margin-left: 7.5px;
     font-size: 25pt;
     font-weight: bold;
     letter-spacing: 1.2px;
@@ -75,14 +74,16 @@
     color:white;
     background-color: #33b5e5;
     border: 4px solid #33b5e5 ;
+    margin-bottom: 10px;
 }
 
 #edit {
     color:white;
     background-color: #ffbb33;
     border: 4px solid #ffbb33 ;
+
 }
 
-h2 {
-    margin-left: 7.5px;
+h1 {
+  padding-bottom: 4px;  
 }
