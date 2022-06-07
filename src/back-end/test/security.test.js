@@ -296,8 +296,10 @@ describe("authenticate() Tests", () => {
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
-        let success = await security.authenticate();
-        expect(success).toBe(false);
+        const undefinedAuth = async () => {
+            await security.authenticate();
+        };
+        await expect(undefinedAuth).rejects.toThrow();
     });
 
     test("Null userdata", async () => {
@@ -306,7 +308,9 @@ describe("authenticate() Tests", () => {
             pwd: "PASSWORD"
         };
         await insertUser(user.email, user.pwd);
-        let success = await security.authenticate(null);
-        expect(success).toBe(false);
+        const nullAuth = async () => {
+            await security.authenticate(null);
+        };
+        await expect(nullAuth).rejects.toThrow();
     });
 });

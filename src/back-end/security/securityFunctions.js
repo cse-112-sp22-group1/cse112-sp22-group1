@@ -53,15 +53,11 @@ const decrypt = (data, password) => {
  * @resolve true if the user authenticated successfully, false otherwise.
  */
 const authenticate = async (userData) => {
-    try {
-        const user = await schema.User.findOne({ email: userData.email });
-        if (user === null) {
-            return false;
-        }
-        return passHash(userData.pwd) === user.pwd;
-    } catch (err) {
+    const user = await schema.User.findOne({ email: userData.email }).exec();
+    if (user === null) {
         return false;
     }
+    return passHash(userData.pwd) === user.pwd;
 }
 
 /* For exporting */
