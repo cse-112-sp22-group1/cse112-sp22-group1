@@ -135,7 +135,6 @@ const getDecryptedUser = async (email, password) => {
 
 describe("Test /auth route", () => {
 
-
     /* Connect to the in-memory Mongo server */
     beforeAll(async () => {
         mongoose.set("useCreateIndex", true);
@@ -442,3 +441,233 @@ describe("Test DELETE /user route", () => {
         expect(response.body).toEqual({ error: "User is not authorized to access this resource." });
     });
 });
+
+describe("Test UPDATE /user route", () => {
+
+    /* Connect to the in-memory Mongo server */
+    beforeAll(async () => {
+        mongoose.set("useCreateIndex", true);
+        await mongoose.connect(`${globalThis.__MONGO_URI__}${globalThis.__MONGO_DB_NAME__}`, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true
+        });
+    });
+
+    /* Drop the database */
+    afterEach(async () => {
+        await schema.User.deleteMany({});
+    });
+
+    /* Clean up the connection */
+    afterAll(async () => {
+        await mongoose.connection.close();
+    });
+
+    test("User full update", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        const insertedUser = await addUser(user.email, user.pwd);
+        let cookie = await getAuthCookie(user);
+        expect(cookie).not.toBe(null);
+
+        insertedUser.index = { objectType: "index", contents: ["One", "Two", "Three"] };
+        insertedUser.theme = "darkmode";
+        insertedUser.dailyLogs.push({
+            id: "DEADBEEF",
+            objectType: "signifier",
+            date: JSON.parse(JSON.stringify(new Date(0))),
+            parent: "CAFEBEEF",
+            content: ["First String", "Second String", "Third String"],
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+        });
+        insertedUser.monthlyLogs.push({
+            id: "DEADBEEF",
+            objectType: "signifier",
+            parent: "CAFEBEEF",
+            date: JSON.parse(JSON.stringify(new Date(0))),
+            days: [
+                {
+                    id: "CAFECAFE",
+                    content: ["Some content", "other content", "more content"],
+                    dailyLog: "BEEFBEEF"
+                }
+            ],
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+        });
+        insertedUser.futureLogs.push({
+            id: "DEADBEEF",
+            objectType: "signifier",
+            startDate: JSON.parse(JSON.stringify(new Date(0))),
+            endDate: JSON.parse(JSON.stringify(new Date(100000000))),
+            months: [
+                {
+                    id: "CAFECAFE",
+                    content: ["Some content", "other content", "more content"],
+                    monthlyLog: "BEEFBEEF"
+                }
+            ],
+            trackers: ["First Tracker", "Second Tracker", "Third Tracker"]
+        });
+        insertedUser.trackers.push({
+            id: "DEADBEEF",
+            objectType: "signifier",
+            title: "Tacker",
+            content: ["Lorem", "Ipsum", "Novo"],
+            parent: "CAFEBEEF"
+        });
+        insertedUser.collections.push({
+            id: "DEADBEEF",
+            objectType: "signifier",
+            title: "Collection",
+            parent: "CAFEBEEF",
+            content: ["First", "Second", "Third"]
+        });
+        insertedUser.textBlocks.push({
+            id: "DEADBEEF",
+            objectType: "signifier",
+            tabLevel: 0,
+            parent: "BEEFBEEF",
+            subParent: "CAFECAFE",
+            kind: "Event",
+            objectReference: "DEADEAD",
+            text: "This is some text",
+            signifier: "orange"
+        });
+        insertedUser.events.push({
+            id: "CAFEBEEF",
+            objectType: "signifier",
+            title: "A title",
+            parent: "DEADBEEF",
+            date: JSON.parse(JSON.stringify(new Date())),
+            signifier: "Orange"
+        });
+        insertedUser.tasks.push({
+            id: "CAFEBEEF",
+            objectType: "task",
+            parent: "DEADBEEF",
+            text: "A task",
+            complete: 0,
+            signifier: "AAAAAAAAAAAAAAAAAAAAAAAAa"
+        });
+        insertedUser.signifiers.push({
+            id: "CAFEBEEF",
+            objectType: "signifier",
+            meaning: "general",
+            symbol: "&#x1F7E0;"
+        });
+
+        const response = await request(app).
+            put("/user").
+            set("cookie", [cookie]).
+            send(insertedUser);
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(removeIds(response.body)).toEqual(removeIds(insertedUser));
+
+        const decryptedUser = await getDecryptedUser(user.email, user.pwd);
+        expect(removeIds(decryptedUser)).toEqual(removeIds(insertedUser));
+    });
+
+    test("User can't update email", async () => {
+        const GOOD_EMAIL = "user@example.com";
+        const BAD_EMAIL = "devil@evil.com";
+        const PASSWORD = "password";
+        const user = await addUser(GOOD_EMAIL, PASSWORD);
+        user.pwd = PASSWORD;
+        let cookie = await getAuthCookie(user);
+        delete user.pwd;
+        expect(cookie).not.toBe(null);
+
+        user.email = BAD_EMAIL;
+        const response = await request(app).
+            put("/user").
+            set("cookie", [cookie]).
+            send(user);
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body.email).toBe(GOOD_EMAIL);
+
+        const decryptedUser = await getDecryptedUser(GOOD_EMAIL, PASSWORD);
+        expect(decryptedUser.email).toEqual(GOOD_EMAIL);
+    });
+
+    test("User can't update password", async () => {
+        const EMAIL = "user@example.com";
+        const PASSWORD = "password";
+        let user = await addUser(EMAIL, PASSWORD);
+        user.pwd = PASSWORD;
+        let cookie = await getAuthCookie(user);
+        expect(cookie).not.toBe(null);
+
+        user.pwd = "differentPassword";
+        const response = await request(app).
+            put("/user").
+            set("cookie", [cookie]).
+            send(user);
+        expect(response.statusCode).toBe(200);
+
+        user = await getEncryptedUser(EMAIL);
+        const EXPECTED_PASSHASH = security.passHash(PASSWORD);
+        expect(user.pwd).toBe(EXPECTED_PASSHASH);
+    });
+
+    test("User can't update a different user", async () => {
+        const user1 = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        const insertedUser1 = await addUser(user1.email, user1.pwd);
+        const user2 = {
+            email: "tim@gmail.com",
+            pwd: "drowssap"
+        };
+        const insertedUser2 = await addUser(user2.email, user2.pwd);
+
+        let cookie = await getAuthCookie(user1);
+        expect(cookie).not.toBe(null);
+
+        insertedUser1.email = user2.email;
+        insertedUser1.theme = "canary";
+        const response = await request(app).
+            put("/user").
+            set("cookie", [cookie]).
+            send(insertedUser1);
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body.email).toEqual(user1.email);
+
+        /* Check that user1 was the one that was updated */
+        let decUser = await getDecryptedUser(user1.email, user1.pwd)
+        expect(decUser.theme).toEqual(insertedUser1.theme);
+
+        /* Check that user2 was no updated */
+        decUser = await getDecryptedUser(user2.email, user2.pwd)
+        expect(decUser.theme).toEqual(insertedUser2.theme);
+    });
+
+    test("Update with empty object", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        const insertedUser = await addUser(user.email, user.pwd);
+
+        let cookie = await getAuthCookie(user);
+        expect(cookie).not.toBe(null);
+
+        const response = await request(app).
+            put("/user").
+            set("cookie", [cookie]).
+            send({});
+        expect(response.statusCode).toBe(500);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body.error).toBeDefined();
+
+        const decUser = await getDecryptedUser(user.email, user.pwd)
+        expect(removeIds(decUser)).toEqual(removeIds(insertedUser));
+    });
+});
+
+
