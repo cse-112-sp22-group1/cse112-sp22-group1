@@ -670,4 +670,69 @@ describe("Test UPDATE /user route", () => {
     });
 });
 
+describe("Test GET /user route", () => {
 
+    /* Connect to the in-memory Mongo server */
+    beforeAll(async () => {
+        mongoose.set("useCreateIndex", true);
+        await mongoose.connect(`${globalThis.__MONGO_URI__}${globalThis.__MONGO_DB_NAME__}`, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true
+        });
+    });
+
+    /* Drop the database */
+    afterEach(async () => {
+        await schema.User.deleteMany({});
+    });
+
+    /* Clean up the connection */
+    afterAll(async () => {
+        await mongoose.connection.close();
+    });
+
+    test("Read empty user", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        const insertedUser = await addUser(user.email, user.pwd);
+        const cookie = await getAuthCookie(user);
+        expect(cookie).not.toBe(null);
+        const response = await request(app).
+            get("/user").
+            set("cookie", [cookie]);
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(removeIds(response.body)).toEqual(removeIds(insertedUser));
+    });
+
+    test("Read not authed", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        await addUser(user.email, user.pwd);
+        const response = await request(app).
+            get("/user");
+        expect(response.statusCode).toBe(401);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body).toEqual({ error: "User is not authorized to access this resource." });
+    });
+
+    test("Read after failed auth", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        await addUser(user.email, user.pwd);
+        user.pwd = "notpassword";
+        const cookie = await getAuthCookie(user);
+        expect(cookie).toBe(null);
+        const response = await request(app).
+            get("/user");
+        expect(response.statusCode).toBe(401);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body).toEqual({ error: "User is not authorized to access this resource." });
+    });
+});
