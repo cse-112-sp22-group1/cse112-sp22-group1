@@ -73,20 +73,68 @@ const removeIds = (user) => {
     return user;
 };
 
+/**
+ * Gets a valid auth cookie.
+ *
+ * @param {request.SuperTest<request.Test>} request The request to auth with.
+ * @param {Object} user The user to authenticate as.
+ * @return An authed session cookie, null if it doesn't exist.
+ */
+const getAuthCookie = async (user) => {
+    const response = await request(app).post("/auth").send(user);
+    if (response.statusCode !== 200) {
+        return null;
+    }
+    for (let cookie of response.header["set-cookie"]) {
+        cookie = cookie.split(" ")[0];
+        if (cookie.startsWith("sessionAuth=")) {
+            return cookie;
+        }
+    }
+    return null;
+};
+
+
+/**
+ * Adds a user directly to the database.
+ *
+ * @param {String} email The email of the user to add.
+ * @param {String} password The password of the user to add.
+ * @returns The added user.
+ */
+const addUser = async (email, password) => {
+    const key = genKeyFromPass(email, password);
+    const user = await createUser.createUser(email, password, key);
+    return user;
+};
+
+/**
+ * Reads a user from the database with data encrypted.
+ *
+ * @param {String} email The email of the user get.
+ * @returns The user if found, null otherwise.
+ */
+const getEncryptedUser = async (email) => {
+    const user = await schema.User.findOne({ email: email }).exec();
+    return JSON.parse(JSON.stringify(user));
+};
+
+/**
+ * Reads a user from the database with data decrypted and password stripped.
+ *
+ * @param {String} email The email of the user to get.
+ * @param {String} password The password of the user to get.
+ * @returns The user if found, null otherwise.
+ */
+const getDecryptedUser = async (email, password) => {
+    const key = genKeyFromPass(email, password);
+    const user = await readUser.readUser(email, key);
+    return JSON.parse(JSON.stringify(user));
+};
+
+
 describe("Test /auth route", () => {
 
-    /**
-     * Adds a user directly to the database.
-     *
-     * @param {String} email The email of the user to add.
-     * @param {String} password The password of the user to add.
-     * @returns The added user.
-     */
-    const addUser = async (email, password) => {
-        const key = genKeyFromPass(email, password);
-        const user = await createUser.createUser(email, password, key);
-        return user;
-    };
 
     /* Connect to the in-memory Mongo server */
     beforeAll(async () => {
@@ -250,30 +298,6 @@ describe("Test /auth route", () => {
 
 describe("Test POST /user route", () => {
 
-    /**
-     * Reads a user from the database with data encrypted.
-     *
-     * @param {String} email The email of the user get.
-     * @returns The user if found, null otherwise.
-     */
-    const getEncryptedUser = async (email) => {
-        const user = await schema.User.findOne({ email: email }).exec();
-        return JSON.parse(JSON.stringify(user));
-    };
-
-    /**
-     * Reads a user from the database with data decrypted and password stripped.
-     *
-     * @param {String} email The email of the user to get.
-     * @param {String} password The password of the user to get.
-     * @returns The user if found, null otherwise.
-     */
-    const getDecryptedUser = async (email, password) => {
-        const key = genKeyFromPass(email, password);
-        const user = await readUser.readUser(email, key);
-        return JSON.parse(JSON.stringify(user));
-    };
-
     /* Connect to the in-memory Mongo server */
     beforeAll(async () => {
         mongoose.set("useCreateIndex", true);
@@ -364,5 +388,57 @@ describe("Test POST /user route", () => {
         expect(response.statusCode).toBe(500);
         expect(response.headers["content-type"]).toMatch(/json/);
         expect(response.body).toEqual({ error: "Cannot read properties of null (reading 'match')" });
+    });
+});
+
+describe("Test DELETE /user route", () => {
+
+    /* Connect to the in-memory Mongo server */
+    beforeAll(async () => {
+        mongoose.set("useCreateIndex", true);
+        await mongoose.connect(`${globalThis.__MONGO_URI__}${globalThis.__MONGO_DB_NAME__}`, {
+            useUnifiedTopology: true,
+            useNewUrlParser: true
+        });
+    });
+
+    /* Drop the database */
+    afterEach(async () => {
+        await schema.User.deleteMany({});
+    });
+
+    /* Clean up the connection */
+    afterAll(async () => {
+        await mongoose.connection.close();
+    });
+
+    test("Delete valid user", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        await addUser(user.email, user.pwd);
+        let cookie = await getAuthCookie(user);
+        expect(cookie).not.toBe(null);
+
+        const response = await request(app).
+            delete("/user").
+            set("cookie", [cookie]);
+        expect(response.statusCode).toBe(200);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body.email).toBe(user.email);
+    });
+
+    test("Delete valid user, not authed", async () => {
+        const user = {
+            email: "user@example.com",
+            pwd: "password"
+        };
+        await addUser(user.email, user.pwd);
+
+        const response = await request(app).delete("/user");
+        expect(response.statusCode).toBe(401);
+        expect(response.headers["content-type"]).toMatch(/json/);
+        expect(response.body).toEqual({ error: "User is not authorized to access this resource." });
     });
 });
