@@ -62,8 +62,12 @@ app.post("/auth", express.json({ type: "*/*" }), (req, res) => {
             req.session.authed = success;
             if (req.session.authed) {
                 req.session.email = req.body.email;
-                req.session.key = security.passHash(security.encrypt(req.body.pwd, constants.sessionSecret));
-                res.json({ error: null });
+                try {
+                    req.session.key = security.passHash(req.body.email + req.body.pwd);
+                    res.json({ error: null });
+                } catch (err) {
+                    sendServerError(res, err);
+                }
             } else {
                 res.status(401);
                 res.json({ error: "Authentication failed!" });
@@ -75,11 +79,14 @@ app.post("/auth", express.json({ type: "*/*" }), (req, res) => {
 
 /* Defines the /user route for creating users */
 app.post("/user", express.json({ type: "*/*" }), (req, res) => {
-    const passHash = security.passHash(req.body.pwd);
-    const key = security.passHash(security.encrypt(passHash, constants.sessionSecret));
-    createUser.createUser(req.body.email, req.body.pwd, key).
-        then((user) => res.json(user)).
-        catch((err) => sendServerError(res, err));
+    try {
+        const key = security.passHash(req.body.email + req.body.pwd);
+        createUser.createUser(req.body.email, req.body.pwd, key).
+            then((user) => res.json(user)).
+            catch((err) => sendServerError(res, err));
+    } catch (err) {
+        sendServerError(res, err);
+    }
 });
 
 /* Defines the /user route for querying user info */
