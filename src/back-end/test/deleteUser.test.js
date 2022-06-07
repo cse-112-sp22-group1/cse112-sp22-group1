@@ -67,4 +67,18 @@ describe("deleteUser Tests", () => {
         };
         await expect(deleteEmpty).rejects.toThrow();
     });
+
+    test("User password is not sent", async () => {
+        let user = {
+            email: "foo@gmail.com",
+            pwd: "123ABC"
+        }
+        const KEY = "ABC123";
+        await createUser(user.email, user.pwd, KEY);
+        let success = await checkUser(user);
+        expect(success).toBe(true);
+
+        user = await deleteUser(user.email);
+        expect(user.pwd).toBeUndefined();
+    });
 });

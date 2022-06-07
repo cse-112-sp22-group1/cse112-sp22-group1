@@ -13,7 +13,7 @@ const schema = require(`${__dirname}/../schema.js`);
  * @reject An error.
  */
 const deleteUser = async (email) => {
-	const user = await schema.User.findOneAndDelete({ email: email }).exec();
+	let user = await schema.User.findOneAndDelete({ email: email }).lean();
 	if (user === null) {
 		throw new Error("User does not exist!");
 	}
