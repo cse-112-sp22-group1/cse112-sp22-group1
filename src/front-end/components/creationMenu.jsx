@@ -149,22 +149,30 @@ export class CreationMenu extends HTMLElement {
         this.kind = kind;
 		if (kind === "futureLog") {
 			this.content.appendChild(futureLogCreator);
-			if (this.startPicker !== null && this.endPicker !== null) {
+			if (this.startPicker && this.startPicker.remove) {
 				/* eslint-disable */
 				this.startPicker.remove();
-				this.endPicker.remove();
+				/* eslint-enable */
+			}
+			if (this.endPicker && this.endPicker.remove) {
 				/* eslint-disable */
+				this.endPicker.remove();
+				/* eslint-enable */
 			}
 			this.futureTitle = this.shadowRoot.getElementById("futureTitle");
 			this.startPicker = datepicker(this.shadowRoot.getElementById("futureFrom"), {id: 1});
 			this.endPicker = datepicker(this.shadowRoot.getElementById("futureTo"), {id: 1});
 		} else if (kind === "monthlyLog") {
 			this.content.appendChild(monthlyLogCreator);
-			if (this.startPicker !== null && this.endPicker !== null) {
+			if (this.startPicker && this.startPicker.remove) {
 				/* eslint-disable */
 				this.startPicker.remove();
-				this.endPicker.remove();
+				/* eslint-enable */
+			}
+			if (this.endPicker && this.endPicker.remove) {
 				/* eslint-disable */
+				this.endPicker.remove();
+				/* eslint-enable */
 			}
 			this.startPicker = datepicker(this.shadowRoot.getElementById("monthlyFrom"), {id: 1, onSelect: (instance, date) => {
 				if (new Date(this.shadowRoot.getElementById("monthlyTo").value).getMonth() !== date.getMonth() && instance.getRange().end) {
@@ -184,9 +192,15 @@ export class CreationMenu extends HTMLElement {
 			}});
 		} else if (kind === "dailyLog") {
 			this.content.appendChild(dailyLogCreator);
-			if (this.startPicker !== null && this.endPicker !== null) {
+			if (this.startPicker && this.startPicker.remove) {
+				/* eslint-disable */
 				this.startPicker.remove();
+				/* eslint-enable */
+			}
+			if (this.endPicker && this.endPicker.remove) {
+				/* eslint-disable */
 				this.endPicker.remove();
+				/* eslint-enable */
 			}
 			this.startPicker = datepicker(this.shadowRoot.getElementById("daily"), {id: 1});
 		} else if (kind === "collection") {

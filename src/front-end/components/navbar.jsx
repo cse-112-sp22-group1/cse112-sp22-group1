@@ -1,7 +1,11 @@
+import * as localStorage from "../localStorage/userOperations.js";
 import { header } from "../index.js";
 import { SettingsMenu } from "./settings.jsx";
 import { router } from "../state/router.js";
 import { HelpMenu } from "./help.jsx";
+import { currentState } from "../state/stateManager.js";
+import { creationMenu } from "../index.js";
+import { createDailyLog } from "../localStorage/userOperations.js";
 
 //const template = document.createElement("template");
 
@@ -22,7 +26,6 @@ let template = <template>
 		<button id="todaysLog"><img src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
 		<button id="monthlyLog"><img src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
 		<button id="futureLog"><img src="../public/resources/futureLog.png"/><h1>Future Log</h1></button>
-		<button id="retrospective"><img src="../public/resources/retrospective.png"/><h1>Retrospective</h1></button>
 		<div id="bottom">
 			<button id="help"><img src="../public/resources/question.png"/><h1>Help </h1></button>
 			<button id="user"><img src="../public/resources/user.png"/><h1>My Account</h1></button>
@@ -38,7 +41,6 @@ let template = <template>
 			<button><img id="todaysLog" src="../public/resources/todaysLog.png"/><h1>Today's Log</h1></button>
 			<button><img id="monthlyLog" src="../public/resources/monthlyLog.png"/><h1>Monthly Log</h1></button>
 			<button><img id="futureLog" src="../public/resources/futureLog.png"/><h1>Future Logs</h1></button>
-			<button><img id="retrospective" src="../public/resources/retrospective.png"/><h1>Retrospective</h1></button>
 			<div id="bottom">
 				<button id="help"><img src="../public/resources/question.png"/><h1>Help </h1></button>
 				<button id="user"><img src="../public/resources/user.png"/><h1>My Account</h1></button>
@@ -77,24 +79,22 @@ export class NavBar extends HTMLElement {
 		this.todayLog = this.shadowRoot.querySelectorAll("button")[2];
 		this.monthLog = this.shadowRoot.querySelectorAll("button")[3];
 		this.futureLog = this.shadowRoot.querySelectorAll("button")[4];
-		this.retrospective = this.shadowRoot.querySelectorAll("button")[5];
 
-		this.help = this.shadowRoot.querySelectorAll("button")[6];
-		this.user = this.shadowRoot.querySelectorAll("button")[7];
-		this.uncollapse = this.shadowRoot.querySelectorAll("button")[8];
+		this.help = this.shadowRoot.querySelectorAll("button")[5];
+		this.user = this.shadowRoot.querySelectorAll("button")[6];
+		this.uncollapse = this.shadowRoot.querySelectorAll("button")[7];
 
 		// Would be used for a vertical screen size
 		this.menu = this.shadowRoot.querySelector("#menu");
 
-		this.collapseSmall = this.shadowRoot.querySelectorAll("button")[9];
-		this.homeSmall = this.shadowRoot.querySelectorAll("button")[10];
-		this.todayLogSmall = this.shadowRoot.querySelectorAll("button")[11];
-		this.monthLogSmall = this.shadowRoot.querySelectorAll("button")[12];
-		this.futureLogSmall = this.shadowRoot.querySelectorAll("button")[13];
-		this.retrospectiveSmall = this.shadowRoot.querySelectorAll("button")[14];
+		this.collapseSmall = this.shadowRoot.querySelectorAll("button")[8];
+		this.homeSmall = this.shadowRoot.querySelectorAll("button")[9];
+		this.todayLogSmall = this.shadowRoot.querySelectorAll("button")[10];
+		this.monthLogSmall = this.shadowRoot.querySelectorAll("button")[11];
+		this.futureLogSmall = this.shadowRoot.querySelectorAll("button")[12];
 
-		this.helpSmall = this.shadowRoot.querySelectorAll("button")[15];
-		this.userSmall = this.shadowRoot.querySelectorAll("button")[16];
+		this.helpSmall = this.shadowRoot.querySelectorAll("button")[13];
+		this.userSmall = this.shadowRoot.querySelectorAll("button")[14];
 	}
 
 	/**
@@ -107,6 +107,15 @@ export class NavBar extends HTMLElement {
 		});
 		this.collapse.addEventListener("click", () => {
 			this.navToggle(this.navShown)
+		});
+		this.todayLog.addEventListener("click", () => {
+			this.goTodaysLog();
+		});
+		this.monthLog.addEventListener("click", () => {
+			this.goMonthlyLog();
+		});
+		this.futureLog.addEventListener("click", () => {
+			this.goFutureLog();
 		});
 		this.help.addEventListener("click", () => {
 			let helpMenu = document.querySelector("help-menu");
@@ -158,6 +167,96 @@ export class NavBar extends HTMLElement {
 	 */
 	goHome () {
 		router.navigate("/");
+	}
+
+	/**
+	 * Goes future log for today
+	 */
+	goFutureLog () {
+		localStorage.readUser((err, user) => {
+            if (err) {
+                console.log(err);
+            } else {
+				let date = new Date()
+				// if we find it then navigate
+                for(let i = 0; i < user.futureLogs.length; i++) {
+					console.log(date)
+					let start = new Date(user.futureLogs[i].startDate)
+					let end = new Date(user.futureLogs[i].endDate)
+					if (start < date && end > date) {
+						router.navigate("/futureLog/" + user.futureLogs[i].id)
+						return
+					}
+				}
+				// else prompt user with creation
+				creationMenu.setKind("futureLog");
+                creationMenu.show();
+            }
+        })
+	}
+
+	/**
+ 	* Goes monthly log for today
+ 	*/
+	goMonthlyLog () {
+		localStorage.readUser((err, user) => {
+			if (err) {
+				console.log(err);
+			} else {
+				let date = new Date()
+				// if we find it then navigate
+				for(let i = 0; i < user.monthlyLogs.length; i++) {
+					console.log(date)
+					let start = new Date(user.monthlyLogs[i].startDate)
+					let end = new Date(user.monthlyLogs[i].endDate)
+					if (start < date && end > date) {
+						router.navigate("/monthlyLog/" + user.monthlyLogs[i].id)
+						return
+					}
+				}
+				// else prompt user with creation
+				creationMenu.setKind("futureLog");
+				creationMenu.show();
+			}
+		})
+	}
+
+	/**
+ 	* Goes monthly log for today
+ 	*/
+	goTodaysLog () {
+		localStorage.readUser((err, user) => {
+			if (err) {
+				console.log(err);
+			} else {
+				let date = new Date()
+				// if we find it then navigate
+				for(let i = 0; i < user.dailyLogs.length; i++) {
+					console.log(date)
+					let start = new Date(user.dailyLogs[i].startDate)
+					if (start == date) {
+						router.navigate("/dailyLog/" + user.dailyLogs[i].id)
+						return
+					}
+				}
+				// else check if monthly log exists for it
+				for(let i = 0; i < user.monthlyLogs.length; i++) {
+					console.log(date)
+					let start = new Date(user.monthlyLogs[i].startDate)
+					let end = new Date(user.monthlyLogs[i].endDate)
+					console.log("test")
+					if (start < date && end > date) {
+						createDailyLog(user.monthlyLogs[i], [], user.monthlyLogs[i].collections, [], date, true, async (err, dailyLog) => {
+							router.navigate("/dailyLog/" + dailyLog.id)
+						});
+						return
+					}
+				}
+				// else prompt user with creation
+				creationMenu.setKind("futureLog");
+				creationMenu.show();
+			}
+		})
 	}
 
 	/**
