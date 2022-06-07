@@ -50,8 +50,8 @@ const sendServerError = (res, err) => {
  *
  * @param {Response<any, Record<string, any>, number>} res The response to send on.
  */
-const sendForbiddenError = (res) => {
-    res.status(403);
+const sendUnauthorizedError = (res) => {
+    res.status(401);
     res.json({ error: "User is not authorized to access this resource." });
 };
 
@@ -65,7 +65,7 @@ app.post("/auth", express.json({ type: "*/*" }), (req, res) => {
                 req.session.key = security.passHash(security.encrypt(req.body.pwd, constants.sessionSecret));
                 res.json({ error: null });
             } else {
-                res.status(400);
+                res.status(401);
                 res.json({ error: "Authentication failed!" });
             }
         }).catch((err) => {
@@ -89,7 +89,7 @@ app.get("/user", express.json({ type: "*/*" }), (req, res) => {
             then((user) => res.json(user)).
             catch((err) => sendServerError(res, err));
     } else {
-        sendForbiddenError(res);
+        sendUnauthorizedError(res);
     }
 });
 
@@ -100,7 +100,7 @@ app.put("/user", express.json({ type: "*/*" }), (req, res) => {
             then((user) => res.json(user)).
             catch((err) => sendServerError(res, err))
     } else {
-        sendForbiddenError(res);
+        sendUnauthorizedError(res);
     }
 });
 
@@ -115,7 +115,7 @@ app.delete("/user", express.json({ type: "*/*" }), (req, res) => {
                 res.json(user);
             }).catch((err) => sendServerError(res, err));
     } else {
-        sendForbiddenError(res);
+        sendUnauthorizedError(res);
     }
 });
 
