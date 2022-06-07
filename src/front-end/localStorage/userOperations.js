@@ -73,7 +73,7 @@ try {
 
 /**
  * Sets up the local storage
- * @param {PouchDB} database 
+ * @param {PouchDB} database
  */
 export let setupStorage = (database) => {
 	if (database) {
@@ -112,7 +112,7 @@ export function loginUser (email, pwd, callback) {
 			"Origin": origin
 		},
 		body: JSON.stringify({
-			email: email,
+			email: email.toLowerCase(),
 			pwd: pwd
 		}),
 		method: "POST"
