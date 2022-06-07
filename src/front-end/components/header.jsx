@@ -27,7 +27,7 @@ let template = <template>
 				<button class="edit-button">Edit</button>
 			</div>
 			<button class="new-button">New</button>
-		</section> 
+		</section>
 		<aside class="search_bar" id="searchBar">
 			<input type="text" placeholder="Search" />
 			<img src="../public/resources/search_icon.png" />
@@ -73,8 +73,8 @@ export class PageHeader extends HTMLElement {
 		});
 
 		this.editButton.addEventListener("click", ()=>{
-			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight - 100;
-			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 548;
+			const headerTopOffset = this.editButton.getBoundingClientRect().top + document.body.scrollTop;
+			const headerLeftOffset = this.editButton.getBoundingClientRect().left + this.editButton.getBoundingClientRect().width + 10;
 			adderDropdown.openEditDropdown(headerTopOffset, headerLeftOffset);
 		});
 
