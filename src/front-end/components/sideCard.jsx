@@ -9,6 +9,8 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
 /* eslint-enable */
+import {adderDropdown} from "../index.js";
+
 
 let template = <template>
 	<link type="text/css" rel="stylesheet" href="sideCard.css" />
@@ -46,6 +48,22 @@ export class SideCard extends HTMLElement {
         if (trackers === null) {} else {
             this.addTracker(trackers)
         }
+        this.editButton = this.shadowRoot.getElementById("editButton");
+        this.dropdownContents = [
+            {
+                title: "Delete",
+                icon: "../public/resources/delete_icon.png",
+                listener: () => {
+                    this.remove();
+                }
+            }, {
+                title: "More",
+                icon: "../public/resources/more_icon.png",
+                listener: () => {
+
+                }
+            }
+        ];
         this.bindDeleteButton();
     }
 
@@ -77,10 +95,10 @@ export class SideCard extends HTMLElement {
     }
 
     bindDeleteButton () {
-        this.shadowRoot.getElementById("editButton").addEventListener("click", () => {
-            let pressed = this.shadowRoot.getElementById("title").innerText + " delete button was pressed!";
-            console.log(pressed);
-            this.remove();
+        this.editButton.addEventListener("click", () => {
+            const headerTopOffset = this.editButton.getBoundingClientRect().bottom + 5 + document.body.scrollTop;
+			const headerLeftOffset = this.editButton.getBoundingClientRect().left - this.editButton.getBoundingClientRect().width - 10;
+			adderDropdown.openSideCardDropdown(headerTopOffset, headerLeftOffset, this.dropdownContents);
         })
     }
 }

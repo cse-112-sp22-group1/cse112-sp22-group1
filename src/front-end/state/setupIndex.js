@@ -1,84 +1,124 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { contentWrapper, header } from "../index.js"
-import { CreatorBlock } from "../components/creator.jsx";
-import { DropdownBlock } from "../components/dropdown.jsx";
-import { FileLocation } from "../components/fileLocation.jsx";
+import { adderDropdown, contentWrapper, creationMenu, header } from "../index.js"
+import { IndexDropdown } from "../components/indexDropdown.jsx";
 import { currentState } from "./stateManager.js";
 
 /**
  * Sets up the index page with the futureLogs and collections of the user.
  */
+
+
 export function setupIndex () {
 	localStorage.readUser((err, user) => {
 		if (err) {
 			console.log(err);
 		} else {
-			console.log(user.futureLogs);
+			let displayToggle = document.createElement("button");
+			displayToggle.id = "displayToggle";
+			displayToggle.innerHTML = "&#x25BC;   Future Logs";
 			let userArr = [];
 			Array.prototype.push.apply(userArr, user.futureLogs);
-			Array.prototype.push.apply(userArr, user.collections);
 
 			let parentArr = [];
-			console.log(currentState);
 			for (let i = 0; i < currentState.futureLogs.length; i++) {
 				Array.prototype.push.apply(parentArr, userArr.filter((object) => object.id === currentState.futureLogs[i]));
 			}
-
-			let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
+			console.log(user.futureLogs);
+			let dropdownContainer = document.createElement("section");
+			dropdownContainer.id = "dropdownContainer";
+			contentWrapper.appendChild(dropdownContainer);
+			console.log(currentState.futureLogs);
+			let dropdowns = [];
 			for (let i = 0; i < parentArr.length; i++) {
 				console.log("inside for loop");
 				if (parentArr[i].objectType === "futureLog") {
-					let futureLogStart = new Date(parentArr[i].startDate);
-					let futureLogEnd = new Date(parentArr[i].endDate);
-					let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, parentArr[i], 1);
-					contentWrapper.appendChild(dropdown);
-
-					if (i > 0) {
-						dropdown.titleWrapper.classList.add("singleItemWrapper");
+					let dropdown = new IndexDropdown(parentArr[i]);
+					if (i === 0) {
+						dropdown.toggleItems();
 					}
-
-					for (let j = 0; j < parentArr[i].months.length; j++) {
-						let currentMonth = user.monthlyLogs.filter((month) => month.id === parentArr[i].months[j].monthlyLog)[0];
-						console.log(currentMonth);
-						console.log(user);
-						let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
-						dropdown.contentWrapper.appendChild(dropdownMonth);
-						for (let k = 0; k < currentMonth.days.length; k++) {
-							let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
-							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-							let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
-							dropdownMonth.contentWrapper.appendChild(dropdownDay);
-						}
-					}
-				} else {
-					let collection = parentArr[i];
-					let dropdown = new DropdownBlock(collection.title, collection, 1);
-					contentWrapper.appendChild(dropdown);
-					if (i > 0) {
-						dropdown.titleWrapper.classList.add("singleItemWrapper");
-					}
+					dropdownContainer.appendChild(dropdown)
+					dropdowns.push(dropdown);
 				}
 			}
-			contentWrapper.appendChild(new CreatorBlock());
+			contentWrapper.appendChild(displayToggle);
+			let dropdownContent = [
+				{
+					title: "Future Logs",
+					icon: "../public/resources/futureLog.png",
+					listener: ()=>{
+						displayToggle.innerHTML = "&#x25BC;   Future Logs"
+						if (user.index.futureLogs.length === 0) {
+							creationMenu.setKind("futureLog");
+							creationMenu.show();
+						}
+						if (user.index.futureLogs.length !== 0) {
+							if (dropdowns.length !== 0) {
+								for (let i = 0; i < dropdowns.length; i++) {
+									dropdownContainer.removeChild(dropdowns[i]);
+								}
+							}
+							dropdowns = [];
+							let futArr = [];
+							for (let i = 0; i < user.index.futureLogs.length; i++) {
+								Array.prototype.push.apply(futArr, user.futureLogs.filter((object) => object.id === user.index.futureLogs[i]));
+							}
+							for (let i = 0; i < futArr.length; i++) {
+								console.log("inside for loop");
+								if (futArr[i].objectType === "futureLog") {
+									let dropdown = new IndexDropdown(futArr[i]);
+									if (i === 0) {
+										dropdown.toggleItems();
+									}
+									dropdownContainer.appendChild(dropdown)
+									dropdowns.push(dropdown);
+								}
+							}
+						}
+						adderDropdown.hide();
+					}
+				}, {
+					title: "Collections",
+					icon: "../public/resources/todaysLog.png",
+					listener: ()=>{
+						displayToggle.innerHTML = "&#9650;   Collections"
+						if (user.index.collections.length === 0) {
+							creationMenu.setKind("collection");
+							creationMenu.show();
+						}
+						if (user.index.collections.length !== 0) {
+							if (dropdowns.length !== 0) {
+								for (let i = 0; i < dropdowns.length; i++) {
+									dropdownContainer.removeChild(dropdowns[i]);
+								}
+							}
+							dropdowns = [];
+							let collArr = user.index.collections;
+							for (let i = 0; i < user.index.collections.length; i++) {
+								Array.prototype.push.apply(collArr, user.collections.filter((object) => object.id === user.index.collections[i]));
+							}
+							for (let i = 0; i < collArr.length; i++) {
+								console.log("inside for loop");
+								if (collArr[i].objectType === "futureLog") {
+									let dropdown = new IndexDropdown(collArr[i]);
+									if (i === 0) {
+										dropdown.toggleItems();
+									}
+									dropdownContainer.appendChild(dropdown)
+									dropdowns.push(dropdown);
+								}
+							}
+						}
+						adderDropdown.hide();
+					}
+				}
+			]
+			displayToggle.onclick = ()=>{
+				const TopOffset = displayToggle.getBoundingClientRect().bottom + 5 + document.body.scrollTop;
+				const LeftOffset = displayToggle.getBoundingClientRect().left;
+				adderDropdown.openUtilDropdown(TopOffset, LeftOffset, dropdownContent);
+			}
+
 		}
 	});
 	header.title = "Index";
-
-	// Remove all child fileLocations first first
-	let child = header.file.lastElementChild;
-	while (child) {
-		header.file.removeChild(child);
-		child = header.file.lastElementChild;
-	}
-	header.file.appendChild(new FileLocation("Index", "index", false))
-	document.getElementById("targetMenu").style.display = "none";
-
-	header.makeUneditable();
-	let headerButtons = header.imgbuttons;
-	for (let i = 0; i < headerButtons.length; i++) {
-		if (!headerButtons[i].classList.contains("plus")) {
-			headerButtons[i].classList.add("hide");
-		}
-	}
 }

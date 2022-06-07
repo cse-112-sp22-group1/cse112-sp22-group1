@@ -4,11 +4,11 @@
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
 
-import {creationDropdownContents,editDropdownContents, otherDropdownContents} from "./dropdownContents.js";
+import {creationDropdownContents,editDropdownContents} from "./dropdownContents.js";
 /* eslint-enable */
 
 import { currentState } from "../state/stateManager.js";
-
+import {readUser} from "../localStorage/userOperations.js"
 
 let template = <template>
     <link type="text/css" rel="stylesheet" href="inlineDropdown.css" />
@@ -150,28 +150,28 @@ export class InlineDropdown extends HTMLElement {
         this.fillDropdown(creationDropdownContents[currentState.objectType]);
     }
     
-    openUtilDropdown(x, y) {
-        if (otherDropdownContents["util"] === undefined) {
+    openUtilDropdown(x, y, contents) {
+        if (contents === undefined) {
             return;
         }
     
         this.setPosition(x, y);
     
-        this.fillDropdown(otherDropdownContents["util"]);
+        this.fillDropdown(contents);
     }
 
-    openTextDropdown(x,y) {
-        if (otherDropdownContents["text"] === undefined) {
+    openTextDropdown(x,y,contents) {
+        if (contents === undefined) {
             return;
         }
     
         this.setPosition(x, y);
     
-        this.fillDropdown(otherDropdownContents["text"]);
+        this.fillDropdown(contents);
     }
 
     openEditDropdown(x,y) {
-        if (otherDropdownContents["text"] === undefined) {
+        if (editDropdownContents[currentState.objectType] === undefined) {
             return;
         }
     
@@ -180,13 +180,13 @@ export class InlineDropdown extends HTMLElement {
         this.fillDropdown(editDropdownContents[currentState.objectType]);
     }
 
-    openSecondDropdown() {
+    openSecondDropdown(contents) {
         while (this.secondList.firstChild) {
             this.secondList.lastChild.remove();
         }
         this.secondDropdown.style.top = `${this.dropdown.offsetTop}px`;
         this.secondDropdown.style.left = `${this.dropdown.offsetWidth+ this.dropdown.offsetLeft-5}px`;
-        let elements = otherDropdownContents["transform"]
+        let elements = contents;
         for (let i = 0; i < elements.length; i++) {
             let title = elements[i].title;
             let newButton = document.createElement("button");
@@ -201,6 +201,42 @@ export class InlineDropdown extends HTMLElement {
         }
 
         this.showSecondDropdown();
+    }
+
+    openSignifierDropdown(x,y) {
+        while (this.list.firstChild) {
+            this.list.lastChild.remove();
+        }
+        readUser((err,user)=>{
+            if(err) console.log(err);
+            this.setPosition(x,y);
+            let signifiers = user.signifiers;
+            for (let i = 0; i < signifiers.length; i++) {
+                let title = signifiers[i].meaning;
+                let newButton = document.createElement("button");
+                newButton.innerHTML = title;
+                let icon = document.createElement("aside");
+                console.log(signifiers[i].symbol.substring(3))
+                icon.innerHTML = signifiers[i].symbol;
+                let listWrapper = document.createElement("li");
+                listWrapper.appendChild(icon);
+                listWrapper.appendChild(newButton);
+                this.list.appendChild(listWrapper);
+                //listWrapper.onclick = elements[i].listener;
+            }
+            this.show();
+            this.hideSecondDropdown();
+        })        
+    }
+
+    openSideCardDropdown(x,y,contents){
+        if (contents === undefined) {
+            return;
+        }
+    
+        this.setPosition(x, y);
+    
+        this.fillDropdown(contents);
     }
 }
 

@@ -27,13 +27,14 @@ let template = <template>
 				<button class="edit-button">Edit</button>
 			</div>
 			<button class="new-button">New</button>
-		</section> 
-		<aside class="search_bar" id="searchBar">
-			<input type="text" placeholder="Search" />
-			<img src="../public/resources/search_icon.png" />
-		</aside>
+			<aside class="search-box d-flex justify-center align-center">
+              	<input type="text" placeholder="Search..."/>
+             	<a class="p-20 cursor-pointer"><img class="search-btn max-h-20" src="../public/resources/search_icon.png" alt="search" /></a>
+			</aside>
+		</section>
 	</div>
 </template>
+
 
 /**
  * Class that creates Page Header
@@ -65,16 +66,16 @@ export class PageHeader extends HTMLElement {
 	 */
 	connectedCallback () {
 		this.futureLogButton.addEventListener("click", () => {
-			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight;
-			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 206;
+			const headerTopOffset = this.futureLogButton.getBoundingClientRect().top - this.futureLogButton.getBoundingClientRect().width;
+			const headerLeftOffset = this.futureLogButton.getBoundingClientRect().left - this.futureLogButton.getBoundingClientRect().width - 140;
 
 			/* DropDown window appears to be 206 px, not sure why previous value was 210 */
 			adderDropdown.openCreationDropdown(headerTopOffset, headerLeftOffset);
 		});
 
 		this.editButton.addEventListener("click", ()=>{
-			const headerTopOffset = this.titleHeader.offsetTop + this.titleHeader.offsetHeight - 100;
-			const headerLeftOffset = this.titleHeader.offsetLeft + this.titleHeader.offsetWidth - 548;
+			const headerTopOffset = this.editButton.getBoundingClientRect().top + document.body.scrollTop - this.editButton.getBoundingClientRect().width;
+			const headerLeftOffset = this.editButton.getBoundingClientRect().left + this.editButton.getBoundingClientRect().width + 10;
 			adderDropdown.openEditDropdown(headerTopOffset, headerLeftOffset);
 		});
 

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import {adderDropdown, creationMenu} from "../index.js";
+import {creationMenu} from "../index.js";
 
 export let creationDropdownContents = {
     "index": [
@@ -168,119 +168,6 @@ export let editDropdownContents = {
             icon: "../public/resources/more_icon.png",
             listener: () => {
                 
-            }
-        }
-    ]
-}
-
-export let otherDropdownContents = {
-    "util": [
-        {
-            title: "Delete",
-            icon: "../public/resources/delete_icon.png",
-            listener: () => {
-            }
-        },{
-            title: "Duplicate",
-            icon: "../public/resources/copy_icon.png",
-            listener: ()=>{
-
-            }
-        }, {
-            title:"Turn into",
-            icon: "../public/resources/turn_into_icon.png",
-            listener: ()=>{
-                adderDropdown.openSecondDropdown();
-            }
-        }
-    ],
-    "text": [
-        {
-            title: "Heading 1",
-            icon: "../public/resources/h1_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Heading 2",
-            icon: "../public/resources/h2_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Heading 3",
-            icon: "../public/resources/h3_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Note",
-            icon: "../public/resources/note_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Event",
-            icon: "../public/resources/event_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Task",
-            icon: "../public/resources/task_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Paragraph",
-            icon: "../public/resources/paragraph_icon.png",
-            listener: ()=>{
-
-            }
-        }
-    ],
-    "transform": [
-        {
-            title: "Heading 1",
-            icon: "../public/resources/h1_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Heading 2",
-            icon: "../public/resources/h2_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Heading 3",
-            icon: "../public/resources/h3_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Note",
-            icon: "../public/resources/note_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Event",
-            icon: "../public/resources/event_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Task",
-            icon: "../public/resources/task_icon.png",
-            listener: ()=>{
-
-            }
-        },{
-            title: "Paragraph",
-            icon: "../public/resources/paragraph_icon.png",
-            listener: ()=>{
-
             }
         }
     ]

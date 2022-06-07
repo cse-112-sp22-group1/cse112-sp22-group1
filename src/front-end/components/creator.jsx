@@ -43,6 +43,15 @@ export class CreatorBlock extends HTMLElement {
             let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
             adderDropdown.openUtilDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
 		}
+		textBlock.oninput = () =>{
+			let content = textBlock.innerHTML;
+			if (content === "/") {
+				let offsetValue = textBlock.getBoundingClientRect().top + textBlock.offsetHeight + 105 > window.innerHeight ? -100 : textBlock.offsetHeight + 5;
+                adderDropdown.openTextDropdown(textBlock.getBoundingClientRect().top + document.body.scrollTop + offsetValue, this.plus.getBoundingClientRect().left);
+			} else {
+				adderDropdown.hide();
+			}
+		}
 		textBlock.onkeydown = (e) => {
 			let key = e.key;
 			if (key === "Enter") {

@@ -24,9 +24,14 @@ div {
 	line-height: 26px;
 }
 
+#dropdownContainer {
+	width: 100%;
+	margin-top: 21px;
+}
+
 #contentWrapper {
 	border: none;
-	overflow: auto;
+	overflow: hidden;
 	outline: none;
 	display: flex;
 	margin-left: 325px;
@@ -35,6 +40,10 @@ div {
 	position: relative;
 	z-index: -1;
 	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+}
+
+index-drop-down {
+	width: 100%;
 }
 
 .centerContent {
@@ -166,9 +175,28 @@ nav-bar {
 	margin: 10px auto;
 }
 
+#displayToggle{
+	float: right;
+	color: var(--highlighted-font-color);
+	margin-top: 20px;
+	margin-right: 130px;
+    background-color: var(--secondary-button-color);
+	user-select: none;
+    vertical-align: middle;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+	width:150px;
+    height: 31px;
+    padding: 0 9px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 /* Text editor, to be integrated */
 
 main {
 	margin-left: 100px;
 	margin-top: 100px;
 }
+
