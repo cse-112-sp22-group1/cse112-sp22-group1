@@ -107,4 +107,12 @@ describe("createUser Tests", () => {
         };
         await expect(invEmPwd).rejects.toThrow();
     });
+
+    test("Password hash is not returned", async () => {
+        const EMAIL = "user@email.com";
+        const PWD = "password";
+        const KEY = "ABC123";
+        const user = await createUser(EMAIL, PWD, KEY);
+        await expect(user.pwd).toBeUndefined();
+    });
 });

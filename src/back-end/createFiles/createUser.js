@@ -79,6 +79,7 @@ const createUser = async (email, pwd, key) => {
 		]
 	});
 	user = await user.save();
+	user = user.toObject();
 	user.signifiers[0].meaning = "general";
 	delete user.pwd;
 	return user;
