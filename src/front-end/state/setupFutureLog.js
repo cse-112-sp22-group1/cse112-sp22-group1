@@ -12,7 +12,7 @@ import { currentState } from "./stateManager.js";
  * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
  */
 export function setupFutureLog () {
-	setSearch("")
+	setSearch("");
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 
@@ -39,12 +39,14 @@ export function setupFutureLog () {
  * Sets up the futureLog page with the mothlyLogs, textBlocks, and trackers of the user.
  */
  export function refreshFutureLog () {
+	console.log("test");
+	setSearch("");
 	let oldChild = contentWrapper.lastElementChild;
     while (oldChild) {
         contentWrapper.removeChild(oldChild);
         oldChild = contentWrapper.lastElementChild;
     }
-
+	header.title = currentState.title;
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 

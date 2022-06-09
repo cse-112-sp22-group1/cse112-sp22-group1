@@ -1,5 +1,6 @@
 // Import { router } from "../state/router.js";
-
+import { adderDropdown } from "../index.js";
+import { bindDropdown } from "./indexDropdownDropdownManager.js";
 import { ItemCard } from "./itemCard.jsx";
 import { LogCarousel } from "./logCarousel.jsx";
 
@@ -9,6 +10,7 @@ import { LogCarousel } from "./logCarousel.jsx";
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
 import { router } from "../state/router.js";
+import { bindListeners } from "./blockListeners.js";
 /* eslint-enable */
 
 let template = <template>
@@ -49,9 +51,10 @@ export class IndexDropdown extends HTMLElement {
 		this.monthlyLogs = this.shadowRoot.getElementById("monthlyLogs");
 		this.collections = this.shadowRoot.getElementById("collections");
 		this.log = log;
+        this.editLog = this.shadowRoot.getElementById("edit");
         this.openLog = this.shadowRoot.getElementById("open");
         console.log(log)
-
+        bindDropdown(this);
 		this.loadContent(this.log.objectType);
     }
 
@@ -65,6 +68,11 @@ export class IndexDropdown extends HTMLElement {
 		});
         this.openLog.onclick = () => {
             router.navigate(`/${this.log.objectType}/${this.log.id}`);
+        }
+        this.editLog.onclick = ()=>{
+            const headerTopOffset = this.editLog.getBoundingClientRect().top + document.body.scrollTop - this.editLog.getBoundingClientRect().width;
+			const headerLeftOffset = this.editLog.getBoundingClientRect().left + this.editLog.getBoundingClientRect().width + 10;
+            adderDropdown.openUtilDropdown(headerTopOffset, headerLeftOffset, this.editDropdownContents[this.log.objectType]);
         }
     }
 

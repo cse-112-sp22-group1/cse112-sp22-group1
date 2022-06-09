@@ -98,6 +98,7 @@ export function setupIndex () {
 	contentWrapper.appendChild(dropdownContainer);
 	contentWrapper.appendChild(displayToggle);
 	if (currentShow === "futureLog") {
+		console.log("im here")
 		displayFutureLog();
 	} else {
 		displayCollection();

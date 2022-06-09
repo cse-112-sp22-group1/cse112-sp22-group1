@@ -11,6 +11,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/futureLog.png",
             listener: () => {
                 creationMenu.setKind("futureLog");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }, {
@@ -18,6 +19,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/todaysLog.png",
             listener: () => {
                 creationMenu.setKind("collection");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }
@@ -29,6 +31,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/monthlyLog.png",
             listener: () => {
                 creationMenu.setKind("monthlyLog");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }, {
@@ -36,6 +39,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/todaysLog.png",
             listener: () => {
                 creationMenu.setKind("collection");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }, {
@@ -43,6 +47,7 @@ export let creationDropdownContents = {
             icon:"../public/resources/task_icon.png",
             listener: () => {
                 creationMenu.setKind("tracker");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }
@@ -54,6 +59,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/todaysLog.png",
             listener: () => {
                 creationMenu.setKind("dailyLog");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }, {
@@ -61,6 +67,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/todaysLog.png",
             listener: () => {
                 creationMenu.setKind("collection");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }, {
@@ -68,6 +75,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/tracker_icon.png",
             listener: () => {
                 creationMenu.setKind("tracker");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }
@@ -79,6 +87,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/todaysLog.png",
             listener: () => {
                 creationMenu.setKind("dailyLog");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }, {
@@ -86,6 +95,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/tracker_icon.png",
             listener: () => {
                 creationMenu.setKind("tracker");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }
@@ -96,6 +106,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/todaysLog.png",
             listener: () => {
                 creationMenu.setKind("collection");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }, {
@@ -103,6 +114,7 @@ export let creationDropdownContents = {
             icon: "../public/resources/tracker_icon.png",
             listener: () => {
                 creationMenu.setKind("tracker");
+                creationMenu.create.innerText = "Create";
                 creationMenu.show();
             }
         }
@@ -133,7 +145,9 @@ export let editDropdownContents = {
             title: "More",
             icon: "../public/resources/more_icon.png",
             listener: () => {
-                
+                creationMenu.setKind("futureLog");
+                creationMenu.create.innerText = "Edit";
+                creationMenu.showEdit(currentState, false);           
             }
         }
     ],
@@ -173,7 +187,10 @@ export let editDropdownContents = {
             title: "More",
             icon: "../public/resources/more_icon.png",
             listener: () => {
-                
+                creationMenu.setKind("monthlyLog");
+                creationMenu.create.innerText = "Edit";
+                console.log(currentState);
+                creationMenu.showEdit(currentState,false); 
             }
         }
     ],
@@ -207,12 +224,6 @@ export let editDropdownContents = {
                         }
                     })
                 }
-            }
-        }, {
-            title: "More",
-            icon: "../public/resources/more_icon.png",
-            listener: () => {
-                
             }
         }
     ],
@@ -293,7 +304,10 @@ export let editDropdownContents = {
             title: "More",
             icon: "../public/resources/more_icon.png",
             listener: () => {
-                
+                creationMenu.setKind("collection");
+                creationMenu.create.innerText = "Edit";
+                console.log(currentState);
+                creationMenu.showEdit(currentState,false); 
             }
         }
     ]
