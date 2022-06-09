@@ -230,14 +230,13 @@ export class NavBar extends HTMLElement {
 				let date = new Date()
 				// if we find it then navigate
 				for(let i = 0; i < user.dailyLogs.length; i++) {
-					console.log(date)
-					let start = new Date(user.dailyLogs[i].startDate)
-					if (start == date) {
+					let start = new Date(user.dailyLogs[i].date)
+					if (start.getFullYear() == date.getFullYear() && start.getMonth() == date.getMonth() && start.getDate() == date.getDate()) {
 						router.navigate("/dailyLog/" + user.dailyLogs[i].id)
 						return
 					}
 				}
-				// else check if monthly log exists for it
+				// Else check if monthly log exists for it
 				for(let i = 0; i < user.monthlyLogs.length; i++) {
 					console.log(date)
 					let start = new Date(user.monthlyLogs[i].startDate)
