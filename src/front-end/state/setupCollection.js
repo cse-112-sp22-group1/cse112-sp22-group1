@@ -9,6 +9,11 @@ import { currentState } from "./stateManager.js";
  * Sets up the collection page with the textBlocks and trackers of the user.
  */
 export function setupCollection () {
+	let oldChild = contentWrapper.lastElementChild;
+    while (oldChild) {
+        contentWrapper.removeChild(oldChild);
+        oldChild = contentWrapper.lastElementChild;
+    }
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 	header.title = currentState.title;

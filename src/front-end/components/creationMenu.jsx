@@ -4,7 +4,11 @@ import { DropdownBlock } from "./dropdown.jsx";
 import { IndexDropdown } from "./indexDropdown.jsx";
 import { createEditor } from "./blockController.js";
 import { currentState } from "../state/stateManager.js";
-
+import { setupIndex } from "../state/setupIndex.js";
+import { refreshFutureLog } from "../state/setupFutureLog.js";
+import { refreshMonthlyLog } from "../state/setupMonthlyLog.js";
+import { router } from "../state/router.js";
+import { setupCollection } from "../state/setupCollection.js";
 // JSX Engine Import
 /* eslint-disable */
 /** @jsx createElement */
@@ -98,7 +102,7 @@ export class CreationMenu extends HTMLElement {
 		this.content = this.shadowRoot.querySelector(".popup-content");
         this.heading = this.shadowRoot.querySelector("header h1");
         this.kind = kind;
-
+		this.log = null;
 		this.setKind(kind);
         // Get the <span> element that closes the popup
 		this.closeButton = this.shadowRoot.querySelectorAll(".close")[0];
@@ -116,14 +120,38 @@ export class CreationMenu extends HTMLElement {
             this.loadingWheel.style.display = "inline";
         })
         this.create.addEventListener("click", () => {
-			if (this.kind === "futureLog") {
-                this.createFutureLog();
-			} else if (this.kind === "monthlyLog") {
-				this.createMonthlyLog();
-			} else if (this.kind === "collection") {
-                this.createCollection();
-			} else if (this.kind === "tracker") {
-                this.createTracker();
+			if (this.create.innerText === "Create") {
+				if (this.kind === "futureLog") {
+					this.createFutureLog();
+				} else if (this.kind === "monthlyLog") {
+					this.createMonthlyLog();
+				} else if (this.kind === "collection") {
+					this.createCollection();
+				} else if (this.kind === "tracker") {
+					this.createTracker();
+				}
+			} else if (this.create.innerText === "Edit") {
+				if (this.kind === "futureLog") {
+					this.editFutureLog(this.log);
+					if (this.index) {
+						setupIndex();
+					} else {
+						refreshFutureLog();
+					}
+				} else if (this.kind === "monthlyLog") {
+					this.editMonthlyLog(this.log);
+					refreshMonthlyLog();
+				} else if (this.kind === "collection") {
+					this.editCollection(this.log);
+					if (this.index) {
+						setupIndex();
+					} else {
+						setupCollection();
+					}
+
+				} else if (this.kind === "tracker") {
+					this.editTracker(this.log);
+				}
 			}
 		})
     }
@@ -131,27 +159,47 @@ export class CreationMenu extends HTMLElement {
 	/**
 	 * Show the menu
 	 */
-	show() {
+	show () {
 		this.popup.style.display = "block";
 	}
 
-    hide() {
+	showEdit (log, index) {
+		if (log.objectType === "futureLog") {
+			this.shadowRoot.querySelector(".future").setAttribute("title", "Edit Future Log");
+			this.futureTitle.value = log.title;
+			this.startPicker.setDate(new Date(log.startDate));
+			this.endPicker.setDate(new Date(log.endDate));
+		} else if (log.objectType === "monthlyLog") {
+			this.shadowRoot.querySelector(".monthly").setAttribute("title", "Edit Monthly Log");
+			this.startPicker.setDate(new Date(log.startDate));
+			this.endPicker.setDate(new Date(log.endDate));
+		} else if (log.objectType === "collection") {
+			this.shadowRoot.querySelector(".collection").setAttribute("title", "Edit Collection");
+			this.shadowRoot.getElementById("collection-title").value = log.title;
+		}
+		this.log = log;
+		this.index = index;
+		this.popup.style.display = "block";
+	}
+
+    hide () {
         this.loadingWheel.style.display = "none";
         this.popup.style.display = "none";
     }
 
 
 	/**
-	 * set the kind of menu to a passed in kind
+	 * Set the kind of menu to a passed in kind
 	 * @param {String} kind the replacement kind
 	 */
 	setKind (kind) {
-		while (this.content.childNodes.length > 0){
+		while (this.content.childNodes.length > 0) {
 			this.content.childNodes[0].remove();
 		}
         this.kind = kind;
 		if (kind === "futureLog") {
 			this.content.appendChild(futureLogCreator);
+			this.shadowRoot.querySelector(".future").setAttribute("title", "New Future Log");
 			if (this.startPicker && this.startPicker.remove) {
 				/* eslint-disable */
 				this.startPicker.remove();
@@ -167,6 +215,7 @@ export class CreationMenu extends HTMLElement {
 			this.endPicker = datepicker(this.shadowRoot.getElementById("futureTo"), {id: 1});
 		} else if (kind === "monthlyLog") {
 			this.content.appendChild(monthlyLogCreator);
+			this.shadowRoot.querySelector(".monthly").setAttribute("title", "New Monthly Log");
 			if (this.startPicker && this.startPicker.remove) {
 				/* eslint-disable */
 				this.startPicker.remove();
@@ -195,6 +244,7 @@ export class CreationMenu extends HTMLElement {
 			}});
 		} else if (kind === "dailyLog") {
 			this.content.appendChild(dailyLogCreator);
+			this.shadowRoot.querySelector(".daily").title = "New Daily Log";
 			if (this.startPicker && this.startPicker.remove) {
 				/* eslint-disable */
 				this.startPicker.remove();
@@ -208,8 +258,10 @@ export class CreationMenu extends HTMLElement {
 			this.startPicker = datepicker(this.shadowRoot.getElementById("daily"), {id: 1});
 		} else if (kind === "collection") {
 			this.content.appendChild(collectionCreator);
+			this.shadowRoot.querySelector(".collection").setAttribute("title", "New Collection");
 		} else if (kind === "tracker") {
 			this.content.appendChild(trackerCreator);
+			this.create.innerText = "Create";
 			if (currentState.objectType !== "futureLog" && currentState.objectType !== "collection") {
 				this.shadowRoot.getElementById("tracker-recurring-check").style.display = "block";
 				this.checkbox = this.shadowRoot.getElementById("checkerContainer");
@@ -235,7 +287,7 @@ export class CreationMenu extends HTMLElement {
         let start = new Date(this.shadowRoot.getElementById("futureFrom").value);
         let end = new Date(this.shadowRoot.getElementById("futureTo").value);
 		let title = this.futureTitle.value;
-		if (start && end && title){
+		if (start && end && title) {
 			localStorage.createFutureLog(title, start, end, [], [], [], [], true, (err, futureLog) => {
 				if (err) {
 					console.log(err);
@@ -316,7 +368,7 @@ export class CreationMenu extends HTMLElement {
 		}
 	}
 
-    createCollection() {
+    createCollection () {
         let title = this.shadowRoot.getElementById("collection-title").value;
 		localStorage.createCollection(title, currentState.id, [], [], [], currentState, true, (err, collection) => {
 			if (err) {
@@ -337,7 +389,7 @@ export class CreationMenu extends HTMLElement {
 		});
     }
 
-    createTracker() {
+    createTracker () {
         let title = this.shadowRoot.getElementById("tracker-title").value;
 		if (this.isRecurring) {
 			localStorage.readUser((error, user) => {
@@ -349,7 +401,7 @@ export class CreationMenu extends HTMLElement {
 					Array.prototype.push.apply(userArr, user.monthlyLogs);
 					Array.prototype.push.apply(userArr, user.futureLogs);
 					Array.prototype.push.apply(userArr, user.collections);
-					localStorage.createTracker(title, [], currentState.parent, userArr.filter(reference => reference.id === currentState.parent)[0], currentState, true, (err, tracker) => {
+					localStorage.createTracker(title, [], currentState.parent, userArr.filter((reference) => reference.id === currentState.parent)[0], currentState, true, (err, tracker) => {
 						if (err) {
 							console.log(err);
 						} else {
@@ -371,6 +423,62 @@ export class CreationMenu extends HTMLElement {
 				}
 			});
 		}
+    }
+
+	editFutureLog (log) {
+        let start = new Date(this.shadowRoot.getElementById("futureFrom").value);
+        let end = new Date(this.shadowRoot.getElementById("futureTo").value);
+		let title = this.futureTitle.value;
+		if (start && end && title) {
+			log.startDate = start;
+			log.endDate = end;
+			log.title = title;
+			localStorage.updateFutureLog(log, true, (err) => {
+				if (err) {
+					console.log(err);
+				} else {
+					this.hide();
+				}
+			});
+		} else {
+			alert("You must give a title and pick a start and end date!")
+			this.loadingWheel.style.display = "none";
+		}
+    }
+
+	editMonthlyLog (log) {
+		let start = new Date(this.shadowRoot.getElementById("monthlyFrom").value);
+        let end = new Date(this.shadowRoot.getElementById("monthlyTo").value);
+		if (start !== null && end !== null) {
+			log.startDate = start;
+			log.endDate = end;
+			localStorage.updateMonthlyLog(log, null, null, true, (err, log) => {
+				if (err) {
+					console.log(err);
+				} else {
+					this.hide();
+				}
+			});
+
+		} else if (!start || !end) {
+			alert("You must pick a start and end date!")
+			this.loadingWheel.style.display = "none";
+		} else {
+			alert("You already have these months in your Future Log, please delete them before creating them again");
+			this.loadingWheel.style.display = "none";
+		}
+	}
+
+	editCollection (log) {
+        let title = this.shadowRoot.getElementById("collection-title").value;
+		log.title = title;
+		localStorage.updateCollection(log, null, null, true, (err, collection) => {
+			if (err) {
+                console.log(err);
+            } else {
+ 				this.hide();
+			}
+		});
     }
 }
 

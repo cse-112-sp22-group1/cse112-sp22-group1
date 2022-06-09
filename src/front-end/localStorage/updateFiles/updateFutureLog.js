@@ -40,7 +40,7 @@ import { readUser } from "../userOperations.js";
 			return db.put(newUser).then((res) => {
 				/* istanbul ignore next */
 				if (res) {
-					callback(res);
+					callback(null);
 				}
 				/* istanbul ignore next */
 			}).catch((error) => callback(error));
