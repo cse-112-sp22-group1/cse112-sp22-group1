@@ -88,6 +88,7 @@ export function setupIndex () {
 	while (dropdownContainer.children.length > 0) {
 		dropdownContainer.removeChild(dropdownContainer.children[0]);
 	}
+	header.editButton.style.display = "none";
 	header.loadSearchbar();
 	displayToggle = document.createElement("button");
 	displayToggle.id = "displayToggle";

@@ -23,6 +23,7 @@ export function setupMonthlyLog () {
 	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
 	header.makeUneditable();
+	header.editButton.style.display = "inline-block";
 	header.loadSearchbar();
 	// Remove all child fileLocations first first
 	let child = header.file.lastElementChild;

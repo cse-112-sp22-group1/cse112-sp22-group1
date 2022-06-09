@@ -18,6 +18,7 @@ export function setupFutureLog () {
 
 	header.title = currentState.title
 	header.makeEditable();
+	header.editButton.style.display = "inline-block";
 	header.loadSearchbar();
 	// Remove all child fileLocations first first
 	let child = header.file.lastElementChild;
