@@ -26,6 +26,7 @@ export function setupDailyLog () {
 	}
 	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${months[currentDate.getMonth()]} ${day}, ${currentDate.getFullYear()}`;
+	header.editButton.style.display = "inline-block";
 	header.loadSearchbar();
 	// FutureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
 
