@@ -8,6 +8,7 @@ import { LogCarousel } from "./logCarousel.jsx";
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
+import { router } from "../state/router.js";
 /* eslint-enable */
 
 let template = <template>
@@ -48,6 +49,7 @@ export class IndexDropdown extends HTMLElement {
 		this.monthlyLogs = this.shadowRoot.getElementById("monthlyLogs");
 		this.collections = this.shadowRoot.getElementById("collections");
 		this.log = log;
+        this.openLog = this.shadowRoot.getElementById("open");
         console.log(log)
 
 		this.loadContent(this.log.objectType);
@@ -61,7 +63,9 @@ export class IndexDropdown extends HTMLElement {
         this.button.addEventListener("click", () => {
 			this.toggleItems();
 		});
-
+        this.openLog.onclick = () => {
+            router.navigate(`/${this.log.objectType}/${this.log.id}`);
+        }
     }
 
 	/**

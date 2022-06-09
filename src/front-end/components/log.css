@@ -2,12 +2,18 @@
     padding-bottom: 0;
     width: 100%;
     z-index: -1;
+    scrollbar-width: 5px;
+}
+
+#log::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
 }
 
 h1 {
     height: 18px;
     font-size: 19px;
-    font-family: "SF-Pro";
+    font-family: system-ui;
 }
 
 #monthlyLogs {

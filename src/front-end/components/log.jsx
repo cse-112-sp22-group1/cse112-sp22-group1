@@ -55,10 +55,6 @@ export class Log extends HTMLElement {
 			this.main.appendChild(this.dailyLogsSection);
 		}
 
-
-
-		// console.log(currentState);
-
 	}
 
 	/**

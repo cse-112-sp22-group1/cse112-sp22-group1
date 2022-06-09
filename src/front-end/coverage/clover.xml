@@ -1,32 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<coverage generated="1654395881420" clover="3.2.0">
-  <project timestamp="1654395881420" name="All files">
-=======
-<coverage generated="1654373623568" clover="3.2.0">
-  <project timestamp="1654373623568" name="All files">
->>>>>>> 5c39c72 (finished merge)
-=======
-<coverage generated="1654375374794" clover="3.2.0">
-  <project timestamp="1654375374794" name="All files">
->>>>>>> 3638013 (Testing workflow updated, testing if it works)
-=======
-<coverage generated="1654395080488" clover="3.2.0">
-  <project timestamp="1654395080488" name="All files">
->>>>>>> 911c4e0 (adds mock testing server and removes env vars)
-=======
-<coverage generated="1654395577064" clover="3.2.0">
-  <project timestamp="1654395577064" name="All files">
->>>>>>> 118419b (server auto closes after tests)
-=======
-<coverage generated="1654395881420" clover="3.2.0">
-  <project timestamp="1654395881420" name="All files">
->>>>>>> c41e6da (makes server run in the background)
-    <metrics statements="666" coveredstatements="319" conditionals="311" coveredconditionals="115" methods="340" coveredmethods="187" elements="1317" coveredelements="621" complexity="0" loc="666" ncloc="666" packages="6" files="42" classes="42"/>
+<coverage generated="1654735875609" clover="3.2.0">
+  <project timestamp="1654735875609" name="All files">
+    <metrics statements="677" coveredstatements="328" conditionals="313" coveredconditionals="118" methods="342" coveredmethods="190" elements="1332" coveredelements="636" complexity="0" loc="677" ncloc="677" packages="6" files="42" classes="42"/>
     <package name="front-end">
       <metrics statements="2" coveredstatements="2" conditionals="4" coveredconditionals="2" methods="0" coveredmethods="0"/>
       <file name="constants.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/constants.js">
@@ -36,9 +11,9 @@
       </file>
     </package>
     <package name="front-end.localStorage">
-      <metrics statements="310" coveredstatements="117" conditionals="138" coveredconditionals="46" methods="165" coveredmethods="74"/>
+      <metrics statements="310" coveredstatements="118" conditionals="138" coveredconditionals="47" methods="165" coveredmethods="74"/>
       <file name="userOperations.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/userOperations.js">
-        <metrics statements="310" coveredstatements="117" conditionals="138" coveredconditionals="46" methods="165" coveredmethods="74"/>
+        <metrics statements="310" coveredstatements="118" conditionals="138" coveredconditionals="47" methods="165" coveredmethods="74"/>
         <line num="66" count="1" type="stmt"/>
         <line num="68" count="1" type="stmt"/>
         <line num="69" count="1" type="stmt"/>
@@ -148,8 +123,8 @@
         <line num="468" count="0" type="stmt"/>
         <line num="470" count="1" type="stmt"/>
         <line num="471" count="1" type="stmt"/>
-        <line num="485" count="117" type="stmt"/>
-        <line num="486" count="117" type="stmt"/>
+        <line num="485" count="130" type="stmt"/>
+        <line num="486" count="130" type="stmt"/>
         <line num="500" count="0" type="stmt"/>
         <line num="501" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="502" count="0" type="stmt"/>
@@ -277,11 +252,11 @@
         <line num="944" count="1" type="stmt"/>
         <line num="945" count="1" type="stmt"/>
         <line num="948" count="0" type="stmt"/>
-        <line num="961" count="1" type="stmt"/>
-        <line num="962" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="961" count="2" type="stmt"/>
+        <line num="962" count="2" type="cond" truecount="2" falsecount="0"/>
         <line num="963" count="1" type="stmt"/>
         <line num="964" count="1" type="stmt"/>
-        <line num="967" count="0" type="stmt"/>
+        <line num="967" count="1" type="stmt"/>
         <line num="981" count="0" type="stmt"/>
         <line num="982" count="0" type="cond" truecount="0" falsecount="2"/>
         <line num="983" count="0" type="stmt"/>
@@ -352,7 +327,7 @@
       </file>
     </package>
     <package name="front-end.localStorage.createFiles">
-      <metrics statements="64" coveredstatements="61" conditionals="14" coveredconditionals="12" methods="33" coveredmethods="29"/>
+      <metrics statements="63" coveredstatements="60" conditionals="14" coveredconditionals="12" methods="33" coveredmethods="29"/>
       <file name="createAudioBlock.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/createFiles/createAudioBlock.js">
         <metrics statements="1" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="15" count="0" type="stmt"/>
@@ -422,43 +397,42 @@
         <line num="4" count="1" type="stmt"/>
       </file>
       <file name="createUser.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/createFiles/createUser.js">
-        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
         <line num="9" count="2" type="stmt"/>
-        <line num="10" count="2" type="stmt"/>
-        <line num="28" count="2" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="31" count="1" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
       </file>
       <file name="makeId.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/createFiles/makeId.js">
         <metrics statements="24" coveredstatements="23" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
-        <line num="7" count="20" type="stmt"/>
-        <line num="8" count="20" type="stmt"/>
-        <line num="9" count="20" type="stmt"/>
-        <line num="10" count="20" type="stmt"/>
-        <line num="11" count="20" type="stmt"/>
-        <line num="12" count="600" type="stmt"/>
-        <line num="14" count="20" type="stmt"/>
-        <line num="25" count="20" type="stmt"/>
-        <line num="26" count="20" type="stmt"/>
-        <line num="27" count="20" type="stmt"/>
-        <line num="28" count="20" type="stmt"/>
-        <line num="29" count="20" type="stmt"/>
-        <line num="30" count="20" type="stmt"/>
-        <line num="31" count="20" type="stmt"/>
-        <line num="32" count="20" type="stmt"/>
-        <line num="33" count="20" type="stmt"/>
-        <line num="34" count="20" type="stmt"/>
-        <line num="35" count="20" type="stmt"/>
-        <line num="36" count="20" type="stmt"/>
-        <line num="37" count="20" type="stmt"/>
-        <line num="39" count="201" type="stmt"/>
+        <line num="7" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="9" count="21" type="stmt"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="11" count="21" type="stmt"/>
+        <line num="12" count="630" type="stmt"/>
+        <line num="14" count="21" type="stmt"/>
+        <line num="25" count="21" type="stmt"/>
+        <line num="26" count="21" type="stmt"/>
+        <line num="27" count="21" type="stmt"/>
+        <line num="28" count="21" type="stmt"/>
+        <line num="29" count="21" type="stmt"/>
+        <line num="30" count="21" type="stmt"/>
+        <line num="31" count="21" type="stmt"/>
+        <line num="32" count="21" type="stmt"/>
+        <line num="33" count="21" type="stmt"/>
+        <line num="34" count="21" type="stmt"/>
+        <line num="35" count="21" type="stmt"/>
+        <line num="36" count="21" type="stmt"/>
+        <line num="37" count="21" type="stmt"/>
+        <line num="39" count="222" type="stmt"/>
         <line num="40" count="0" type="stmt"/>
-        <line num="42" count="20" type="stmt"/>
-        <line num="52" count="20" type="stmt"/>
+        <line num="42" count="21" type="stmt"/>
+        <line num="52" count="21" type="stmt"/>
       </file>
     </package>
     <package name="front-end.localStorage.deleteFiles">
-      <metrics statements="228" coveredstatements="135" conditionals="118" coveredconditionals="55" methods="97" coveredmethods="74"/>
+      <metrics statements="240" coveredstatements="144" conditionals="120" coveredconditionals="57" methods="99" coveredmethods="77"/>
       <file name="deleteAudioBlock.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteAudioBlock.js">
         <metrics statements="25" coveredstatements="0" conditionals="8" coveredconditionals="0" methods="8" coveredmethods="0"/>
         <line num="12" count="0" type="stmt"/>
@@ -488,16 +462,21 @@
         <line num="63" count="0" type="stmt"/>
       </file>
       <file name="deleteAuxiliarFunctions.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteAuxiliarFunctions.js">
-        <metrics statements="9" coveredstatements="8" conditionals="10" coveredconditionals="9" methods="4" coveredmethods="3"/>
+        <metrics statements="14" coveredstatements="13" conditionals="12" coveredconditionals="11" methods="6" coveredmethods="6"/>
         <line num="9" count="14" type="cond" truecount="2" falsecount="0"/>
         <line num="10" count="9" type="stmt"/>
         <line num="12" count="5" type="stmt"/>
-        <line num="35" count="9" type="stmt"/>
-        <line num="36" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="37" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="38" count="9" type="cond" truecount="3" falsecount="1"/>
-        <line num="39" count="9" type="stmt"/>
-        <line num="41" count="0" type="stmt"/>
+        <line num="35" count="10" type="stmt"/>
+        <line num="36" count="10" type="cond" truecount="1" falsecount="1"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="39" count="16" type="stmt"/>
+        <line num="40" count="10" type="stmt"/>
+        <line num="41" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="44" count="9" type="stmt"/>
+        <line num="45" count="9" type="stmt"/>
+        <line num="47" count="1" type="stmt"/>
       </file>
       <file name="deleteCollection.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteCollection.js">
         <metrics statements="29" coveredstatements="26" conditionals="14" coveredconditionals="9" methods="11" coveredmethods="11"/>
@@ -564,34 +543,36 @@
         <line num="37" count="1" type="stmt"/>
       </file>
       <file name="deleteFutureLog.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteFutureLog.js">
-        <metrics statements="27" coveredstatements="21" conditionals="16" coveredconditionals="9" methods="12" coveredmethods="12"/>
+        <metrics statements="29" coveredstatements="23" conditionals="16" coveredconditionals="9" methods="12" coveredmethods="12"/>
         <line num="11" count="5" type="cond" truecount="2" falsecount="0"/>
         <line num="12" count="1" type="stmt"/>
         <line num="14" count="4" type="stmt"/>
         <line num="15" count="4" type="cond" truecount="1" falsecount="1"/>
         <line num="16" count="0" type="stmt"/>
-        <line num="18" count="10" type="stmt"/>
-        <line num="19" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="20" count="0" type="stmt"/>
-        <line num="22" count="4" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="41" count="0" type="stmt"/>
-        <line num="43" count="1" type="stmt"/>
-        <line num="44" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="45" count="0" type="stmt"/>
-        <line num="47" count="1" type="stmt"/>
-        <line num="48" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="49" count="0" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="52" count="1" type="cond" truecount="1" falsecount="1"/>
-        <line num="53" count="0" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
+        <line num="19" count="10" type="stmt"/>
+        <line num="20" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="23" count="4" type="stmt"/>
+        <line num="40" count="1" type="stmt"/>
+        <line num="41" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="46" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="49" count="1" type="stmt"/>
+        <line num="50" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="54" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="55" count="0" type="stmt"/>
         <line num="57" count="1" type="stmt"/>
-        <line num="76" count="1" type="stmt"/>
-        <line num="77" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="1" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
         <line num="78" count="1" type="stmt"/>
+        <line num="79" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="80" count="1" type="stmt"/>
       </file>
       <file name="deleteImageBlock.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteImageBlock.js">
         <metrics statements="36" coveredstatements="0" conditionals="16" coveredconditionals="0" methods="10" coveredmethods="0"/>
@@ -633,7 +614,7 @@
         <line num="76" count="0" type="stmt"/>
       </file>
       <file name="deleteMonthlyLog.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteMonthlyLog.js">
-        <metrics statements="30" coveredstatements="24" conditionals="18" coveredconditionals="10" methods="13" coveredmethods="13"/>
+        <metrics statements="35" coveredstatements="26" conditionals="18" coveredconditionals="10" methods="13" coveredmethods="13"/>
         <line num="11" count="5" type="stmt"/>
         <line num="12" count="5" type="cond" truecount="1" falsecount="1"/>
         <line num="13" count="0" type="stmt"/>
@@ -644,26 +625,31 @@
         <line num="19" count="0" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
         <line num="37" count="4" type="stmt"/>
-        <line num="38" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="39" count="0" type="stmt"/>
-        <line num="41" count="4" type="stmt"/>
-        <line num="42" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="43" count="0" type="stmt"/>
-        <line num="45" count="4" type="stmt"/>
-        <line num="46" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="47" count="0" type="stmt"/>
-        <line num="49" count="4" type="stmt"/>
-        <line num="50" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="38" count="4" type="stmt"/>
+        <line num="39" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="43" count="4" type="stmt"/>
+        <line num="44" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="48" count="4" type="stmt"/>
+        <line num="49" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="50" count="0" type="stmt"/>
         <line num="51" count="0" type="stmt"/>
-        <line num="53" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="54" count="10" type="stmt"/>
-        <line num="55" count="4" type="stmt"/>
-        <line num="56" count="4" type="stmt"/>
-        <line num="58" count="10" type="stmt"/>
-        <line num="59" count="4" type="stmt"/>
-        <line num="78" count="4" type="stmt"/>
-        <line num="79" count="4" type="cond" truecount="1" falsecount="1"/>
-        <line num="80" count="4" type="stmt"/>
+        <line num="53" count="4" type="stmt"/>
+        <line num="54" count="4" type="stmt"/>
+        <line num="55" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="58" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="59" count="10" type="stmt"/>
+        <line num="60" count="4" type="stmt"/>
+        <line num="61" count="4" type="stmt"/>
+        <line num="63" count="10" type="stmt"/>
+        <line num="64" count="4" type="stmt"/>
+        <line num="83" count="4" type="stmt"/>
+        <line num="84" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="85" count="4" type="stmt"/>
       </file>
       <file name="deleteSignifier.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteSignifier.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
@@ -714,7 +700,7 @@
       </file>
       <file name="deleteTracker.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteTracker.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="11" count="2" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
       </file>
       <file name="deleteUser.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/deleteFiles/deleteUser.js">
         <metrics statements="7" coveredstatements="0" conditionals="4" coveredconditionals="0" methods="3" coveredmethods="0"/>
@@ -731,7 +717,7 @@
       <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
       <file name="readUser.js" path="/Users/waynarbocangel/Documents/University_of_California_San_Diego/Spring_2022/cse_112/dev-waynar/cse112-sp22-group1/src/front-end/localStorage/readFiles/readUser.js">
         <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="8" count="117" type="stmt"/>
+        <line num="8" count="130" type="stmt"/>
       </file>
     </package>
     <package name="front-end.localStorage.updateFiles">

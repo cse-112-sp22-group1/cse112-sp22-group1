@@ -1,6 +1,7 @@
 /* eslint-disable */
 import * as localStorage from "../localStorage/userOperations.js";
 import { DropdownBlock } from "./dropdown.jsx";
+import { IndexDropdown } from "./indexDropdown.jsx";
 import { createEditor } from "./blockController.js";
 import { currentState } from "../state/stateManager.js";
 
@@ -9,6 +10,8 @@ import { currentState } from "../state/stateManager.js";
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
+import { currentShow, displayCollection } from "../state/setupIndex.js";
+import { ItemCard } from "./itemCard.jsx";
 /* eslint-enable */
 
 const futureLogCreator = <form class="future" title="New Future Log">
@@ -238,36 +241,11 @@ export class CreationMenu extends HTMLElement {
 					console.log(err);
 				} else if (futureLog) {
 					console.log(futureLog);
-					localStorage.readUser((error, user) => {
-						if(error){
-							console.log(error);
-						} else {
-							let monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-							let weekDays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-							let contentWrapper = document.getElementById("contentWrapper");
-							let futureLogStart = new Date(futureLog.startDate);
-							let futureLogEnd = new Date(futureLog.endDate);
-							let dropdown = new DropdownBlock(`Future Log ${monthNames[futureLogStart.getMonth()]} ${futureLogStart.getFullYear()} - ${monthNames[futureLogEnd.getMonth()]} ${futureLogEnd.getFullYear()}`, futureLog, 1);
-							contentWrapper.insertBefore(dropdown, contentWrapper.lastChild);
-
-							if (contentWrapper.childNodes.length >= 1) {
-								dropdown.titleWrapper.classList.add("singleItemWrapper");
-							}
-
-							for (let j = 0; j < futureLog.months.length; j++) {
-								let currentMonth = user.monthlyLogs.filter((month) => month.id === futureLog.months[j].id)[0];
-								let dropdownMonth = new DropdownBlock(`${monthNames[new Date(currentMonth.date).getMonth()]} ${new Date(currentMonth.date).getFullYear()}`, currentMonth, 2);
-								dropdown.contentWrapper.appendChild(dropdownMonth);
-								for (let k = 0; k < currentMonth.days.length; k++) {
-									let currentDay = user.dailyLogs.filter((day) => day.id === currentMonth.days[k].dailyLog)[0];
-									let dropdownDay = new DropdownBlock(`${weekDays[new Date(currentDay.date).getDay()]}, ${monthNames[new Date(currentDay.date).getMonth()]} ${new Date(currentDay.date).getUTCDate()}`, currentDay, 3);
-									dropdownMonth.contentWrapper.appendChild(dropdownDay);
-								}
-							}
-							this.hide();
-							dropdown.scrollIntoView({behavior: "smooth"});
-						}
-					});
+					let contentWrapper = document.getElementById("contentWrapper");
+					let dropdown = new IndexDropdown(futureLog);
+					contentWrapper.firstChild.insertBefore(dropdown, contentWrapper.firstChild.firstChild);
+					this.hide();
+					dropdown.scrollIntoView({behavior: "smooth"});
 				}
 			});
 		} else {
@@ -344,8 +322,16 @@ export class CreationMenu extends HTMLElement {
 			if (err) {
                 console.log(err);
             } else {
-				let contentWrapper = document.getElementById("contentWrapper");
-				contentWrapper.children[0].addCollection(collection);
+				if (currentState.objectType == "index") {
+					if (currentShow === "collection") {
+						let dropdownContainer = document.getElementById("dropdownContainer");
+						dropdownContainer.insertBefore(dropdownContainer.firstChild, new IndexDropdown(collection));
+					} else {
+						displayCollection();
+					}
+				} else {
+					document.querySelector("log-component").addCollection(collection);
+				}
 				this.hide();
             }
 		});

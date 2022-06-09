@@ -34,7 +34,7 @@
 
 #title{
     display: inline-block;
-    font-family: "SF-Pro";
+    font-family: system-ui;
     margin-left: 7.5px;
     font-size: calc(20pt - var(--level) * 2pt);
     font-weight: calc(900 - var(--level) * 200);

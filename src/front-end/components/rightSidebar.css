@@ -3,10 +3,10 @@
 }
 
 #container{
-    font-family: "SF-Pro";
+    font-family: system-ui;
     max-width: 100%;
     text-align: center;
-    margin: calc(15.77px - 0.5vw) 0 0;
+    margin: 10px 0 0;
 }
 
 #sideCardWrapper{

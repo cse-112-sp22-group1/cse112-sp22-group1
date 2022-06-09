@@ -1,5 +1,5 @@
 :host{
-	font-family: 'SF-Pro';
+	font-family: system-ui;
 }
 
 header{
@@ -24,7 +24,7 @@ header h1{
 
 section {
 	display: grid;
-	background-color: var(--card-background);
+	/* background-color: var(--card-background); */
 	width: calc(100% - 20px);
 	grid-template-rows: repeat(8, calc(((100vw - 325px) * 0.637) * 0.143));
 	border-radius: 10px;

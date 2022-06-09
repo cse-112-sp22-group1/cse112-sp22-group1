@@ -6,7 +6,6 @@
  * @param {singleParameterCallback} callback Eihter sends the newly created user or an error if there is one to the callback.
  */
 export function createUserPouch (db, userObject, callback) {
-	console.log(userObject);
 	let newUser = {
 		_id: "0000",
 		email: userObject.email,

@@ -1,3 +1,7 @@
+:host {
+    font-family: system-ui;
+}
+
 #logCarousel {
     border: none;
     overflow: auto;
@@ -5,8 +9,17 @@
     display: block;
     z-index: -1;
     margin-bottom: 30px;
+    scrollbar-width: 5px;
 }
 
+#carousel::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    display:none;
+}
+#logCarousel:hover > #carousel::-webkit-scrollbar{
+    display:block;
+}
 #carousel {
     overflow-x: auto;
     overflow-y: hidden;
@@ -14,6 +27,7 @@
     display: flex;
     white-space: nowrap;
     width: 100%;
+    scrollbar-width: 8px;
 }
 
 #carousel item-card {
@@ -51,7 +65,7 @@ button {
 h1 {
     height: 18px;
     font-size: 19px;
-    font-family: "SF-Pro";
+    font-family: system-ui;
     font-weight: bold;
 }
 ::-webkit-scrollbar {

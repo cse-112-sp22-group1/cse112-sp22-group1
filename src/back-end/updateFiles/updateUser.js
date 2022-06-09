@@ -11,13 +11,22 @@ const schema = require(`${__dirname}/../schema.js`);
  * Updated the user from the local db to send to the online db.
  * @memberof mongoUpdate
  * @param {String} email The email of the user to update.
- * @param {String} key The encryption key of the user's data.
+ * @param {String} currentKey The encryption currentKey of the user's data.
  * @param {Object} userObject The new version of user to replace in the online db.
  * @resolve The updated user.
  * @reject An error.
  */
-const updateUser = async (email, key, userObject) => {
+const updateUser = async (email, currentKey, userObject) => {
 	let userCopy = JSON.parse(JSON.stringify(userObject));
+	let user = await schema.User.findOne({ email: email }).exec();
+	if (user === null) {
+		throw new Error("User does not exist!");
+	}
+	let key = currentKey;
+	if (userCopy.pwd) {
+		user.pwd = security.passHash(userCopy.pwd);
+		key = security.passHash(userCopy.email + userCopy.pwd);
+	}
 	let newCollections = [];
 	for (let i = 0; i < userCopy.collections.length; i++) {
 		let collection = userCopy.collections[i];
@@ -66,11 +75,6 @@ const updateUser = async (email, key, userObject) => {
 		tracker.title = security.encrypt(tracker.title, key);
 		newTrackers.push(tracker);
 	}
-
-	let user = await schema.User.findOne({ email: email }).exec();
-	if (user === null) {
-		throw new Error("User does not exist!");
-	}
 	user.index = userCopy.index;
 	user.email = email;
 	user.theme = userCopy.theme;
@@ -85,7 +89,6 @@ const updateUser = async (email, key, userObject) => {
 	user.tasks = newTasks;
 	user.events = newEvents;
 	user.signifiers = newSignifiers;
-
 	await user.save();
 	user = await readUser.readUser(user.email, key);
 	return user;

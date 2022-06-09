@@ -54,7 +54,7 @@ const createUser = async (email, pwd, key) => {
 	user = new schema.User({
 		email: email,
 		pwd: security.passHash(pwd),
-		theme: "lightmode",
+		theme: "minimalLight",
 		index: {
 			objectType: "index",
 			futureLogs: [],

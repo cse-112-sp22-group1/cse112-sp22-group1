@@ -1,9 +1,9 @@
 :host{
-	font-family: "SF-Pro";
+	font-family: system-ui;
 }
 
 #textBlock {
-	font-family: "SF-Pro";
+	font-family: system-ui;
 	border: none;
 	overflow: auto;
 	outline: none;

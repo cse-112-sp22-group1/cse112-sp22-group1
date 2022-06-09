@@ -128,7 +128,15 @@
 <a name='L69'></a><a href='#L69'>69</a>
 <a name='L70'></a><a href='#L70'>70</a>
 <a name='L71'></a><a href='#L71'>71</a>
-<a name='L72'></a><a href='#L72'>72</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a>
+<a name='L77'></a><a href='#L77'>77</a>
+<a name='L78'></a><a href='#L78'>78</a>
+<a name='L79'></a><a href='#L79'>79</a>
+<a name='L80'></a><a href='#L80'>80</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -138,7 +146,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,56 +233,64 @@ export function deleteTrackerPouch (db, id, callback) {
 			/* istanbul ignore next */
 		} else {
 			let trackerArr = user.trackers.filter((tracker) =&gt; tracker.id === id);
+			console.log(trackerArr);
+			console.log(id);
 			let block = null;
 			if (trackerArr.length &gt; 0) {
 				block = trackerArr[0];
-			}
+				let userArr = [];
+				Array.prototype.push.apply(userArr, user.dailyLogs);
+				Array.prototype.push.apply(userArr, user.monthlyLogs);
+				Array.prototype.push.apply(userArr, user.futureLogs);
+				Array.prototype.push.apply(userArr, user.collections);
 &nbsp;
-			let userArr = [];
-			Array.prototype.push.apply(userArr, user.dailyLogs);
-			Array.prototype.push.apply(userArr, user.monthlyLogs);
-			Array.prototype.push.apply(userArr, user.futureLogs);
-			Array.prototype.push.apply(userArr, user.collections);
-&nbsp;
-			let parentArr = userArr.filter((object) =&gt; object.id === block.parent);
-			let parent = parentArr[0];
-			parent.trackers = parent.trackers.filter((obj) =&gt; obj !== block.id);
-			parent.recurringTrackers = parent.recurringTrackers.filter((obj) =&gt; obj !== block.id);
-			user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) =&gt; object.id !== parent.id);
-			user[`${parent.objectType}s`].push(parent);
-			let allReferences = userArr.filter((reference) =&gt; reference.trackers.includes(id));
-			for (let i = 0; i &lt; allReferences.length; i++) {
-				let reference = allReferences[i];
-				reference.trackers = reference.trackers.filter((tracker) =&gt; tracker !== id);
-				user[`${reference.objectType}s`] = user[`${reference.objectType}s`].filter((object) =&gt; object.id !== reference.id);
-				user[`${reference.objectType}s`].push(reference);
-			}
-			user.trackers = user.trackers.filter((tracker) =&gt; tracker.id !== id);
-&nbsp;
-			let newUser = {
-				_id: "0000",
-				_rev: user._rev,
-				email: user.email,
-				theme: user.theme,
-				index: user.index,
-				dailyLogs: user.dailyLogs,
-				monthlyLogs: user.monthlyLogs,
-				futureLogs: user.futureLogs,
-				collections: user.collections,
-				trackers: user.trackers,
-				imageBlocks: user.imageBlocks,
-				audioBlocks: user.audioBlocks,
-				textBlocks: user.textBlocks,
-				tasks: user.tasks,
-				events: user.events,
-				signifiers: user.signifiers
-			};
-&nbsp;
-			return db.put(newUser).then((res) =&gt; {
-				if (res.ok) {
-					callback(null);
+				let parentArr = userArr.filter((object) =&gt; object.id === block.parent);
+				let parent = parentArr[0];
+				parent.trackers = parent.trackers.filter((obj) =&gt; obj !== block.id);
+				if (parent.recurringTrackers) {
+					parent.recurringTrackers = parent.recurringTrackers.filter((obj) =&gt; obj !== block.id);
 				}
-			});
+				user[`${parent.objectType}s`] = user[`${parent.objectType}s`].filter((object) =&gt; object.id !== parent.id);
+				user[`${parent.objectType}s`].push(parent);
+				let allReferences = userArr.filter((reference) =&gt; reference.trackers.includes(id));
+				for (let i = 0; i &lt; allReferences.length; i++) {
+					let reference = allReferences[i];
+					reference.trackers = reference.trackers.filter((tracker) =&gt; tracker !== id);
+					user[`${reference.objectType}s`] = user[`${reference.objectType}s`].filter((object) =&gt; object.id !== reference.id);
+					user[`${reference.objectType}s`].push(reference);
+				}
+				user.trackers = user.trackers.filter((tracker) =&gt; tracker.id !== id);
+&nbsp;
+				let newUser = {
+					_id: "0000",
+					_rev: user._rev,
+					email: user.email,
+					theme: user.theme,
+					index: user.index,
+					dailyLogs: user.dailyLogs,
+					monthlyLogs: user.monthlyLogs,
+					futureLogs: user.futureLogs,
+					collections: user.collections,
+					trackers: user.trackers,
+					imageBlocks: user.imageBlocks,
+					audioBlocks: user.audioBlocks,
+					textBlocks: user.textBlocks,
+					tasks: user.tasks,
+					events: user.events,
+					signifiers: user.signifiers
+				};
+&nbsp;
+				return db.put(newUser).then((res) =&gt; {
+					if (res.ok) {
+						callback(null);
+					} else {
+						callback("something happen");
+					}
+				});
+			}
+				callback(null);
+&nbsp;
+&nbsp;
 		}
 	});
 }
@@ -277,27 +301,7 @@ export function deleteTrackerPouch (db, id, callback) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                at Sat Jun 04 2022 19:24:41 GMT-0700 (Pacific Daylight Time)
-=======
-                at Sat Jun 04 2022 13:13:43 GMT-0700 (Pacific Daylight Time)
->>>>>>> 5c39c72 (finished merge)
-=======
-                at Sat Jun 04 2022 13:42:54 GMT-0700 (Pacific Daylight Time)
->>>>>>> 3638013 (Testing workflow updated, testing if it works)
-=======
-                at Sat Jun 04 2022 19:11:20 GMT-0700 (Pacific Daylight Time)
->>>>>>> 911c4e0 (adds mock testing server and removes env vars)
-=======
-                at Sat Jun 04 2022 19:19:37 GMT-0700 (Pacific Daylight Time)
->>>>>>> 118419b (server auto closes after tests)
-=======
-                at Sat Jun 04 2022 19:24:41 GMT-0700 (Pacific Daylight Time)
->>>>>>> c41e6da (makes server run in the background)
+                at Wed Jun 08 2022 17:51:15 GMT-0700 (Pacific Daylight Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

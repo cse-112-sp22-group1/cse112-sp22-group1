@@ -28,7 +28,7 @@ module.exports = {
     },
 	plugins: [
 		new CopyPlugin({
-            patterns: [{ from: "./localStorage/pouchdb-7.2.1.min.js" }, { from: "./components/datepicker.min.js" }, { from: "./login/bugP3.png" }, { from: "./public/resources", to: "public/resources"}, { from: "./public/fonts", to: "public/fonts" }]
+            patterns: [{ from: "./localStorage/pouchdb-7.2.1.min.js" }, { from: "./components/datepicker.min.js" }, { from: "./public/resources", to: "public/resources"}, { from: "./public/fonts", to: "public/fonts" }]
         })
 	]
 }

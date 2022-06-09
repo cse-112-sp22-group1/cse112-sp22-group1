@@ -1,5 +1,8 @@
 /* eslint-disable */
-import {creationMenu} from "../index.js";
+import * as localStorage from "../localStorage/userOperations.js";
+import {adderDropdown, creationMenu} from "../index.js";
+import { currentState } from "../state/stateManager.js";
+import { router } from "../state/router.js";
 
 export let creationDropdownContents = {
     "index": [
@@ -29,6 +32,13 @@ export let creationDropdownContents = {
                 creationMenu.show();
             }
         }, {
+            title: "New Collection",
+            icon: "../public/resources/todaysLog.png",
+            listener: () => {
+                creationMenu.setKind("collection");
+                creationMenu.show();
+            }
+        }, {
             title: "New Goal",
             icon:"../public/resources/task_icon.png",
             listener: () => {
@@ -44,6 +54,13 @@ export let creationDropdownContents = {
             icon: "../public/resources/todaysLog.png",
             listener: () => {
                 creationMenu.setKind("dailyLog");
+                creationMenu.show();
+            }
+        }, {
+            title: "New Collection",
+            icon: "../public/resources/todaysLog.png",
+            listener: () => {
+                creationMenu.setKind("collection");
                 creationMenu.show();
             }
         }, {
@@ -115,7 +132,18 @@ export let editDropdownContents = {
             title: "Delete",
             icon: "../public/resources/delete_icon.png",
             listener: () => {
-            
+                if (confirm("You sure you want to delete this Future Log? This is irreversible")) {
+                    console.log("here now")
+                    localStorage.deleteFutureLog(currentState, true, (err) => {
+                        console.log("somethign has been done");
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            adderDropdown.hide();
+                            router.navigate("/");
+                        }
+                    })
+                }
             }
         }, {
             title: "More",

@@ -1,6 +1,6 @@
 :host {
     display: block;
-    font-family: "SF-Pro";
+    font-family: system-ui;
 }
 
 form {

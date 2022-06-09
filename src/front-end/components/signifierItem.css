@@ -1,0 +1,48 @@
+:host{
+	width: 100%;
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid var(--lighter-divider-color);
+}
+
+#meaning {
+	margin-right: auto;
+	margin-top: 16px;
+	margin-bottom: 16px;
+	outline: none;
+}
+
+#arrow{
+	margin-right: 10px;
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+#symbol {
+	margin-right: 10px;
+	margin-top: 0;
+	margin-bottom: 0;
+	outline: none;
+}
+
+#deleteButton {
+	margin-left: auto;
+	margin-top: 0;
+	margin-bottom: 0;
+	border: none;
+	color: var(--highlighted-font-color);
+	background-color: var(--danger-button-color);
+	border-radius: 5px;
+	font-size: 14px;
+	width: min-content;
+	height: min-content;
+	padding: 5px 10px;
+	cursor: pointer;
+	opacity: 0.8;
+	transition: 0.3ms ease-in-out;
+}
+
+#deleteButton:hover {
+	opacity: 1;
+	transition: 0.3ms ease-in-out;
+}

@@ -1,8 +1,4 @@
 @import "./theme.css";
-@font-face {
-	font-family: "SF-Pro";
-	src: url("./public/fonts/SF-Pro.ttf");
-}
 
 html {
 	overflow: hidden;
@@ -27,6 +23,14 @@ div {
 #dropdownContainer {
 	width: 100%;
 	margin-top: 21px;
+	overflow-y: auto;
+}
+
+main{
+	position: relative;
+	margin-left: 325px;
+	width: calc(100% - 325px);
+	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
 #contentWrapper {
@@ -34,27 +38,23 @@ div {
 	overflow: hidden;
 	outline: none;
 	display: flex;
-	margin-left: 325px;
+	max-width: 1720px;
+	min-height: 20vw;
+	margin-left: auto;
+	margin-right: auto;
 	padding: 0;
-	margin-right: 0;
 	position: relative;
-	z-index: -1;
-	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+	z-index: 0;
 }
 
 index-drop-down {
 	width: 100%;
 }
 
-.centerContent {
-	margin-left: 187px !important;
-	margin-right: 138px !important;
-	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
-}
-
-.centerHeader {
-	margin-left: 187px !important;
-	margin-right: 138px !important;
+.centerMain {
+	margin-left: 25px !important;
+	margin-right: 0;
+	width: 100% !important;
 	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
@@ -78,18 +78,23 @@ creator-block {
 
 page-header {
 	display: block;
-    margin-left: 325px;
+	max-width: 1720px;
+    margin-left: auto;
+	margin-right: auto;
     margin-top: 20px;
     text-align: left;
-	transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
 }
 
 log-component {
 	width: 63.7%;	
+	height: 100%;
+	overflow: auto;
 }
 
 right-sidebar{
 	width: 36.3%;
+	height: 100%;
+	overflow: auto;
 }
 
 .noteContainer {
@@ -108,6 +113,15 @@ right-sidebar{
 	display: list-item;
 	list-style-type: circle;
 	list-style-position: outside;
+}
+
+@media only screen and (max-width:2045px) {
+	.centerMain {
+		margin-left: 187px !important;
+		width: calc(100% - 325px) !important;
+		transition: cubic-bezier(0.77,0.2,0.05,1.0) 0.5s;
+	}
+
 }
 
 /*
@@ -175,11 +189,15 @@ nav-bar {
 	margin: 10px auto;
 }
 
+index-drop-down:first-of-type{
+	margin-top: -15px;
+}
+
 #displayToggle{
 	float: right;
 	color: var(--highlighted-font-color);
 	margin-top: 20px;
-	margin-right: 130px;
+	right: 0;
     background-color: var(--secondary-button-color);
 	user-select: none;
     vertical-align: middle;
@@ -190,13 +208,6 @@ nav-bar {
     height: 31px;
     padding: 0 9px;
     border-radius: 6px;
+	position: absolute;
     cursor: pointer;
 }
-
-/* Text editor, to be integrated */
-
-main {
-	margin-left: 100px;
-	margin-top: 100px;
-}
-

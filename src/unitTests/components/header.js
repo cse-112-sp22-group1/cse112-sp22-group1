@@ -18,7 +18,7 @@ export class PageHeader extends HTMLElement {
 				}
 
 				.header {
-					font-family: "SF-Pro";
+					font-family: system-ui;
 					position: relative;
 					top: 1em;
 					margin-top: 100px;

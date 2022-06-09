@@ -38,9 +38,6 @@ export function createTrackerPouch (db, title, content, parent, addToParent, rec
 			if (addToParent) {
 				if (recurring) {
 					addToParent.recurringTrackers.push(trackerObject.id);
-					recurring.trackers.push(trackerObject.id);
-					user[`${recurring.objectType}s`] = user[`${recurring.objectType}s`].filter((element) => element.id !== recurring.id);
-					user[`${recurring.objectType}s`].push(recurring);
 				} else {
 					addToParent.trackers.push(trackerObject.id);
 				}
@@ -69,7 +66,50 @@ export function createTrackerPouch (db, title, content, parent, addToParent, rec
 
 			return db.put(newUser).then((res) => {
 				if (res.ok) {
-					callback(null, trackerObject);
+					localStorage.readUser((failedToRead, updatedUser) => {
+						if (failedToRead && recurring) {
+							callback(failedToRead)
+						} else if (recurring) {
+							let newTrackerObject = {
+								id: makeid(updatedUser),
+								objectType: "tracker",
+								title: title,
+								content: content,
+								parent: recurring.id
+							};
+							updatedUser.trackers.push(newTrackerObject);
+							recurring.trackers.push(newTrackerObject.id);
+							updatedUser[`${recurring.objectType}s`] = updatedUser[`${recurring.objectType}s`].filter((element) => element.id !== recurring.id);
+							updatedUser[`${recurring.objectType}s`].push(recurring);
+							newUser = {
+								_id: "0000",
+								_rev: updatedUser._rev,
+								email: updatedUser.email,
+								theme: updatedUser.theme,
+								index: updatedUser.index,
+								dailyLogs: updatedUser.dailyLogs,
+								monthlyLogs: updatedUser.monthlyLogs,
+								futureLogs: updatedUser.futureLogs,
+								collections: updatedUser.collections,
+								trackers: updatedUser.trackers,
+								imageBlocks: updatedUser.imageBlocks,
+								audioBlocks: updatedUser.audioBlocks,
+								textBlocks: updatedUser.textBlocks,
+								tasks: updatedUser.tasks,
+								events: updatedUser.events,
+								signifiers: updatedUser.signifiers
+							};
+							console.log(newUser)
+							return db.put(newUser).then((response) => {
+								if (response.ok) {
+									callback(null, trackerObject);
+								}
+							});
+
+						} else {
+							callback(null, trackerObject);
+						}
+					});
 				}
 			}).catch((error) => {
 				callback(error, null);

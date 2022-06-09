@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.89% </span>
+                <span class="strong">93.33% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>14/15</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">90% </span>
+                <span class="strong">91.67% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>9/10</span>
+                <span class='fraction'>11/12</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">75% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/4</span>
+                <span class='fraction'>6/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">88.89% </span>
+                <span class="strong">92.86% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/9</span>
+                <span class='fraction'>13/14</span>
             </div>
         
             
@@ -120,7 +120,19 @@
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -154,13 +166,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">16x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-yes">9x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -217,34 +241,46 @@ export function handleContent (collection, callback) {
 }
 &nbsp;
 export function handleTrackers (collection, callback) {
-	let isNotRecurringTracker = !collection.recurringTrackers
-	let isRecurringTrackerEmpty = collection.recurringTrackers &amp;&amp; collection.recurringTrackers.length === 0;
-	let doneRecurring = isNotRecurringTracker || isRecurringTrackerEmpty;
-	<span class="missing-if-branch" title="else path not taken" >E</span>if (collection.trackers.length === 0 &amp;&amp; doneRecurring) {
-		callback(null, collection);
-	} else {
-<span class="cstat-no" title="statement not covered" >		localStorage.deleteTrackerByID(collection.trackers[0], false, <span class="fstat-no" title="function not covered" >(f</span>ailedDeleteTracker) =&gt; {</span>
-			/* istanbul ignore next */
-			if (failedDeleteTracker) {
-				/* istanbul ignore next */
-				callback(failedDeleteTracker, null);
-				/* istanbul ignore next */
-			} else if (collection.recurringTrackers &amp;&amp; collection.recurringTrackers.length &gt; 0) {
-					localStorage.deleteTrackerByID(collection.recurringTrackers[0], false, (failedDeleteRecurringTracker) =&gt; {
+	localStorage.readUser((failedRead, user) =&gt; {
+		<span class="missing-if-branch" title="if path not taken" >I</span>if (failedRead) {
+<span class="cstat-no" title="statement not covered" >			callback(failedRead);</span>
+		} else {
+			collection = user[`${collection.objectType}s`].filter((reference) =&gt; reference.id === collection.id)[0];
+			let isNotRecurringTracker = !collection.recurringTrackers
+			let isRecurringTrackerEmpty = collection.recurringTrackers &amp;&amp; collection.recurringTrackers.length === 0;
+			let doneRecurring = isNotRecurringTracker || isRecurringTrackerEmpty;
+			if (collection.trackers.length === 0 &amp;&amp; doneRecurring) {
+				console.log("finished this");
+				callback(null, collection);
+			} else {
+				localStorage.deleteTrackerByID(collection.trackers[0], false, (failedDeleteTracker) =&gt; {
+					/* istanbul ignore next */
+					if (failedDeleteTracker) {
 						/* istanbul ignore next */
-						if (failedDeleteRecurringTracker) {
+						console.log("failed original");
+						callback(failedDeleteTracker, null);
+						/* istanbul ignore next */
+					} else if (collection.recurringTrackers &amp;&amp; collection.recurringTrackers.length &gt; 0) {
+						localStorage.deleteTrackerByID(collection.recurringTrackers[0], false, (failedDeleteRecurringTracker) =&gt; {
 							/* istanbul ignore next */
-							callback(failedDeleteRecurringTracker);
-							/* istanbul ignore next */
-						} else {
-							handleTrackers(collection, callback);
-						}
-					});
-				} else {
-					handleTrackers(collection, callback);
-				}
-		});
-	}
+							if (failedDeleteRecurringTracker) {
+								/* istanbul ignore next */
+								console.log("failed recurring");
+								callback(failedDeleteRecurringTracker, null);
+								/* istanbul ignore next */
+							} else {
+								console.log("handling next iteration");
+								handleTrackers(collection, callback);
+							}
+						});
+					} else {
+						console.log("handling next iteration without recurring")
+						handleTrackers(collection, callback);
+					}
+				});
+			}
+		}
+	})
 }
 &nbsp;</pre></td></tr></table></pre>
 
@@ -253,27 +289,7 @@ export function handleTrackers (collection, callback) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                at Sat Jun 04 2022 19:24:41 GMT-0700 (Pacific Daylight Time)
-=======
-                at Sat Jun 04 2022 13:13:43 GMT-0700 (Pacific Daylight Time)
->>>>>>> 5c39c72 (finished merge)
-=======
-                at Sat Jun 04 2022 13:42:54 GMT-0700 (Pacific Daylight Time)
->>>>>>> 3638013 (Testing workflow updated, testing if it works)
-=======
-                at Sat Jun 04 2022 19:11:20 GMT-0700 (Pacific Daylight Time)
->>>>>>> 911c4e0 (adds mock testing server and removes env vars)
-=======
-                at Sat Jun 04 2022 19:19:37 GMT-0700 (Pacific Daylight Time)
->>>>>>> 118419b (server auto closes after tests)
-=======
-                at Sat Jun 04 2022 19:24:41 GMT-0700 (Pacific Daylight Time)
->>>>>>> c41e6da (makes server run in the background)
+                at Wed Jun 08 2022 17:51:15 GMT-0700 (Pacific Daylight Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

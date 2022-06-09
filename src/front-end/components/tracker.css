@@ -60,7 +60,7 @@ creator-block{
     height: 100vh;
     background-color: var(--tracker-background-color); /* #2B2D42 */
     color: var(--tracker-foreground-color);
-    font-family: "SF-Pro";
+    font-family: system-ui;
     transition: transform .4s ease-in-out
 }
 

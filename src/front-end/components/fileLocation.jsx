@@ -43,13 +43,13 @@ export class FileLocation extends HTMLElement {
 			this.slash.style.display = "none";
 		}
 
-        if(type == "dailyLog") {
+        if (type === "dailyLog") {
             this.img.src = "../public/resources/todaysLog.png";
         } else if (type === "monthlyLog") {
             this.img.src = "../public/resources/monthlyLog.png";
         } else if (type === "index") {
             this.img.src = "../public/resources/index.png";
-        } else if (type === "futureLog"){
+        } else if (type === "futureLog") {
             this.img.src = "../public/resources/futureLog.png";
         } else {
 			this.img.src = "../public/resources/collection.png"
@@ -60,9 +60,15 @@ export class FileLocation extends HTMLElement {
 	 * When a log instance is created sets event listeners for all header buttons in the callback
 	 */
 	connectedCallback () {
-		// normal open menu button
+		// Normal open menu button
 		this.locationTitle.onclick = () => {
-			router.navigate(`/${this.type}/${this.collectionID}`);
+			// if (this.type !== "index") {
+			// 	router.navigate(`/${this.type}/${this.collectionID}`);
+			if (this.collectionID) {
+				router.navigate(`/${this.type}/${this.collectionID}`);
+			} else {
+				router.navigate("/");
+			}
 		};
 	}
 

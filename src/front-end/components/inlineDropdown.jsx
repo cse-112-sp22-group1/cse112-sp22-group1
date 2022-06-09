@@ -135,9 +135,9 @@ export class InlineDropdown extends HTMLElement {
      * @param {Number} x - pixels from the left side of the screen
      * @param {Number} y - pixels from the top of the screen
      */
-    setPosition (x, y) {
-        this.dropdown.style.top = `${x}px`;
-        this.dropdown.style.left = `${y}px`;
+    setPosition (y, x) {
+        this.dropdown.style.top = `${y}px`;
+        this.dropdown.style.left = `${x}px`;
     }
 
     openCreationDropdown(x, y) {
@@ -185,7 +185,11 @@ export class InlineDropdown extends HTMLElement {
             this.secondList.lastChild.remove();
         }
         this.secondDropdown.style.top = `${this.dropdown.offsetTop}px`;
-        this.secondDropdown.style.left = `${this.dropdown.offsetWidth+ this.dropdown.offsetLeft-5}px`;
+        if (this.dropdown.offsetWidth + this.dropdown.offsetLeft - 5 + this.secondDropdown.offsetWidth + 145 < window.innerWidth) {
+            this.secondDropdown.style.left = `${this.dropdown.offsetWidth + this.dropdown.offsetLeft - 5}px`;
+        } else {
+            this.secondDropdown.style.left = `${this.dropdown.offsetLeft - this.dropdown.offsetWidth}px`;
+        }
         let elements = contents;
         for (let i = 0; i < elements.length; i++) {
             let title = elements[i].title;

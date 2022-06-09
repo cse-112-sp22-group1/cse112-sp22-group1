@@ -1,15 +1,14 @@
 :host{
-	font-family: "SF-Pro", "Roboto";
+    font-family: system-ui;
 }
 .card{
-    font-family: "SF-Pro", "Roboto";
+    font-family: system-ui;
     width: fit-content;
     overflow: hidden;
     border-radius: 15px;
     justify-content: space-between;
     padding: 0.3em 1em 1em;
-    background-color: var(--card-backgound);
-    
+    background-color: var(--card-background);
     box-shadow: 0 0 10px var(--card-shadow);
 }
 #titleWrapper{
@@ -22,11 +21,13 @@
     text-decoration-thickness: 2px;
     text-align: center;
     text-decoration: underline;
+    filter: var(--itemcard-font-filter);
 }
 #date{
     font-size: 12pt;
     font-weight: normal;
     text-align: center;
+    filter: var(--itemcard-font-filter);
 }
 #buttonWrapper{
     text-align:center;
@@ -44,7 +45,9 @@ button{
 }
 #openButton{
     background-color: var(--primary-button-color);
+    color: var(--primary-button-font-color);
 }
 #peakButton{
     background-color:var(--secondary-button-color);
+    color: var(--secondary-button-font-color);
 }

@@ -12,16 +12,16 @@ function deleteDays (monthlyLog, callback) {
 		if (err) {
 			callback(err, null);
 		} else if (monthlyLog.days.length === 0) {
-				callback(null, monthlyLog);
-			} else {
-				localStorage.deleteDailyLog(user.dailyLogs.filter((reference) => reference.id === monthlyLog.days[0].id)[0], monthlyLog, false, (error) => {
-					if (error) {
-						callback(error, null);
-					} else {
-						deleteDays(monthlyLog, callback);
-					}
-				});
-			}
+			callback(null, monthlyLog);
+		} else {
+			localStorage.deleteDailyLog(user.dailyLogs.filter((reference) => reference.id === monthlyLog.days[0].id)[0], monthlyLog, false, (error) => {
+				if (error) {
+					callback(error, null);
+				} else {
+					deleteDays(monthlyLog, callback);
+				}
+			});
+		}
 	})
 }
 
@@ -35,17 +35,22 @@ function deleteDays (monthlyLog, callback) {
  */
 export function deleteMonthlyLogPouch (db, log, parent, callback) {
 	deleteDays(log, (failedDeleteDays, preProcessedMonth) => {
+		console.log("deleted days");
 		if (failedDeleteDays) {
+			console.log(failedDeleteDays);
 			callback(failedDeleteDays);
 		} else {
 			aux.handleContent(preProcessedMonth, (failedContentHandle, processedMonth) => {
 				if (failedContentHandle) {
+					console.log(failedContentHandle);
 					callback(failedContentHandle);
 				} else {
 					aux.handleTrackers(processedMonth, (failedTrackerHandle, monthlyLog) => {
 						if (failedTrackerHandle) {
+							console.log(failedTrackerHandle);
 							callback(failedTrackerHandle);
 						} else {
+							console.log("we break trhough");
 							localStorage.readUser((err, updatedUser) => {
 								if (err) {
 									callback(err);

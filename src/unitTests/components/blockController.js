@@ -73,7 +73,7 @@ export class Controller extends Object {
 	}
 }
 
-export function createEditor (container, parent, subParent, callback) {
+export function createEditor (container, parent, callback) {
 
 	let controller = new Controller(container, parent, subParent);
 	setTimeout(() => {

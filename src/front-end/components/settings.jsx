@@ -2,6 +2,7 @@ import {fade, unfade} from "../transitions.js";
 /* eslint-disable */
 import {GeneralSettingsPanel} from "./generalSettingsPanel.jsx";
 import {ThemePanel} from "./themePanel.jsx";
+import { SignifierSettingsPanel } from "./signifierSettingsPanel.jsx";
 /* eslint-enable */
 
 // JSX Engine Import
@@ -54,26 +55,33 @@ let template = <template>
  *          <your-panel></your-panel>
  *      </settings-panel>
  */
-const settingsTemplate = `
-	<style>
-		settings-tab {
+const settingsTemplate = <template>
+    <style>
+		{`settings-tab {
 			cursor: pointer;
-		}
+		}`}
 	</style>
-    <settings-tab slot="settings-tab" title="Settings">
-        <img slot="icon" src="public/resources/generalSettingsIcon.png">
+    <settings-tab slot="settings-tab" title="Account Settings">
+        <p slot="icon">Account</p>
     </settings-tab>
     <settings-panel slot="settings-panel">
-        <general-settings-panel>
+        <general-settings-panel />
     </settings-panel>
 
-    <settings-tab slot="settings-tab" title="Theme">
-        <img slot="icon" src="public/resources/palette.png">
+    <settings-tab slot="settings-tab" title="Themes">
+        <p slot="icon">Themes</p>
     </settings-tab>
     <settings-panel slot="settings-panel">
-        <theme-panel></theme-panel>
+        <theme-panel />
     </settings-panel>
-`;
+
+    <settings-tab slot="settings-tab" title="Signifiers">
+        <p slot="icon">Signifiers</p>
+    </settings-tab>
+    <settings-panel slot="settings-panel">
+        <signifier-settings-panel />
+    </settings-panel>
+</template>;
 
 export class SettingsMenu extends HTMLElement {
     static get observedAttributes () {
@@ -102,7 +110,7 @@ export class SettingsMenu extends HTMLElement {
     }
 
     connectedCallback () {
-        this.innerHTML = settingsTemplate;
+        this.innerHTML = settingsTemplate.innerHTML;
 
         this.classList.toggle("open", false);
         this.setAttribute("aria-hidden", true);
@@ -225,29 +233,10 @@ customElements.define("settings-menu", SettingsMenu);
 // Used to generate an id
 let tabId = 0;
 
-let settingsTabTemplate = document.createElement("template");
-settingsTabTemplate.innerHTML = `
-<style>
-    :host {
-        padding: 10px;
-    }
-
-    ::slotted(img) {
-        pointer-events: none;
-        width: 32px;
-        height: 32px;
-        opacity: 50%;
-        filter: var(--icon-filter);
-    }
-
-    :host(:hover) ::slotted(img) {
-        opacity: 100%;
-        transition: opacity 150ms;
-    }
-</style>
-
-<slot name="icon"></slot>
-`;
+let settingsTabTemplate = <template>
+    <link type="text/css" rel="stylesheet" href="./settingsTab.css" />
+    <slot name="icon"></slot>
+</template>;
 
 export class SettingsTab extends HTMLElement {
     static get observedAttributes () {

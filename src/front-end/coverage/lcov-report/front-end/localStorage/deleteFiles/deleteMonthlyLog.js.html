@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">82.35% </span>
+                <span class="strong">76.92% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>28/34</span>
+                <span class='fraction'>30/39</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">80% </span>
+                <span class="strong">74.29% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>24/30</span>
+                <span class='fraction'>26/35</span>
             </div>
         
             
@@ -55,7 +55,7 @@
             Press <em>n</em> or <em>j</em> to go to the next uncovered block, <em>b</em>, <em>p</em> or <em>k</em> for the previous block.
         </p>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -148,7 +148,12 @@
 <a name='L89'></a><a href='#L89'>89</a>
 <a name='L90'></a><a href='#L90'>90</a>
 <a name='L91'></a><a href='#L91'>91</a>
-<a name='L92'></a><a href='#L92'>92</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -186,16 +191,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -253,16 +263,16 @@ function deleteDays (monthlyLog, callback) {
 		<span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >			callback(err, null);</span>
 		} else if (monthlyLog.days.length === 0) {
-				callback(null, monthlyLog);
-			} else {
-				localStorage.deleteDailyLog(user.dailyLogs.filter((reference) =&gt; reference.id === monthlyLog.days[0].id)[0], monthlyLog, false, (error) =&gt; {
-					<span class="missing-if-branch" title="if path not taken" >I</span>if (error) {
-<span class="cstat-no" title="statement not covered" >						callback(error, null);</span>
-					} else {
-						deleteDays(monthlyLog, callback);
-					}
-				});
-			}
+			callback(null, monthlyLog);
+		} else {
+			localStorage.deleteDailyLog(user.dailyLogs.filter((reference) =&gt; reference.id === monthlyLog.days[0].id)[0], monthlyLog, false, (error) =&gt; {
+				<span class="missing-if-branch" title="if path not taken" >I</span>if (error) {
+<span class="cstat-no" title="statement not covered" >					callback(error, null);</span>
+				} else {
+					deleteDays(monthlyLog, callback);
+				}
+			});
+		}
 	})
 }
 &nbsp;
@@ -276,17 +286,22 @@ function deleteDays (monthlyLog, callback) {
  */
 export function deleteMonthlyLogPouch (db, log, parent, callback) {
 	deleteDays(log, (failedDeleteDays, preProcessedMonth) =&gt; {
+		console.log("deleted days");
 		<span class="missing-if-branch" title="if path not taken" >I</span>if (failedDeleteDays) {
+<span class="cstat-no" title="statement not covered" >			console.log(failedDeleteDays);</span>
 <span class="cstat-no" title="statement not covered" >			callback(failedDeleteDays);</span>
 		} else {
 			aux.handleContent(preProcessedMonth, (failedContentHandle, processedMonth) =&gt; {
 				<span class="missing-if-branch" title="if path not taken" >I</span>if (failedContentHandle) {
+<span class="cstat-no" title="statement not covered" >					console.log(failedContentHandle);</span>
 <span class="cstat-no" title="statement not covered" >					callback(failedContentHandle);</span>
 				} else {
 					aux.handleTrackers(processedMonth, (failedTrackerHandle, monthlyLog) =&gt; {
 						<span class="missing-if-branch" title="if path not taken" >I</span>if (failedTrackerHandle) {
+<span class="cstat-no" title="statement not covered" >							console.log(failedTrackerHandle);</span>
 <span class="cstat-no" title="statement not covered" >							callback(failedTrackerHandle);</span>
 						} else {
+							console.log("we break trhough");
 							localStorage.readUser((err, updatedUser) =&gt; {
 								<span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
 <span class="cstat-no" title="statement not covered" >									callback(err);</span>
@@ -337,27 +352,7 @@ export function deleteMonthlyLogPouch (db, log, parent, callback) {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-                at Sat Jun 04 2022 19:24:41 GMT-0700 (Pacific Daylight Time)
-=======
-                at Sat Jun 04 2022 13:13:43 GMT-0700 (Pacific Daylight Time)
->>>>>>> 5c39c72 (finished merge)
-=======
-                at Sat Jun 04 2022 13:42:54 GMT-0700 (Pacific Daylight Time)
->>>>>>> 3638013 (Testing workflow updated, testing if it works)
-=======
-                at Sat Jun 04 2022 19:11:20 GMT-0700 (Pacific Daylight Time)
->>>>>>> 911c4e0 (adds mock testing server and removes env vars)
-=======
-                at Sat Jun 04 2022 19:19:37 GMT-0700 (Pacific Daylight Time)
->>>>>>> 118419b (server auto closes after tests)
-=======
-                at Sat Jun 04 2022 19:24:41 GMT-0700 (Pacific Daylight Time)
->>>>>>> c41e6da (makes server run in the background)
+                at Wed Jun 08 2022 17:51:15 GMT-0700 (Pacific Daylight Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

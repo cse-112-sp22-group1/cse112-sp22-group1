@@ -3,7 +3,6 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
-import { createEditor } from "../components/blockController.js";
 import { Calendar } from "../components/calendar.jsx"
 import { readUser } from "../localStorage/userOperations.js";
 /* eslint-enable */

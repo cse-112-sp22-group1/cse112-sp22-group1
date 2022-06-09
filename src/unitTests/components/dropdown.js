@@ -25,7 +25,7 @@ export class DropdownBlock extends HTMLElement {
 
 			#title{
 				display: inline-block;
-				font-family: "SF-Pro";
+                font-family: system-ui;
 				font-size: calc(20pt - ${level * 2}pt);
 				font-weight: calc(900 - ${level * 200});
 				letter-spacing: calc(1.2px - ${level * 0.35}px);

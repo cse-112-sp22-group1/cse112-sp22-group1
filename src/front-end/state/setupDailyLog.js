@@ -1,5 +1,5 @@
 import * as localStorage from "../localStorage/userOperations.js";
-import { contentWrapper, header } from "../index.js";
+import { contentWrapper, header, setSearch } from "../index.js";
 import { FileLocation } from "../components/fileLocation.jsx";
 import { Log } from "../components/log.jsx";
 import { RightSidebar } from "../components/rightSidebar.jsx";
@@ -10,6 +10,7 @@ import { currentState } from "./stateManager.js";
  * Sets up the daillyLog page with the textBlocks, and trackers of the user.
  */
 export function setupDailyLog () {
+	setSearch("");
 	contentWrapper.appendChild(new Log(currentState));
 	contentWrapper.appendChild(new RightSidebar(currentState.trackers));
 	let currentDate = new Date(currentState.date);
@@ -25,6 +26,7 @@ export function setupDailyLog () {
 	}
 	let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 	header.title = `${months[currentDate.getMonth()]} ${day}, ${currentDate.getFullYear()}`;
+	header.loadSearchbar();
 	// FutureLogEnd.getFullYear() === futureLogStart.getFullYear() ? `Future Log ${futureLogStart.getFullYear()}` : `Future Log ${futureLogStart.getFullYear()} - ${futureLogEnd.getFullYear()}`;
 
 	// Remove all child fileLocations first first
@@ -42,6 +44,27 @@ export function setupDailyLog () {
 			header.file.appendChild(new FileLocation(futureLog.title, "futureLog", month.parent, true));
 			header.file.appendChild(new FileLocation(`${months[currentDate.getMonth()]} ${currentDate.getFullYear()}`, "monthlyLog", currentState.parent, true));
 			header.file.appendChild(new FileLocation(`${months[currentDate.getMonth()]} ${day}, ${currentDate.getFullYear()}`, "dailyLog", currentState.id, false));
+			let viewPort = document.getElementById("contentWrapper");
+			console.log(viewPort.getClientRects());
+			viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
 		}
 	});
+}
+
+
+export function refreshDailyLog () {
+    let oldChild = contentWrapper.lastElementChild;
+    while (oldChild) {
+        contentWrapper.removeChild(oldChild);
+        oldChild = contentWrapper.lastElementChild;
+    }
+
+    contentWrapper.appendChild(new Log(currentState));
+    contentWrapper.appendChild(new RightSidebar(currentState.trackers));
+
+	setTimeout(() => {
+		let viewPort = document.getElementById("contentWrapper");
+		console.log(viewPort.getClientRects());
+		viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
+	}, 10);
 }

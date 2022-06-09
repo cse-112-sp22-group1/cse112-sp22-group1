@@ -1,5 +1,5 @@
 :host {
-    font-family: "SF-Pro";
+    font-family: system-ui;
 }
 
 /* Top navigation */
@@ -17,14 +17,15 @@
 }
 
 .header {
-    font-family: "SF-Pro";
+    font-family: system-ui;
     position: relative;
     height: 56px;
-    margin-top: 16px;
-    width: 90%;
+    margin-top: 23px;
+    width: 100%;
     display: flex;
     align-items: center;
     border-bottom: solid 1px var(--divider-color);
+    justify-content: space-between;
 }
 
 .header > div{
@@ -41,19 +42,20 @@ button {
 }
 
 .new-button {
-    color: var(--highlighted-font-color);
+    color: var(--primary-button-font-color);
     background-color: var(--primary-button-color);
     height: 31px;
     float: right;
     padding: 0 9px;
     border-radius: 6px;
     margin-left: auto;
+    margin-right: 5px;
     margin-bottom: 15px;
     cursor: pointer;
 }
 
 .edit-button {
-    color: var(--highlighted-font-color);
+    color: var(--secondary-button-font-color);
     margin-left: 17px;
     background-color: var(--secondary-button-color);
     height: 31px;
@@ -66,7 +68,6 @@ h1 {
     display: inline;
     font-size: 41px;
     font-weight: bold;
-    letter-spacing: 1.1px;
     vertical-align: middle;
 
     z-index: 0;
@@ -76,55 +77,124 @@ h1 {
     display: flex;
     justify-content: flex-end;
     margin-bottom: 17px;
-    margin-left: 5px;
-  }
+    margin-right: 10px;
+    margin-left: auto;
+}
+
+.search-box + .new-button{
+    margin-left: 0;
+}
   
-  .search-box input {
+.search-box input {
+    display: inline-block;
     border-radius: 5px;
-    border: 0;
+    font-size: 20px;
+    border: none;
     font-size: 20px;
     box-shadow: 1px 1px 9px 0 var(--card-shadow);
-    border-color: var(--card-shadow);
-    border-width: 2px;
     margin-right: 5px;
-    padding:0;
+    padding: 8px 0;
     width: 0;
     height: 36px;
     background-color: rgba(0, 0, 0, 0);
     transition: width 0.45s ease-in-out;
-  }
-  .search-btn:hover{
+    outline:none;
+}
+
+.search-box a {
+    height: 44px;
+}
+
+.search-btn:hover{
     transition: 150ms;
       opacity: 90%;
   }
-  .search-box:hover > input{
+.search-box:hover > .search-input{
     display: inline-block;
+    opacity: 90%;
+}
+.search-box:hover > input{
     border-radius: 5px;
     width: 260px;
     color: var(--normal-font-color);
-    font-size: 20px;
     padding: 8px;
-    border: solid;
-    border-color: rgba(0, 0, 0, 0);
     outline:none;
-  }
+}
 
-  input:focus{
-    display: inline-block;
+.search-box input:focus{
     border-radius: 5px;
     width: 260px;
     color: var(--normal-font-color);
     font-size: 20px;
     padding: 8px;
-    border: solid;
-    border-color: rgba(0, 0, 0, 0);
     outline:none;
-  }
-  .search-btn{
-      width: 30px;
-      margin-top: 15px;
-      opacity: 60%;
-  }
+}
+.search-btn{
+    cursor: pointer;
+    height: 26px;
+    padding: 13px 8px 5px;
+    opacity: 60%;
+    filter: var(--icon-filter);
+}
+
+.search_bar {
+    display: flex;
+    align-items: center;
+    margin: 15px 49px 10px;
+    padding: 0 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 9px 0 var(--card-shadow);
+    border-color: var(--card-shadow);
+    border-width: 2px;
+    width: calc(36.3% - 110px);
+    border-style: solid;
+    opacity: 60%;
+}
+
+.search_bar img {
+    display: inline-block;
+
+    opacity: 50%;
+    height: 21px;
+
+    vertical-align: middle;
+
+    filter: var(--icon-filter);
+}
+
+.search_bar img:hover{
+    opacity: 90%;
+    transition: opacity 150ms;
+}
+
+.search_bar input{
+
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--normal-font-color);
+    font-size: 20px;
+    opacity: 90%;
+    height: 42px;
+    text-align: left;
+    width: calc(100% - 7px);
+    border: solid;
+    border-radius: 5px;
+    border-color: rgba(0, 0, 0, 0);
+    outline: none;
+}
+
+/* Fade in for search bar */
+
+.search_bar:hover {
+    transition: 150ms;
+    opacity: 90%;
+    
+}
+
+.search_bar input:focus .search_bar{
+    transition: 150ms;
+    opacity: 90%;
+}
+
 #header_back{
     margin-left: 0;
     margin-right: 5px;
@@ -203,7 +273,6 @@ h1 {
     #title_page{
         top: 5px;
         font-size: 35px;
-        letter-spacing: 1.5px;
     }
 
     button.imgbutton {
@@ -295,7 +364,6 @@ h1 {
     #title_page{
         top: 5px;
         font-size: 22px;
-        letter-spacing: 1px;
     }
 
     #menuToggle input {

@@ -22,6 +22,7 @@ export function fade (element, callback) {
 		if (op <= 0.1) {
 			clearInterval(timer);
 			element.style.display = "none";
+			element.style.opacity = 0;
 			end = true;
 		}
 		element.style.opacity = op;
@@ -44,20 +45,24 @@ export function fade (element, callback) {
  * @param {singleParameterCallback} callback function for when transition end is true
  */
 export function unfade (element, callback) {
-	let end = false;
-	// Initial opacity
-	let op = 0.1;
-	element.style.opacity = op;
 	element.style.display = "block";
-	let timer = setInterval(() => {
-		if (op >= 1) {
-			clearInterval(timer);
-			end = true;
-		}
+	element.style.opacity = 0;
+	setTimeout(() => {
+		let end = false;
+		// Initial opacity
+		let op = 0.1;
 		element.style.opacity = op;
-		op += op * 0.1;
-		if (end && callback) {
-			callback();
-		}
-	}, 10);
+		let timer = setInterval(() => {
+			if (op >= 1) {
+				clearInterval(timer);
+				end = true;
+			}
+			element.style.opacity = op;
+			op += op * 0.1;
+			if (end && callback) {
+				callback();
+			}
+		}, 15);
+	}, 220);
+
 }

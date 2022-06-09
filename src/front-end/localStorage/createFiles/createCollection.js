@@ -35,11 +35,14 @@ export function createCollectionPouch (db, title, parent, content, collections, 
 			};
 
 			user.collections.push(collectionObject);
-			if (addToParent) {
+			console.log(addToParent);
+			console.log(parent);
+			if (addToParent && addToParent.objectType !== "index") {
 				addToParent.collections.push(collectionObject.id);
 				user[`${addToParent.objectType}s`] = user[`${addToParent.objectType}s`].filter((element) => element.id !== addToParent.id);
 				user[`${addToParent.objectType}s`].push(addToParent);
-			} else if (parent === null) {
+			} else if (!parent) {
+				console.log("here");
 				user.index.collections.push(collectionObject.id);
 			}
 

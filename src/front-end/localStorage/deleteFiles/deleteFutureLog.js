@@ -15,6 +15,7 @@ import * as localStorage from "../userOperations.js";
 			if (err) {
 				callback(err, null);
 			} else {
+				console.log(futureLog.months);
 				localStorage.deleteMonthlyLog(user.monthlyLogs.filter((reference) => reference.id === futureLog.months[0].id)[0], futureLog, false, (error) => {
 					if (error) {
 						callback(error, null);
@@ -40,6 +41,7 @@ export function deleteFutureLogPouch (db, log, callback) {
 		if (failedDeleteMonths) {
 			callback(failedDeleteMonths);
 		} else {
+			console.log("hello there")
 			aux.handleContent(preProcessedLog, (failedContentHandle, processedLog) => {
 				if (failedContentHandle) {
 					callback(failedContentHandle);
@@ -52,7 +54,7 @@ export function deleteFutureLogPouch (db, log, callback) {
 								if (err) {
 									callback(err);
 								} else {
-									user.index.futureLogs = user.index.futureLogs.filter((reference) => reference.id !== futureLog.id);
+									user.index.futureLogs = user.index.futureLogs.filter((reference) => reference !== futureLog.id);
 									user.futureLogs = user.futureLogs.filter((reference) => reference.id !== futureLog.id);
 									let newUser = {
 										_id: "0000",

@@ -5,6 +5,7 @@
  */
 import * as localStorage from "../localStorage/userOperations.js";
 import { TextBlock } from "./block.jsx";
+import { search } from "../index.js";
 
 /**
  * Controller for TextBlock object
@@ -14,9 +15,9 @@ export class BlockController extends Object {
 	/**
 	 * @param {HTMLElement} container
 	 * @param {Object} parent
-	 * @param {String} subParent
+	 * @param {Object} tracker
 	 */
-	constructor (container, parent, subParent) {
+	constructor (container, parent, tracker = null) {
 		super();
 		this.blockArray = [];
 		this.creatingFromBullet = {isTrue: false, kind: ""};
@@ -25,7 +26,7 @@ export class BlockController extends Object {
 		this.currentBlockIndex = 0;
 		this.container = container;
 		this.parent = parent;
-		this.subParent = subParent;
+		this.tracker = tracker;
 	}
 
 	/**
@@ -34,9 +35,9 @@ export class BlockController extends Object {
 	 * @param {*} signifier
 	 * @param {*} callback
 	 */
-	createNewBlock (block, signifier, callback) {
+	createNewBlock (block, signifiers, callback) {
 		if (block.objectType === "textBlock") {
-			let newBlock = new TextBlock(this, block, signifier, (success) => {
+			let newBlock = new TextBlock(this, block, signifiers, (success) => {
 				if (success) {
 					if (this.currentBlockIndex < this.blockArray.length - 1) {
 						this.container.insertBefore(newBlock, this.blockArray[this.currentBlockIndex + 1]);
@@ -50,7 +51,7 @@ export class BlockController extends Object {
 					newBlock.focus();
 					callback(newBlock);
 				}
-			});
+			}, this.tracker);
 		} else if (block.objectType === "imageBlock") {
 			console.log("it was image");
 		}
@@ -61,7 +62,7 @@ export class BlockController extends Object {
 	 * @param {Object} block Stored block
 	 */
 	addNewBlock (block) {
-		let newBlock = new TextBlock(this, block, this.generalSignifier, (success) => {
+		let newBlock = new TextBlock(this, block, [], (success) => {
 			if (success) {
 				if (this.blockArray[this.currentBlockIndex].nextSibling === null) {
 					this.container.appendChild(newBlock);
@@ -74,7 +75,7 @@ export class BlockController extends Object {
 				}
 				newBlock.focus();
 			}
-		});
+		}, this.tracker);
 	}
 
 
@@ -128,7 +129,7 @@ export class BlockController extends Object {
  function populateEditorRecursive (controller, items, index, signifiers, callback) {
 	if (index < items.length) {
 		let signifier = signifiers.filter((currentSignifier) => currentSignifier.id === items[index].signifier)[0];
-		controller.createNewBlock(items[index], signifier, (block) => {
+		controller.createNewBlock(items[index], [signifier], (block) => {
 			block.tabLevel = items[index].tabLevel
 			block.setupTabLevel();
 
@@ -219,15 +220,14 @@ export function populateEditor (controller, items, signifiers, callback) {
  *
  * @param {Array} container The html content wrapper to add the editor to.
  * @param {Object} parent The id of the parent of the textBlock being created.
- * @param {String} subParent The id of the child within the parent's content list.
  * @param {response} callback Either sends an error if there is one or sends back the block controller to the callback.
  */
-export function createEditor (container, parent, subParent, callback) {
-	console.log(subParent);
-	let controller = new BlockController(container, parent, subParent);
+export function createEditor (container, parent, callback, tracker = null) {
+	let controller = new BlockController(container, parent, tracker);
 	setTimeout(() => {
 		let itemObject = null;
 		let objectArr = [];
+		let filteredArr = [];
 		localStorage.readUser((err, doc) => {
 			if (err) {
 				callback(err);
@@ -239,9 +239,6 @@ export function createEditor (container, parent, subParent, callback) {
 				Array.prototype.push.apply(arrays, doc.collections);
 				Array.prototype.push.apply(arrays, doc.trackers);
 
-				let generalSignifier = doc.signifiers.filter((signifer) => signifer.meaning === "general")[0];
-				controller.generalSignifier = generalSignifier;
-
 				if (parent !== null && parent.objectType !== "index") {
 					let itemArrs = arrays.filter((element) => element.id === parent.id);
 					if (itemArrs.length > 0) {
@@ -249,30 +246,19 @@ export function createEditor (container, parent, subParent, callback) {
 
 						let tempArr = doc.textBlocks;
 
-						if (!subParent) {
-							if (!itemObject.content) {
-								itemObject.content = [];
-							}
-							for (let i = 0; i < itemObject.content.length; i++) {
-								Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === itemObject.content[i]));
-							}
-
-						} else if (itemObject.objectType === "monthlyLog") {
-							let day = itemObject.days.filter((currentDay) => currentDay.dailyLog === subParent)[0];
-							for (let i = 0; i < day.content.length; i++) {
-								Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === day.content[i]));
-							}
-						} else if (itemObject.objectType === "futureLog") {
-							let month = itemObject.months.filter((currentMonth) => currentMonth.monthlyLog === subParent)[0];
-							for (let i = 0; i < month.content.length; i++) {
-								Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === month.content[i]));
-							}
+						if (!itemObject.content) {
+							itemObject.content = [];
+						}
+						for (let i = 0; i < itemObject.content.length; i++) {
+							Array.prototype.push.apply(objectArr, tempArr.filter((element) => element.id === itemObject.content[i]));
 						}
 
+                        // Filter with the contents of the search bar
+                        Array.prototype.push.apply(filteredArr, objectArr.filter((element) => element.text.toLowerCase().includes(search.toLowerCase())));
 
-						populateEditor(controller, objectArr, doc.signifiers, (res) => {
+						populateEditor(controller, filteredArr, doc.signifiers, (res) => {
 							if (res === "done populating items") {
-								let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
+								let newBlock = new TextBlock(controller, null, [], (success) => {
 									if (success) {
 										container.appendChild(newBlock);
 										controller.blockArray.push(newBlock);
@@ -281,12 +267,12 @@ export function createEditor (container, parent, subParent, callback) {
 										newBlock.focus();
 									}
 									callback(controller);
-								});
+								}, tracker);
 							}
 						})
 					}
 				} else {
-					let newBlock = new TextBlock(controller, null, generalSignifier, (success) => {
+					let newBlock = new TextBlock(controller, null, [], (success) => {
 						if (success) {
 							container.appendChild(newBlock);
 							controller.blockArray.push(newBlock);
@@ -298,7 +284,7 @@ export function createEditor (container, parent, subParent, callback) {
 							console.log("newBlock not being created");
 						}
 						callback(controller);
-					});
+					}, tracker);
 				}
 			}
 		})

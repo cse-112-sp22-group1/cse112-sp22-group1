@@ -1,15 +1,15 @@
 :host {
-	font-family:"SF-Pro";
+	font-family: system-ui;
 }
 .card{
-    font-family: "SF-Pro";
+    font-family: system-ui;
     display: inline-block;
     overflow: auto;
     border-radius: 15px;
     justify-content: space-between;
     padding: 0 0 1rem;
     width: calc(100% - 98px);
-    background-color: var(--card-backgound);
+    background-color: var(--card-background);
     box-shadow: 0 0 10px var(--card-shadow);
     margin-top: 0.5vw;
     margin-bottom: 0.5vw;
@@ -49,10 +49,41 @@
     background-color: var(--secondary-button-color);
 }
 #trackerWrapper{
-    padding-left: 2.5vw;
-    padding-right: 2vw;
+    margin-left: 2.5vw;
+    margin-right: 2.5vw;
     padding-bottom: 1vw;
+    text-align: left;
 }
+
+#trackerWrapper text-block{
+	display: block;
+	margin: 0;
+	padding: 0 ;
+	width: calc(100% - var(--block-tab-level));
+	left: 0;
+	right: 0;
+}
+
+#trackerWrapper .noteContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 19px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: outside;
+	width: calc(100% - 19px - var(--block-tab-level)) !important;
+}
+
+#trackerWrapper .eventContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 19px;
+	display: list-item;
+	list-style-type: circle;
+	list-style-position: outside;
+	width: calc(100% - 19px - var(--block-tab-level)) !important;
+}
+
 #titleblock > * {
     vertical-align:middle; 
 }
@@ -91,7 +122,7 @@
 }
 
 #trackerTitle {
-	font-family: "SF-Pro";
+    font-family: system-ui;
 	border: none;
 	overflow: auto;
 	outline: none;

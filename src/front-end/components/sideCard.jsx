@@ -8,6 +8,7 @@
 /** @jsx createElement */
 /** @jsxFrag createFragment */
 import { createElement, createFragment } from "../jsxEngine.js";
+import { createEditor } from "./blockController.js";
 /* eslint-enable */
 import {adderDropdown} from "../index.js";
 
@@ -21,20 +22,9 @@ let template = <template>
                 <button id="editButton">Edit</button>
             </div>
         </div>
-        <div id="trackerWrapper">
-            <div id="titleBlock">
-                <div id="trackerTitle"></div>
-                <div id="editorIcons" class="paragraphIcons">
-                    <img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="more" />
-                </div>
-            </div>
-        </div>
+        <div id="trackerWrapper"></div>
     </article>
 </template>
-
-let sixDots = <div id="editorIcon">
-    <img src="../public/resources/sixDotIcon.png" class="unfocusedIcons" id="hide" />
-</div>
 export class SideCard extends HTMLElement {
     constructor (title, trackers) {
         super();
@@ -79,19 +69,11 @@ export class SideCard extends HTMLElement {
 
     addTracker (tracker) {
         this.tracker = tracker;
-        const trackerTitle = this.shadowRoot.getElementById("trackerTitle");
-        trackerTitle.innerText = tracker.title;
-        for (let i = 0; i < tracker.content.length; i++) {
-            let trackerblock = document.createElement("div");
-            let trackertext = document.createElement("div");
-            trackertext.classList.add("tracker-text");
-            trackertext.id = "trackerText" + i;
-            trackerblock.classList.add("tracker-block");
-            trackertext.innerText = tracker.content[i];
-            trackerblock.appendChild(trackertext);
-            trackerblock.appendChild(sixDots.cloneNode(true));
-            this.shadowRoot.getElementById("trackerWrapper").appendChild(trackerblock);
-        }
+        createEditor(this.shadowRoot.getElementById("trackerWrapper"), this.tracker, (err) => {
+            if (err) {
+                console.log(err);
+            }
+        }, this.tracker);
     }
 
     bindDeleteButton () {

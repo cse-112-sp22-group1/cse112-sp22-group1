@@ -5,7 +5,7 @@ const html = `<template id="block">
 		src: url("./public/fonts/SF-Pro.ttf");
 	}
 	#textBlock {
-		font-family: "SF-Pro";
+		font-family: system-ui;
 		border: none;
 		overflow: auto;
 		outline: none;

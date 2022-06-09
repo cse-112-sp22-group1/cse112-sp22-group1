@@ -1,6 +1,7 @@
 #logNotes {
     border: none;
-    overflow: auto;
+    overflow: hidden;
+	height: max-content;
     outline: none;
     display: block;
     z-index: -1;
@@ -9,14 +10,35 @@
 #logNotes text-block{
 	display: block;
 	margin: 0;
-	padding: 0 0 8px 0;
-	width: 100%;
+	padding: 0 ;
+	width: calc(100% - var(--block-tab-level));
+	/* overflow-x: hidden; */
 	left: 0;
 	right: 0;
+}
+
+#logNotes .noteContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 57px;
+	display: list-item;
+	list-style-type: disc;
+	list-style-position: outside;
+	width: calc(100% - 57px - var(--block-tab-level)) !important;
+}
+
+#logNotes .eventContainer {
+	margin-top: 7px;
+	margin-bottom: 7px;
+	margin-left: 57px;
+	display: list-item;
+	list-style-type: circle;
+	list-style-position: outside;
+	width: calc(100% - 57px - var(--block-tab-level)) !important;
 }
 
 h1 {
     height: 18px;
     font-size: 19px;
-    font-family: "SF-Pro";
+	font-family: system-ui;
 }

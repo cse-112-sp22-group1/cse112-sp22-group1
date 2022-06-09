@@ -14,6 +14,16 @@ import "./index.css";
 
 document.querySelector("body").style.display = "none";
 
+export let search = "";
+
+export function setSearch (value) {
+    search = value;
+}
+
+export function getSearch () {
+    return search;
+}
+
 /**
  * The index page navbar
  */
@@ -42,6 +52,10 @@ document.getElementById("adderDropdown").appendChild(adderDropdown);
 document.getElementById("creationMenu").appendChild(creationMenu);
 document.getElementById("topbar").appendChild(header);
 document.getElementById("sidebar").appendChild(navbar);
-document.getElementById("targetMenu").onclick = () => {
-	navbar.toggleTracker();
+
+window.onresize = () => {
+	let viewPort = document.getElementById("contentWrapper");
+	console.log(viewPort.getClientRects());
+	viewPort.style.height = `${window.innerHeight - viewPort.getClientRects()[0].y}px`;
 };
+

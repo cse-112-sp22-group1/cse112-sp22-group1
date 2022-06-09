@@ -23,7 +23,7 @@ export class TrackerMenu extends HTMLElement {
 				padding-right: 20px;
                 height: 100vh;
 				background-color: #2B2D42;
-                font-family: "SF-Pro";
+                font-family: system-ui;
                 transform: translate3d(135vw, 0, 0);
                 transition: transform .4s ease-in-out /*cubic-bezier(0, .52, 0, 1);*/
             }

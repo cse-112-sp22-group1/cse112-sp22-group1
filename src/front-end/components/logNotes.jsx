@@ -39,7 +39,7 @@ export class LogNotes extends HTMLElement {
             this.sectionTitle.remove();
         }
 
-        createEditor(this.logNotes, currentState, null, (success) => {
+        createEditor(this.logNotes, currentState, (success) => {
             console.log(success);
         });
 	}

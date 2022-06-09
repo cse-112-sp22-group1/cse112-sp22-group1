@@ -1,48 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-    
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-
-    <!-- add fonts -->
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&family=Satisfy&family=Source+Sans+Pro:wght@300&family=Tajawal:wght@300&display=swap" rel="stylesheet">
-
+    <title>BooJo: Login</title>
 </head>
-
-
-<!-- Begin of Body -->
 <body>
+    <header>
+        <h1>BooJo</h1>
+    </header>
 
-    <main id="main-holder">     
-
-        <!-- failure message ? -->
-        <div id="login-error-msg-holder">
-            <p id="login-error-msg">Invalid email <span id="error-msg-second-line">and/or password</span></p>
-        </div>
-        
-        <!-- insert form: login form -->
+    <main>
+        <strong id="error-msg"></strong>
         <form id="login-form">
-            <input type="text" name="email" id="email-field" class="login-form-field" placeholder="Email">
-            <input type="password" name="password" id="password-field" class="login-form-field" placeholder="Password">
-            <input type="submit" value="Log In" id="login-form-submit">
-            <input type="submit" value= "Create Account" id="login-form-create">
+            <ul class="container-list">
+                <li class="input-container"><input id="input-email" type="email" placeholder="Email"></li>
+                <li class="input-container"><input id="input-password" type="password" placeholder="Password"></li>
+                <li>
+                    <ul id="buttons" class="container-list">
+                        <li><button id="btn-login">Login</button></li>
+                        <li><button id="btn-create">Create</button></li>
+                    </ul>
+                </li>
+            </ul>
         </form>
-
-
     </main>
 
-    <!-- logos, names, and contact us-->
-    <div class="logo">
-        <img src="./bugP3.png" alt="team-logo">
-    </div>
-    <p id=name>My Journal</h2>
+    <footer>
+        <a href="https://github.com/cse-112-sp22-group1/cse112-sp22-group1">GitHub</a>
+    </footer>
 
-    <a href="https://github.com/cse110-sp21-group11/cse110-sp21-group11">Contact us</a>
-	<script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/pouchdb@7.2.1/dist/pouchdb.min.js"></script>
 </body>
-
 </html>
