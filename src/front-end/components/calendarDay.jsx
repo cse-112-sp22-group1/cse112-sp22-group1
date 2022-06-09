@@ -74,6 +74,7 @@ export class CalendarDay extends HTMLElement {
 			this.dayTitle.classList.add("extend");
 			this.eventSection.classList.add("extend");
 			this.footerSection.appendChild(<button id="extend">Extend Log</button>);
+			this.extendButton = this.shadowRoot.getElementById("extend");
 		} else {
 			this.content.classList.add("dimmer");
 		}
@@ -170,6 +171,26 @@ export class CalendarDay extends HTMLElement {
 
 		this.dayTitle.onclick = () => {
 			this.openLog();
+		}
+	}
+
+	connectedCallback() {
+		this.extendButton.onclick = () => {
+			// localStorage.readUser((err, user) => {
+			// 	if (err) {
+			// 		console.log(err);
+			// 	} else {
+			// 		let monthlyLog = user.monthlyLogs.filter((reference) => currentState.id == reference.id)[0];
+
+			// 		monthlyLog.
+
+			// 		localStorage.updateMonthlyLog(monthlyLog, null, null, true, (err) => {
+			// 			if(err) {
+			// 				console.log(err);
+			// 			}
+			// 		});
+			// 	}
+			// })
 		}
 	}
 }
