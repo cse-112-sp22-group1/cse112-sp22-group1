@@ -109,6 +109,9 @@ export function setupIndex () {
 			icon: "../public/resources/futureLog.png",
 			listener: ()=>{
 				if (currentShow !== "futureLog") {
+					while (dropdownContainer.children.length > 0) {
+						dropdownContainer.removeChild(dropdownContainer.children[0]);
+					}
 					displayFutureLog();
 				}
 				adderDropdown.hide();
@@ -118,6 +121,9 @@ export function setupIndex () {
 			icon: "../public/resources/todaysLog.png",
 			listener: ()=>{
 				if (currentShow !== "collection") {
+					while (dropdownContainer.children.length > 0) {
+						dropdownContainer.removeChild(dropdownContainer.children[0]);
+					}
 					displayCollection();
 				}
 				adderDropdown.hide();
