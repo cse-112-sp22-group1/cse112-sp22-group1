@@ -1,7 +1,6 @@
 import * as localStorage from "../localStorage/userOperations.js";
 import { adderDropdown, creationMenu } from "../index.js";
 import { refreshIndex } from "../state/setupIndex";
-import { router } from "../state/router.js";
 export let bindDropdown = (IndexReference) => {
     console.log(IndexReference.log);
     if (IndexReference.log) {
@@ -42,6 +41,7 @@ export let bindDropdown = (IndexReference) => {
                     if (confirm("You sure you want to delete this Collection? This is irreversible")) {
                         console.log("here now")
                         localStorage.readUser((err, user) =>{
+                            // eslint-disable-next-line init-declarations
                             let logParent;
                             if (err) {
                                 console.log(err);
@@ -73,20 +73,20 @@ export let bindDropdown = (IndexReference) => {
                                         }
                                     }
                                     console.log(logParent)
-                                    localStorage.deleteCollection(IndexReference.log, logParent, true, (err) => {
+                                    localStorage.deleteCollection(IndexReference.log, logParent, true, (err1) => {
                                         console.log("somethign has been done");
-                                        if (err) {
-                                            console.log(err);
+                                        if (err1) {
+                                            console.log(err1);
                                         } else {
                                             adderDropdown.hide();
                                             refreshIndex();
                                         }
                                      })
                                 } else {
-                                    localStorage.deleteCollectionByID(IndexReference.log.id, true, (err)=>{
+                                    localStorage.deleteCollectionByID(IndexReference.log.id, true, (err2)=>{
                                         console.log("somethign has been done");
-                                        if (err) {
-                                            console.log(err);
+                                        if (err2) {
+                                            console.log(err2);
                                         } else {
                                             adderDropdown.hide();
                                             refreshIndex();
