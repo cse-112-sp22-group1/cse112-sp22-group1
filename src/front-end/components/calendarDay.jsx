@@ -194,6 +194,7 @@ export class CalendarDay extends HTMLElement {
 						if(err) {
 							console.log(err);
 						}
+						refreshMonthlyLog();
 					});
 				}
 			})
