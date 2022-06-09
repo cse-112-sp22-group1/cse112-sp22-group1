@@ -17,6 +17,7 @@ const themeColors = {
         "--card-background": "rgba(252, 252, 252, 0.8)",
         "--card-background-dim": "rgba(236, 236, 236)",
         "--card-background-dimmer": "rgba(218, 218, 218)",
+        "--card-font-color": "rgb(0, 0, 0)",
 
         "--divider-color": "rgba(0, 0, 0, 0.1)",
         "--lighter-divider-color": "rgba(140, 140, 140, 0.1)",

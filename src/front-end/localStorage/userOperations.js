@@ -142,8 +142,8 @@ export function getUser (callback) {
 /**
  * Updates the user from the online db.
  */
-export function updateUserFromMongo (callback) {
-	updateUserOnline(callback);
+export function updateUserFromMongo (callback, pwd = null) {
+	updateUserOnline(callback, pwd);
 }
 
 // -------------------------------Create Functions----------------------------------
@@ -607,11 +607,12 @@ export async function deleteDB (cloud) {
 			credentials: "include",
 			method: "DELETE"
 		}).then((data) => data.json()).then(async (userData) => {
-			await db.destroy((err, res) => {
-				if (err || res === null) {
+			await db.destroy((err) => {
+				if (err) {
 					return err;
 				}
-					return userData.error;
+				document.cookie = "";
+				return userData.error;
 
 			});
 		});
@@ -620,6 +621,7 @@ export async function deleteDB (cloud) {
 			if (err) {
 				console.log(err);
 			} else {
+				document.cookie = "";
 				console.log(res);
 			}
 		});
@@ -997,6 +999,7 @@ export function deleteTrackerFromContainer (container, index, shouldUpdate, call
 export function deleteUser (callback) {
 	deleteUserPouch(db, () => {
 		updateUserFromMongo((couldNotUpdate) => {
+			document.cookie = "";
 			callback(couldNotUpdate);
 		});
 	});
@@ -1252,4 +1255,26 @@ export function updateTracker (tracker, shouldUpdate, parent, addParent, callbac
 			callback(err);
 		}
 	});
+}
+
+export function updateUser (updatedUser, shouldUpdate, callback) {
+	readUser((err, user) => {
+		if (err) {
+			callback(err);
+		} else {
+			user.email = updatedUser.email;
+			db.put(user).then((res) => {
+				if (res.ok) {
+					console.log(shouldUpdate);
+					if (shouldUpdate) {
+						updateUserFromMongo((couldNotUpdate) => {
+							callback(couldNotUpdate);
+						}, updatedUser.pwd ? updatedUser.pwd : null);
+					}
+				}
+			}).catch((error) => {
+				callback(error);
+			})
+		}
+	})
 }

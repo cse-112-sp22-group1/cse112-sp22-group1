@@ -36,16 +36,74 @@ export class GeneralSettingsPanel extends HTMLElement {
 			}
 		});
 		this.logoutButton = this.shadowRoot.getElementById("logout");
+		this.deleteButton = this.shadowRoot.getElementById("deleteUser");
 
     }
 
 	connectedCallback () {
+		this.email.onkeydown = (e) => {
+			let key = e.key || e.keyCode;
+			if (key === "Enter") {
+				localStorage.readUser((err, user) => {
+					if (err) {
+						console.log(err);
+					} else {
+						user.email = this.email.value;
+						localStorage.updateUser(user, true, (err) => {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}
+				});
+			}
+		};
+
+		this.email.onblur = () => {
+			localStorage.readUser((err, user) => {
+				if (err) {
+					console.log(err);
+				} else if (user.email !== this.email.value){
+					user.email = this.email.value;
+					localStorage.updateUser(user, true, (err) => {
+						if (err) {
+							console.log(err);
+						}
+					});
+				}
+			});
+		};
+
+		this.confirmPasswordChange.onclick = () => {
+			if (this.password.value) {
+				localStorage.readUser((err, user) => {
+					if (err) {
+						console.log(err);
+					} else {
+						user.pwd = this.password.value;
+						localStorage.updateUser(user, true, (err) => {
+							if(err){
+								console.log(err);
+							}
+						})
+					}
+				})
+			}
+		};
+
 		this.logoutButton.onclick = () => {
 			if (navigator.onLine) {
 				localStorage.deleteDB();
 				window.location.href = "/login";
 			} else if (confirm("You're logging out while offline, all your local changes will be deleted if you continue!")) {
 				localStorage.deleteDB();
+				window.location.href = "/login";
+			}
+		}
+
+		this.deleteButton.onclick = async () => {
+			if (confirm("This action is irreversible, are you sure you want to delete this account?")) {
+				await localStorage.deleteDB(true);
 				window.location.href = "/login";
 			}
 		}
