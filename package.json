@@ -3,7 +3,6 @@
   "description": "This is the repository for team 11's CSE 110 project.   Team Name: It's not a bug, It's a feature",
   "version": "1.0.0",
   "main": ".eslintrc.js",
-  "dependencies": {},
   "scripts": {
     "jsdoc": "jsdoc -c jsdoc.json",
     "lint": "./node_modules/.bin/eslint ./src/back-end ./src/front-end -c ./.eslintrc.js --ignore-path ./.eslintignore",
@@ -24,10 +23,12 @@
     "@babel/preset-env": "^7.14.4",
     "babel-jest": "^27.0.2",
     "eslint": "^7.26.0",
+    "eslint-plugin-jest": "^26.4.6",
     "jest": "^27.0.4",
     "jest-puppeteer": "^5.0.3",
     "jsdoc": "^3.6.10",
-    "puppeteer": "^9.1.1"
+    "puppeteer": "^9.1.1",
+    "supertest": "^6.2.3"
   },
   "jest": {
     "preset": "jest-puppeteer",

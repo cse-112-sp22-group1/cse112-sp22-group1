@@ -45,49 +45,49 @@ import * as localStorage from "../userOperations.js";
 		if (err) {
 			callback(err, null);
 		} else if (textBlock.objectReference === originalBlock.objectReference && date) {
-				if (textBlock.objectReference && originalBlock.kind === "event") {
-					let event = user.events.filter((reference) => reference.id === textBlock.objectReference)[0];
-					event.references = event.references.filter((reference) => reference !== textBlock.id);
-					localStorage.updateEvent(event, null, null, false, (error) => {
-						callback(error, textBlock);
-					});
+			if (textBlock.objectReference && originalBlock.kind === "event") {
+				let event = user.events.filter((reference) => reference.id === textBlock.objectReference)[0];
+				event.references = event.references.filter((reference) => reference !== textBlock.id);
+				localStorage.updateEvent(event, null, null, false, (error) => {
+					callback(error, textBlock);
+				});
+			} else {
+				callback(null, textBlock);
+			}
+		} else if (textBlock.kind === "task") {
+				/* istanbul ignore next */
+			localStorage.createTask([textBlock.id], textBlock.text, 0, false, (failedCreateTask, task) => {
+				/* istanbul ignore next */
+				if (failedCreateTask) {
+					/* istanbul ignore next */
+					callback(failedCreateTask, null);
+
+					/* istanbul ignore next */
 				} else {
+					textBlock.objectReference = task.id;
 					callback(null, textBlock);
+
 				}
-			} else if (textBlock.kind === "task") {
+			});
+		} else if (textBlock.kind === "event") {
+			/* istanbul ignore next */
+			localStorage.createEvent(textBlock.text, [textBlock.id], date, false, (failedCreateEvent, journalEvent) => {
+				/* istanbul ignore next */
+				if (failedCreateEvent) {
 					/* istanbul ignore next */
-					localStorage.createTask([textBlock.id], textBlock.text, 0, false, (failedCreateTask, task) => {
-						/* istanbul ignore next */
-						if (failedCreateTask) {
-							/* istanbul ignore next */
-							callback(failedCreateTask, null);
+					callback(failedCreateEvent, null);
 
-							/* istanbul ignore next */
-						} else {
-							textBlock.objectReference = task.id;
-							callback(null, textBlock);
-
-						}
-					});
-				} else if (textBlock.kind === "event") {
 					/* istanbul ignore next */
-					localStorage.createEvent(textBlock.text, [textBlock.id], date, false, (failedCreateEvent, journalEvent) => {
-						/* istanbul ignore next */
-						if (failedCreateEvent) {
-							/* istanbul ignore next */
-							callback(failedCreateEvent, null);
-
-							/* istanbul ignore next */
-						} else {
-							textBlock.objectReference = journalEvent.id;
-							callback(null, textBlock);
-
-						}
-					});
 				} else {
-					/* istanbul ignore next */
+					textBlock.objectReference = journalEvent.id;
 					callback(null, textBlock);
+
 				}
+			});
+		} else {
+			/* istanbul ignore next */
+			callback(null, textBlock);
+		}
 	});
  }
 
@@ -151,7 +151,7 @@ export function updateTextBlockPouch (db, textBlock, date, parent, addParent, ca
 										audioBlocks: updatedUser.audioBlocks,
 										textBlocks: updatedUser.textBlocks,
 										tasks: updatedUser.tasks,
-										Tasks: updatedUser.events,
+										events: updatedUser.events,
 										signifiers: updatedUser.signifiers
 									};
 
