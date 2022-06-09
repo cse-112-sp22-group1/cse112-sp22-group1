@@ -95,7 +95,7 @@ export let creationDropdownContents = {
             title: "New Collection",
             icon: "../public/resources/todaysLog.png",
             listener: () => {
-                creationMenu.setKind("dailyLog");
+                creationMenu.setKind("collection");
                 creationMenu.show();
             }
         }, {
@@ -111,23 +111,7 @@ export let creationDropdownContents = {
 };
 
 export let editDropdownContents = {
-    "index": [
-        {
-            title: "Delete",
-            icon: "../public/resources/delete_icon.png",
-            listener: () => {
-            
-            }
-        }, {
-            title: "More",
-            icon: "../public/resources/more_icon.png",
-            listener: () => {
-                
-            }
-        }
-    ],
-
-    "futureLog": [
+        "futureLog": [
         {
             title: "Delete",
             icon: "../public/resources/delete_icon.png",
@@ -159,7 +143,31 @@ export let editDropdownContents = {
             title: "Delete",
             icon: "../public/resources/delete_icon.png",
             listener: () => {
-            
+                if (confirm("You sure you want to delete this Monthly Log? This is irreversible")) {
+                    console.log("here now")
+                    localStorage.readUser((err,user) =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            let logParent = user.futureLogs[0];
+                            for (let i = 0; i < user.futureLogs.length; i++) {
+                                if(user.futureLogs[i].id === currentState.parent){
+                                    logParent = user.futureLogs[i];
+                                }
+                            }
+                            localStorage.deleteMonthlyLog(currentState, logParent, true, (err) => {
+                                console.log("somethign has been done");
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    adderDropdown.hide();
+                                    router.navigate("/futureLog/" + logParent.id);
+                                }
+                            })
+                        }
+                    })
+                }
             }
         }, {
             title: "More",
@@ -174,7 +182,31 @@ export let editDropdownContents = {
             title: "Delete",
             icon: "../public/resources/delete_icon.png",
             listener: () => {
-            
+                if (confirm("You sure you want to delete this Daily Log? This is irreversible")) {
+                    console.log("here now")
+                    localStorage.readUser((err,user) =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            let logParent = user.monthlyLogs[0];
+                            for (let i = 0; i < user.monthlyLogs.length; i++) {
+                                if(user.monthlyLogs[i].id === currentState.parent){
+                                    logParent = user.monthlyLogs[i];
+                                }
+                            }
+                            localStorage.deleteDailyLog(currentState, logParent, true, (err) => {
+                                console.log("somethign has been done");
+                                if (err) {
+                                    console.log(err);
+                                } else {
+                                    adderDropdown.hide();
+                                    router.navigate("/monthlyLog/"  + logParent.id);
+                                }
+                            })
+                        }
+                    })
+                }
             }
         }, {
             title: "More",
@@ -189,7 +221,73 @@ export let editDropdownContents = {
             title: "Delete",
             icon: "../public/resources/delete_icon.png",
             listener: () => {
-            
+                if (confirm("You sure you want to delete this Collection? This is irreversible")) {
+                    console.log("here now")
+                    localStorage.readUser((err,user) =>{
+                        if(err){
+                            console.log(err);
+                        }
+                        else{
+                            if(currentState.parent){
+                                let logParent;
+                                let parentType = "";
+                                for (let i = 0; i < user.collections.length; i++) {
+                                    if(user.collections[i].id === currentState.parent){
+                                        logParent = user.collections[i];
+                                        parentType = "collection";
+                                    }
+                                }
+                                if(!logParent){
+                                    for (let i = 0; i < user.dailyLogs.length; i++) {
+                                        if(user.dailyLogs[i].id === currentState.parent){
+                                            logParent = user.dailyLogs[i];
+                                            parentType = "dailyLog";
+                                        }
+                                    }
+                                }
+                                if(!logParent){
+                                    for (let i = 0; i < user.monthlyLogs.length; i++) {
+                                        if(user.monthlyLogs[i].id === currentState.parent){
+                                            logParent = user.monthlyLogs[i];
+                                            parentType = "monthlyLog";
+                                        }
+                                    }
+                                }
+                                if(!logParent){
+                                    for (let i = 0; i < user.futureLogs.length; i++) {
+                                        if(user.futureLogs[i].id === currentState.parent){
+                                            logParent = user.futureLogs[i];
+                                            parentType = "futureLog";
+                                        }
+                                    }
+                                }
+                                console.log(logParent)
+                                localStorage.deleteCollection(currentState, logParent, true, (err) => {
+                                    console.log("somethign has been done");
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        adderDropdown.hide();
+                                        router.navigate("/" + parentType + "/" + logParent.id);
+   
+                                    }
+                                })
+                            }
+                            else{
+                                console.log(logParent)
+                                localStorage.deleteCollectionByID(currentState.id, true, (err)=>{
+                                    console.log("somethign has been done");
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        adderDropdown.hide();
+                                        router.navigate("/");
+                                    }
+                                })
+                            }
+                        }
+                    })
+                }
             }
         }, {
             title: "More",
