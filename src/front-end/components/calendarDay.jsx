@@ -7,6 +7,7 @@ import * as localStorage from "../localStorage/userOperations.js";
 import { createElement, createFragment } from "../jsxEngine.js";
 import { currentState } from "../state/stateManager.js";
 import { router } from "../state/router.js";
+import { refreshMonthlyLog } from "../state/setupMonthlyLog.js";
 /* eslint-enable */
 
 let today = new Date();
@@ -176,21 +177,26 @@ export class CalendarDay extends HTMLElement {
 
 	connectedCallback() {
 		this.extendButton.onclick = () => {
-			// localStorage.readUser((err, user) => {
-			// 	if (err) {
-			// 		console.log(err);
-			// 	} else {
-			// 		let monthlyLog = user.monthlyLogs.filter((reference) => currentState.id == reference.id)[0];
+			localStorage.readUser((err, user) => {
+				if (err) {
+					console.log(err);
+				} else {
+					let monthlyLog = user.monthlyLogs.filter((reference) => currentState.id == reference.id)[0];
+					let start = new Date(monthlyLog.startDate);
+					let end = new Date(monthlyLog.endDate)
 
-			// 		monthlyLog.
-
-			// 		localStorage.updateMonthlyLog(monthlyLog, null, null, true, (err) => {
-			// 			if(err) {
-			// 				console.log(err);
-			// 			}
-			// 		});
-			// 	}
-			// })
+					if (this.currentDate.getDate() < start.getDate()) {
+						monthlyLog.startDate = this.currentDate;
+					} else if (this.currentDate.getDate() > end.getDate()) {
+						monthlyLog.endDate = this.currentDate;
+					}
+					localStorage.updateMonthlyLog(monthlyLog, null, null, true, (err) => {
+						if(err) {
+							console.log(err);
+						}
+					});
+				}
+			})
 		}
 	}
 }
